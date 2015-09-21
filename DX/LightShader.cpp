@@ -1,12 +1,10 @@
 // texture shader.cpp
 #include "lightshader.h"
 
-
 LightShader::LightShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
 {
 	InitShader(L"../shaders/light_vs.hlsl", L"../shaders/light_ps.hlsl");
 }
-
 
 LightShader::~LightShader()
 {
@@ -48,6 +46,7 @@ void LightShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
 	D3D11_BUFFER_DESC lightBufferDesc;
+	D3D11_BUFFER_DESC cameraBufferDesc;
 
 	// Load (+ compile) shader files
 	loadVertexShader(vsFilename);
@@ -95,15 +94,27 @@ void LightShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
 	m_device->CreateBuffer(&lightBufferDesc, NULL, &m_lightBuffer);
 
+	// Setup camera buffer
+	// setup the description of the camera tynamic constant buffer that is in the pixel shader
+	cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	cameraBufferDesc.ByteWidth = sizeof(CameraBufferType);
+	cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cameraBufferDesc.MiscFlags = 0;
+	cameraBufferDesc.StructureByteStride = 0;
+
+	// creat the constant buffer pointer so we can access the vertex shader constant buffer from within this class
+	m_device->CreateBuffer( &cameraBufferDesc, NULL, &m_cameraBuffer );
 }
 
 
-void LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, Light* light)
+void LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, Camera* camera, Light* light)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	MatrixBufferType* dataPtr;
 	LightBufferType* lightPtr;
+	CameraBufferType* cameraPtr;
 	unsigned int bufferNumber;
 	XMMATRIX tworld, tview, tproj;
 
@@ -138,11 +149,22 @@ void LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const 
 	deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	lightPtr = (LightBufferType*)mappedResource.pData;
 	lightPtr->diffuse = light->GetDiffuseColour();
+	lightPtr->ambient = light->GetAmbientColour();
 	lightPtr->direction = light->GetDirection();
-	lightPtr->padding = 0.0f;
+	lightPtr->specular = light->GetSpecularColour();
+	lightPtr->specularPower = light->GetSpecularPower();
 	deviceContext->Unmap(m_lightBuffer, 0);
 	bufferNumber = 0;
 	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
+
+	// send the camera data to pixel shader
+	deviceContext->Map( m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );
+	cameraPtr = (CameraBufferType*)mappedResource.pData;
+	cameraPtr->position = camera->GetPosition();
+	cameraPtr->padding = 0.0f;
+	deviceContext->Unmap( m_cameraBuffer, 0 );
+	bufferNumber = 1;
+	deviceContext->VSSetConstantBuffers( bufferNumber, 1, &m_cameraBuffer );
 
 	// Set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
