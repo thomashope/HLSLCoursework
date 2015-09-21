@@ -1,0 +1,23 @@
+// TriangleMesh.h
+// Simple single triangle mesh (for example purposes).
+
+#ifndef _TRIMESH_H_
+#define _TRIMESH_H_
+
+#include "BaseMesh.h"
+
+using namespace DirectX;
+
+class TriangleMesh : public BaseMesh
+{
+
+public:
+	TriangleMesh(ID3D11Device* device, WCHAR* textureFilename);
+	~TriangleMesh();
+
+protected:
+	void InitBuffers(ID3D11Device* device);
+	
+};
+
+#endif
