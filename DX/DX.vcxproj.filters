@@ -114,6 +114,12 @@
     <ClCompile Include="DirectionalLightShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="Lab4.cpp">
+      <Filter>Source Files\Applications</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -197,6 +203,12 @@
     <ClInclude Include="DirectionalLightShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="Lab4.h">
+      <Filter>Source Files\Applications</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightShader.h">
+      <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -218,6 +230,12 @@
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\directional_light_ps.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\point_light_ps.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\point_light_vs.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
   </ItemGroup>
