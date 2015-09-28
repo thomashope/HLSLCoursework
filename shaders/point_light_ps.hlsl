@@ -8,14 +8,19 @@ SamplerState SampleType : register(s0);
 
 cbuffer LightBuffer : register(cb0)
 {
-	float4 ambientColour;
     float4 diffuseColour[NUM_LIGHTS];    
 	float4 lightPosition[NUM_LIGHTS];
-    
 	float4 specularColour[2];
+	float4 ambientColour;
 
-	float specularPower[2];
-	float padding[2];
+	// attenuation x, y, z, w == range, constant, linear, quadratic
+	float4 attenuation[NUM_LIGHTS];
+	//float4 range[NUM_LIGHTS];
+	//float4 constantAttenuation[NUM_LIGHTS];
+	//float4 linearAttenuation[NUM_LIGHTS];
+	//float4 quadraticAttenuation[NUM_LIGHTS];
+
+	float4 specularPower[NUM_LIGHTS];
 };
 
 struct InputType
@@ -40,13 +45,13 @@ float4 main(InputType input) : SV_TARGET
 	float4 finalSpec = { 0, 0, 0, 0 };
 
 		// used for attenuation, constant for now
-		float range = 25.0f;
-		float constFactor = 0.5f;
-		float linearFactor = 0.125f;
-		float quadFactor = 0.0f;
-		float attenuation = 1.0f;
+		//float range = 25.0f;
+		//float constFactor = 0.5f;
+		//float linearFactor = 0.125f;
+		//float quadFactor = 0.0f;
 
-		float distance;
+	float attenuationIntensity;
+	float distance;
 
     // Sample the pixel color from the texture using the sampler at this texture coordinate location.
     textureColour = shaderTexture.Sample(SampleType, input.tex);
@@ -56,10 +61,15 @@ float4 main(InputType input) : SV_TARGET
 
 	for (int i = 0; i < NUM_LIGHTS; i++)
 	{
-		distance = length( input.position3D - lightPosition[i].xyz );
+		distance = length( lightPosition[i].xyz - input.position3D );
+
+		if (i == 1)
+		{
+			//distance = 0.12f;
+		}
 		
 		// skip lights that are not in range
-		if (distance < range)
+		if (distance < attenuation[i].x)
 		{
 			// points from the light to the fragment
 			lightDir = normalize( input.position3D - lightPosition[i].xyz );
@@ -70,11 +80,14 @@ float4 main(InputType input) : SV_TARGET
 			// if the surface is facing away from the light, light intensity will be negative
 			if (diffuseIntensity > 0.0f)
 			{
+
 				// calculate attenuation value
-				attenuation = 1 / (constFactor + linearFactor * distance + quadFactor * distance * distance);
+				attenuationIntensity = 1 / (attenuation[i].y +
+										attenuation[i].z * distance +
+										attenuation[i].w * distance * distance);
 
 				// Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
-				colour += diffuseColour[i] * diffuseIntensity * attenuation;
+				colour += diffuseColour[i] * diffuseIntensity * attenuationIntensity;
 				colour = saturate( colour );
 
 				/* USED FOR SPECULAR REFLECTION */

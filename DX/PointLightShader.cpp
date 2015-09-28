@@ -157,13 +157,23 @@ void PointLightShader::SetShaderParameters( ID3D11DeviceContext* deviceContext,
 	// Ambient colour is global and defined by light[0]
 	lightPtr->ambient = light[0]->GetAmbientColour();
 
-	for (int i = 0; i < NUM_LIGHTS; i++) {
+	for (int i = 0; i < NUM_LIGHTS; i++)
+	{
 		lightPtr->diffuse[i] = light[i]->GetDiffuseColour();
 		lightPtr->position[i] = light[i]->GetPosition4();
 		lightPtr->specular[i] = light[i]->GetSpecularColour();
-		lightPtr->specularPower[i] = light[i]->GetSpecularPower();
+		lightPtr->specularPower[i].w = light[i]->GetSpecularPower();
+		lightPtr->attenuation[i].x = light[i]->GetRange();
+		lightPtr->attenuation[i].y = light[i]->GetConstantAttenuation();
+		lightPtr->attenuation[i].z = light[i]->GetLinearAttenuation();
+		lightPtr->attenuation[i].w = light[i]->GetQuadraticAttenuation();
+		/*
+		lightPtr->range[i].w = light[i]->GetRange();
+		lightPtr->constAttenuation[i].w = light[i]->GetConstantAttenuation();
+		lightPtr->linearAttenuation[i].w = light[i]->GetlinearAttenuation();
+		lightPtr->quadraticAttenuation[i].w = light[i]->GetQuadraticAttenuation();
+		*/
 	}
-	
 
 	deviceContext->Unmap(m_lightBuffer, 0);
 	bufferNumber = 0;

@@ -3,11 +3,14 @@
 
 #include "light.h"
 
-Light::Light() {
+Light::Light()
+{
 	SetAmbientColour( 0.0f, 0.0f, 0.0f, 1.0f );
 	SetDiffuseColour( 0.5f, 0.5f, 0.5f, 1.0f );
 	SetSpecularColour( 1.0f, 1.0f, 1.0f, 1.0f );
 	SetSpecularPower( 25.0f );
+	SetRange( 32.0f );
+	setAttenuation( 0.5f, 0.125f, 0.0f );
 }
 
 void Light::GenerateViewMatrix()

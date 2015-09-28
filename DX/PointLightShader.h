@@ -7,6 +7,7 @@
 #include "light.h"
 #include "Camera.h"
 
+
 using namespace std;
 using namespace DirectX;
 
@@ -18,14 +19,21 @@ private:
 	struct LightBufferType
 	{
 		// Ambient colour is global and defined by light[0]
-		XMFLOAT4 ambient;
 		XMFLOAT4 diffuse[NUM_LIGHTS];
 		XMFLOAT4 position[NUM_LIGHTS];
+		XMFLOAT4 specular[NUM_LIGHTS];
+		XMFLOAT4 ambient;
 
-		XMFLOAT4 specular[2];
+		// attenuation x, y, z, w == range, constant, linear, quadratic
+		XMFLOAT4 attenuation[NUM_LIGHTS];
+		// TODO turn below variables back into floats
+		// have to be float4 due to some strange allignment issue
+		//XMFLOAT4 range[NUM_LIGHTS];
+		//XMFLOAT4 constAttenuation[NUM_LIGHTS];
+		//XMFLOAT4 linearAttenuation[NUM_LIGHTS];
+		//XMFLOAT4 quadraticAttenuation[NUM_LIGHTS];
 
-		float specularPower[2];
-		float padding[2];
+		XMFLOAT4 specularPower[NUM_LIGHTS];
 	};
 
 	struct CameraBufferType

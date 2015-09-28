@@ -33,6 +33,9 @@ public:
 	void SetPosition(float, float, float);
 	void SetLookAt(float, float, float);
 
+	void SetRange( float r ) { range = r; }
+	void setAttenuation( float c, float l, float q ) { constantAttenuation = c; linearAttenuation = l; quadraticAttenuation = q; }
+
 	// Getters
 	XMFLOAT4 GetAmbientColour();
 	XMFLOAT4 GetDiffuseColour();
@@ -44,6 +47,10 @@ public:
 	XMMATRIX GetViewMatrix();
 	XMMATRIX GetProjectionMatrix();
 
+	inline float GetRange() { return range; }
+	inline float GetConstantAttenuation() { return constantAttenuation; }
+	inline float GetLinearAttenuation() { return linearAttenuation; }
+	inline float GetQuadraticAttenuation() { return quadraticAttenuation; }
 
 protected:
 	XMFLOAT4 m_ambientColour;
@@ -55,6 +62,11 @@ protected:
 	XMMATRIX m_viewMatrix;
 	XMMATRIX m_projectionMatrix;
 	XMVECTOR m_lookAt; 
+
+	float range;
+	float constantAttenuation;
+	float linearAttenuation;
+	float quadraticAttenuation;
 };
 
 #endif
