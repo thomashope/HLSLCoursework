@@ -64,9 +64,6 @@ float4 main(InputType input) : SV_TARGET
 
 	colour = saturate( colour + finalSpec );
 
-	// DEBUG
-	//colour.xyz = input.viewDirection.xyz;
-
 	return colour;
 }
 

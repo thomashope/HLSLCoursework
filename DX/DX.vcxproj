@@ -99,7 +99,7 @@
     <ClCompile Include="Lab2.cpp" />
     <ClCompile Include="Lab3.cpp" />
     <ClCompile Include="Light.cpp" />
-    <ClCompile Include="LightShader.cpp" />
+    <ClCompile Include="DirectionalLightShader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="OrthoMesh.cpp" />
@@ -129,7 +129,7 @@
     <ClInclude Include="Lab2.h" />
     <ClInclude Include="Lab3.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="LightShader.h" />
+    <ClInclude Include="DirectionalLightShader.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="OrthoMesh.h" />
     <ClInclude Include="PlaneMesh.h" />
@@ -155,10 +155,10 @@
     <FxCompile Include="..\shaders\colour_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
-    <FxCompile Include="..\shaders\light_ps.hlsl">
+    <FxCompile Include="..\shaders\directional_light_ps.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
-    <FxCompile Include="..\shaders\light_vs.hlsl">
+    <FxCompile Include="..\shaders\directional_light_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\texture_ps.hlsl">

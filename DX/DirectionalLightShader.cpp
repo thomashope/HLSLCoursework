@@ -1,12 +1,12 @@
 // texture shader.cpp
-#include "lightshader.h"
+#include "DirectionalLightshader.h"
 
-LightShader::LightShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
+DirectionalLightShader::DirectionalLightShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
 {
-	InitShader(L"../shaders/light_vs.hlsl", L"../shaders/light_ps.hlsl");
+	InitShader(L"../shaders/directional_light_vs.hlsl", L"../shaders/directional_light_ps.hlsl");
 }
 
-LightShader::~LightShader()
+DirectionalLightShader::~DirectionalLightShader()
 {
 	// Release the sampler state.
 	if (m_sampleState)
@@ -41,7 +41,7 @@ LightShader::~LightShader()
 }
 
 
-void LightShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
+void DirectionalLightShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 {
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -108,7 +108,7 @@ void LightShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 }
 
 
-void LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, Camera* camera, Light* light)
+void DirectionalLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, Camera* camera, Light* light)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -170,7 +170,7 @@ void LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const 
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 }
 
-void LightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
+void DirectionalLightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
 {
 	// Set the sampler state in the pixel shader.
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);

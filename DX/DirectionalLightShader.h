@@ -11,7 +11,7 @@ using namespace std;
 using namespace DirectX;
 
 
-class LightShader : public BaseShader
+class DirectionalLightShader : public BaseShader
 {
 private:
 	struct LightBufferType
@@ -31,8 +31,8 @@ private:
 
 public:
 
-	LightShader(ID3D11Device* device, HWND hwnd);
-	~LightShader();
+	DirectionalLightShader(ID3D11Device* device, HWND hwnd);
+	~DirectionalLightShader();
 
 	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, Camera* camera, Light* light);
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);

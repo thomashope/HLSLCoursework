@@ -111,7 +111,7 @@
     <ClCompile Include="Lab3.cpp">
       <Filter>Source Files\Applications</Filter>
     </ClCompile>
-    <ClCompile Include="LightShader.cpp">
+    <ClCompile Include="DirectionalLightShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,7 +194,7 @@
     <ClInclude Include="Lab3.h">
       <Filter>Source Files\Applications</Filter>
     </ClInclude>
-    <ClInclude Include="LightShader.h">
+    <ClInclude Include="DirectionalLightShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
@@ -214,10 +214,10 @@
     <FxCompile Include="..\shaders\texture_vs.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\shaders\light_vs.hlsl">
+    <FxCompile Include="..\shaders\directional_light_vs.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\shaders\light_ps.hlsl">
+    <FxCompile Include="..\shaders\directional_light_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -7,12 +7,12 @@ Lab3::Lab3(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, In
 {
 	// Create Mesh object
 	m_SphereMesh = new SphereMesh(m_Direct3D->GetDevice(), L"../res/brick1.dds");
-	m_LightShader = new LightShader( m_Direct3D->GetDevice( ), hwnd );
+	m_LightShader = new DirectionalLightShader(m_Direct3D->GetDevice(), hwnd);
 	
 	m_Light = new Light;
-	m_Light->SetDiffuseColour( 0.0f, 0.0f, 0.0f, 1.8f );
-	m_Light->SetAmbientColour( 0.2f, 0.2f, 0.0f, 1.0f );
-	m_Light->SetSpecularColour( 1.0f, 1.0f, 1.0f, 1.0f );
+	m_Light->SetDiffuseColour( 0.2f, 0.2f, 0.4f, 1.0f );
+	m_Light->SetAmbientColour( 0.2f, 0.2f, 0.2f, 1.0f );
+	m_Light->SetSpecularColour( 1.0f, 0.8f, 0.9f, 1.0f );
 	m_Light->SetSpecularPower( 25.0f );
 	m_Light->SetDirection( 0.5f, 0.0f, 0.0f );
 }

@@ -5,7 +5,7 @@
 // Includes
 #include "baseapplication.h"
 
-#include "LightShader.h"
+#include "DirectionalLightShader.h"
 #include "SphereMesh.h"
 #include "Light.h"
 
@@ -23,7 +23,7 @@ private:
 
 private:
 
-	LightShader* m_LightShader;
+	DirectionalLightShader* m_LightShader;
 	SphereMesh* m_SphereMesh;
 	Light* m_Light;
 };
