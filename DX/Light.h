@@ -19,6 +19,8 @@ public:
 		_mm_free(p);
 	}
 
+	Light();
+
 	void GenerateViewMatrix();
 	void GenerateProjectionMatrix(float, float);
 
@@ -38,6 +40,7 @@ public:
 	XMFLOAT4 GetSpecularColour();
 	float GetSpecularPower();
 	XMFLOAT3 GetPosition();
+	XMFLOAT4 GetPosition4();
 	XMMATRIX GetViewMatrix();
 	XMMATRIX GetProjectionMatrix();
 

@@ -3,6 +3,13 @@
 
 #include "light.h"
 
+Light::Light() {
+	SetAmbientColour( 0.0f, 0.0f, 0.0f, 1.0f );
+	SetDiffuseColour( 0.5f, 0.5f, 0.5f, 1.0f );
+	SetSpecularColour( 1.0f, 1.0f, 1.0f, 1.0f );
+	SetSpecularPower( 25.0f );
+}
+
 void Light::GenerateViewMatrix()
 {
 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
@@ -89,6 +96,12 @@ float Light::GetSpecularPower()
 XMFLOAT3 Light::GetPosition()
 {
 	XMFLOAT3 temp(XMVectorGetX(m_position), XMVectorGetY(m_position), XMVectorGetZ(m_position));
+	return temp;
+}
+
+XMFLOAT4 Light::GetPosition4()
+{
+	XMFLOAT4 temp(XMVectorGetX(m_position), XMVectorGetY(m_position), XMVectorGetZ(m_position), 1.0f);
 	return temp;
 }
 

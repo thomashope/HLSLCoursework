@@ -108,7 +108,13 @@ void PointLightShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 }
 
 
-void PointLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, Camera* camera, Light* light)
+void PointLightShader::SetShaderParameters( ID3D11DeviceContext* deviceContext,
+											const XMMATRIX &worldMatrix,
+											const XMMATRIX &viewMatrix,
+											const XMMATRIX &projectionMatrix,
+											ID3D11ShaderResourceView* texture,
+											Camera* camera,
+											Light* light[2] )
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -117,7 +123,6 @@ void PointLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, c
 	CameraBufferType* cameraPtr;
 	unsigned int bufferNumber;
 	XMMATRIX tworld, tview, tproj;
-
 
 	// Transpose the matrices to prepare them for the shader.
 	tworld = XMMatrixTranspose(worldMatrix);
@@ -148,11 +153,18 @@ void PointLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, c
 	// Send light data to pixel shader
 	deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	lightPtr = (LightBufferType*)mappedResource.pData;
-	lightPtr->diffuse = light->GetDiffuseColour();
-	lightPtr->ambient = light->GetAmbientColour();
-	lightPtr->position = light->GetPosition();
-	lightPtr->specular = light->GetSpecularColour();
-	lightPtr->specularPower = light->GetSpecularPower();
+
+	// Ambient colour is global and defined by light[0]
+	lightPtr->ambient = light[0]->GetAmbientColour();
+
+	for (int i = 0; i < NUM_LIGHTS; i++) {
+		lightPtr->diffuse[i] = light[i]->GetDiffuseColour();
+		lightPtr->position[i] = light[i]->GetPosition4();
+		lightPtr->specular[i] = light[i]->GetSpecularColour();
+		lightPtr->specularPower[i] = light[i]->GetSpecularPower();
+	}
+	
+
 	deviceContext->Unmap(m_lightBuffer, 0);
 	bufferNumber = 0;
 	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
@@ -160,8 +172,10 @@ void PointLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, c
 	// send the camera data to pixel shader
 	deviceContext->Map( m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );
 	cameraPtr = (CameraBufferType*)mappedResource.pData;
+
 	cameraPtr->position = camera->GetPosition();
 	cameraPtr->padding = 0.0f;
+	
 	deviceContext->Unmap( m_cameraBuffer, 0 );
 	bufferNumber = 1;
 	deviceContext->VSSetConstantBuffers( bufferNumber, 1, &m_cameraBuffer );

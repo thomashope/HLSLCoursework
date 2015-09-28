@@ -10,17 +10,22 @@
 using namespace std;
 using namespace DirectX;
 
+#define NUM_LIGHTS 2
 
 class PointLightShader : public BaseShader
 {
 private:
 	struct LightBufferType
 	{
-		XMFLOAT4 diffuse;
+		// Ambient colour is global and defined by light[0]
 		XMFLOAT4 ambient;
-		XMFLOAT3 position;
-		float specularPower;
-		XMFLOAT4 specular;
+		XMFLOAT4 diffuse[NUM_LIGHTS];
+		XMFLOAT4 position[NUM_LIGHTS];
+
+		XMFLOAT4 specular[2];
+
+		float specularPower[2];
+		float padding[2];
 	};
 
 	struct CameraBufferType
@@ -34,7 +39,14 @@ public:
 	PointLightShader(ID3D11Device* device, HWND hwnd);
 	~PointLightShader();
 
-	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, Camera* camera, Light* light);
+	void SetShaderParameters( ID3D11DeviceContext* deviceContext,
+							  const XMMATRIX &world,
+							  const XMMATRIX &view,
+							  const XMMATRIX &projection,
+							  ID3D11ShaderResourceView* texture,
+							  Camera* camera,
+							  Light* light[2]);
+
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
 
 private:

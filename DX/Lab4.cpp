@@ -3,21 +3,25 @@
 #include "lab4.h"
 #include <iostream>
 
-Lab4::Lab4(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in) : BaseApplication(hinstance, hwnd, screenWidth, screenHeight, in)
+Lab4::Lab4( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in ) : BaseApplication( hinstance, hwnd, screenWidth, screenHeight, in )
 {
 	// Create Mesh object
-	m_SphereMesh = new SphereMesh(m_Direct3D->GetDevice(), L"../res/brick1.dds");
-	m_PlaneMesh = new PlaneMesh(m_Direct3D->GetDevice(), L"../res/bunny.png");
+	m_SphereMesh = new SphereMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
+	m_PlaneMesh = new PlaneMesh( m_Direct3D->GetDevice(), L"../res/DefaultDiffuse.png" );
 
 	// create she shaders
-	m_LightShader = new PointLightShader(m_Direct3D->GetDevice(), hwnd);
-	
-	m_Light = new Light;
-	m_Light->SetDiffuseColour( 1.0f, 1.0f, 0.8f, 1.0f );
-	m_Light->SetAmbientColour( 0.0f, 0.0f, 0.0f, 1.0f );
-	m_Light->SetSpecularColour( 1.0f, 0.8f, 0.9f, 1.0f );
-	m_Light->SetSpecularPower( 25.0f );
-	m_Light->SetPosition( 0.0f, 0.0f, 0.0f );
+	m_LightShader = new PointLightShader( m_Direct3D->GetDevice(), hwnd );
+
+	// declare all the lights with default values
+	for (int i = 0; i < NUM_LIGHTS; i++) {
+		m_Light[i] = new Light;
+	}
+
+	m_Light[0]->SetPosition( 0.0f, 0.0f, 0.0f );
+	m_Light[0]->SetDiffuseColour( 1.0f, 0.0f, 0.0f, 1.0f );
+
+	m_Light[1]->SetPosition( 10.0f, 0.0f, 10.0f );
+	m_Light[1]->SetDiffuseColour( 0.0f, 1.0f, 0.0f, 1.0f );
 }
 
 
@@ -39,10 +43,13 @@ Lab4::~Lab4()
 		m_LightShader = 0;
 	}
 
-	if( m_Light )
-	{
-		delete m_Light;
-		m_Light = 0;
+
+	for (int i = 0; i < NUM_LIGHTS; i++) {
+		if (m_Light[i])
+		{
+			delete m_Light[i];
+			m_Light[i] = 0;
+		}
 	}
 }
 
@@ -81,7 +88,6 @@ bool Lab4::Render()
 	m_Direct3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
-
 
 	// move up
 	worldMatrix = XMMatrixTranslation(0, 2, 0);
