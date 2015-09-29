@@ -2,9 +2,6 @@
 #ifndef _LAB4_H
 #define _LAB4_H
 
-// the number of lights the shader will handle before it breaks down and dies
-#define NUM_LIGHTS 2
-
 // Includes
 #include "baseapplication.h"
 

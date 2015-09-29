@@ -4,7 +4,7 @@
 Texture2D shaderTexture : register(t0);
 SamplerState SampleType : register(s0);
 
-#define NUM_LIGHTS 2
+#define NUM_LIGHTS 4
 
 cbuffer LightBuffer : register(cb0)
 {

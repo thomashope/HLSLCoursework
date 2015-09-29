@@ -11,7 +11,8 @@
 using namespace std;
 using namespace DirectX;
 
-#define NUM_LIGHTS 2
+// the number of lights the shader will handle before it breaks down and dies
+#define NUM_LIGHTS 4
 
 class PointLightShader : public BaseShader
 {

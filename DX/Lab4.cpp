@@ -7,7 +7,7 @@ Lab4::Lab4( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 {
 	// Create Mesh object
 	m_SphereMesh = new SphereMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
-	m_PlaneMesh = new PlaneMesh( m_Direct3D->GetDevice(), L"../res/DefaultDiffuse.png" );
+	m_PlaneMesh = new PlaneMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
 
 	// create she shaders
 	m_LightShader = new PointLightShader( m_Direct3D->GetDevice(), hwnd );
@@ -25,6 +25,16 @@ Lab4::Lab4( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 	m_Light[1]->SetPosition( 10.0f, 0.0f, 10.0f );
 	m_Light[1]->SetDiffuseColour( 0.0f, 1.0f, 0.0f, 1.0f );
 	m_Light[1]->SetSpecularColour( 0.0f, 1.0f, 0.0f, 1.0f );
+
+	m_Light[2]->SetPosition( 20.0f, 0.0f, 0.0f );
+	m_Light[2]->SetDiffuseColour( 1.0f, 1.0f, 0.0f, 1.0f );
+
+	m_Light[3]->SetPosition( 30.0f, -1.0f, 20.0f );
+	m_Light[3]->SetDiffuseColour( 1.0f, 1.0f, 1.0f, 1.0f );
+	m_Light[3]->SetSpecularColour( 0.1f, 0.9f, 1.0f, 1.0f );
+	m_Light[3]->setAttenuation( 0.5f, 0.2f, 0.0f );
+	m_Light[3]->SetRange( 9.5f );
+	m_Light[3]->SetSpecularPower( 20.0f );
 }
 
 
