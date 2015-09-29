@@ -23,19 +23,19 @@ struct InputType
 
 float4 main(InputType input) : SV_TARGET
 {
-    float4 textureColour;
-	float3 lightDir;
-    float lightIntensity;
-	float4 colour = { 0, 0, 0, 0 };
-	float3 reflection;
-	float4 specular;
+	float4 finalColour = { 0, 0, 0, 0 };
 	float4 finalSpec = { 0, 0, 0, 0 };
+    float4 textureColour;
+	float4 specular;
+	float3 lightDir;
+	float3 reflection;
+    float lightIntensity;
 
     // Sample the pixel color from the texture using the sampler at this texture coordinate location.
     textureColour = shaderTexture.Sample(SampleType, input.tex);
 
-	// set the default output colour to the ambient light value
-	colour = ambientColour;
+	// set the default output finalColour to the ambient light value
+	finalColour = ambientColour;
 
 	lightDir = -lightDirection;
 
@@ -45,8 +45,8 @@ float4 main(InputType input) : SV_TARGET
 	if( lightIntensity > 0.0f )
 	{
 		// Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
-		colour += diffuseColour * lightIntensity;
-		colour = saturate( colour );
+		finalColour += diffuseColour * lightIntensity;
+		finalColour = saturate( finalColour );
 
 		// calculate reflection vector based on the light intensity, normal vector and light direction
 		reflection = reflect( -lightDir, input.normal );
@@ -60,10 +60,10 @@ float4 main(InputType input) : SV_TARGET
 	}
     
 	// Multiply the texture pixel and the final diffuse color to get the final pixel color result.
-    colour = colour * textureColour;
+    finalColour = finalColour * textureColour;
 
-	colour = saturate( colour + finalSpec );
+	finalColour = saturate( finalColour + finalSpec );
 
-	return colour;
+	return finalColour;
 }
 
