@@ -10,7 +10,7 @@ cbuffer LightBuffer : register(cb0)
 {
     float4 diffuseColour[NUM_LIGHTS];    
 	float4 lightPosition[NUM_LIGHTS];
-	float4 specularColour[2];
+	float4 specularColour[NUM_LIGHTS];
 	float4 ambientColour;
 
 	// attenuation x, y, z, w == range, constant, linear, quadratic
@@ -39,16 +39,10 @@ float4 main(InputType input) : SV_TARGET
     float4 textureColour;
 	float3 lightDir;
     float diffuseIntensity;
-	float4 colour = { 0, 0, 0, 0 };
+	float4 colour = { 0, 0, 0, 0 }; // should be renamed final colour?
 	float3 reflection;
 	float4 specular;
 	float4 finalSpec = { 0, 0, 0, 0 };
-
-		// used for attenuation, constant for now
-		//float range = 25.0f;
-		//float constFactor = 0.5f;
-		//float linearFactor = 0.125f;
-		//float quadFactor = 0.0f;
 
 	float attenuationIntensity;
 	float distance;
@@ -63,11 +57,6 @@ float4 main(InputType input) : SV_TARGET
 	{
 		distance = length( lightPosition[i].xyz - input.position3D );
 
-		if (i == 1)
-		{
-			//distance = 0.12f;
-		}
-		
 		// skip lights that are not in range
 		if (distance < attenuation[i].x)
 		{
@@ -80,9 +69,8 @@ float4 main(InputType input) : SV_TARGET
 			// if the surface is facing away from the light, light intensity will be negative
 			if (diffuseIntensity > 0.0f)
 			{
-
 				// calculate attenuation value
-				attenuationIntensity = 1 / (attenuation[i].y +
+				attenuationIntensity =	1 / (attenuation[i].y +
 										attenuation[i].z * distance +
 										attenuation[i].w * distance * distance);
 
@@ -92,19 +80,14 @@ float4 main(InputType input) : SV_TARGET
 
 				/* USED FOR SPECULAR REFLECTION */
 				// calculate reflection vector based on the light intensity, normal vector and light direction
-				//reflection = reflect( lightDir, input.normal );
+				reflection = reflect( lightDir, input.normal );
 
 				// determine the amount of specular light based on the reflection vector, viewing direcion and specular power
 				//TODO: find out why / if its correct to have sharp edges on the specular reflection at extreme angles
-				//specular = pow( saturate( dot( reflection, input.viewDirection) ), specularPower[i] );
-
-				//float4 temp = { 1.0f, 1.0f, 1.0f, 1.0f };
+				specular = pow( saturate( dot( reflection, input.viewDirection) ), specularPower[i].w );
 
 				// sum up specular light
-				//finalSpec = specularColour[0] * specular;
-
-				//finalSpce = temp;
-				//finalSpec = saturate( finalSpec + temp );
+				finalSpec += specularColour[i] * specular * attenuationIntensity;
 			}
 		}
 	}
@@ -113,7 +96,7 @@ float4 main(InputType input) : SV_TARGET
     colour = colour * textureColour;
 
 	// blend with the specular colour
-	//colour = saturate( colour + finalSpec );
+	colour = saturate( colour + finalSpec );
 
 	return colour;
 }

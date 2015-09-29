@@ -162,7 +162,7 @@ void PointLightShader::SetShaderParameters( ID3D11DeviceContext* deviceContext,
 		lightPtr->diffuse[i] = light[i]->GetDiffuseColour();
 		lightPtr->position[i] = light[i]->GetPosition4();
 		lightPtr->specular[i] = light[i]->GetSpecularColour();
-		lightPtr->specularPower[i].w = light[i]->GetSpecularPower();
+		lightPtr->specularPower[i].w = 25.0f;//light[i]->GetSpecularPower();
 		lightPtr->attenuation[i].x = light[i]->GetRange();
 		lightPtr->attenuation[i].y = light[i]->GetConstantAttenuation();
 		lightPtr->attenuation[i].z = light[i]->GetLinearAttenuation();

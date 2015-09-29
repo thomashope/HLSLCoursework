@@ -57,5 +57,11 @@ OutputType main(InputType input)
 	// convert the world position to a float3 and pass to output
 	output.position3D = worldPosition.xyz;
 
+	// Determine the viewing direction based on the position of the camer and the position of the vertex in the world
+	output.viewDirection = cameraPosition.xyz - worldPosition.xyz;
+
+	// normalize the viewing direction vector
+	output.viewDirection = normalize( output.viewDirection );
+
     return output;
 }

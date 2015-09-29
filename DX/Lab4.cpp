@@ -18,11 +18,13 @@ Lab4::Lab4( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 	}
 
 	m_Light[0]->SetPosition( 0.0f, 0.0f, 0.0f );
-	m_Light[0]->SetDiffuseColour( 1.0f, 0.0f, 0.0f, 1.0f );
+	m_Light[0]->SetDiffuseColour( 0.7f, 0.0f, 0.0f, 1.0f );
+	m_Light[0]->SetSpecularColour( 1.0f, 0.0f, 0.0f, 1.0f );
 	m_Light[0]->SetRange( 4.0f );
 
 	m_Light[1]->SetPosition( 10.0f, 0.0f, 10.0f );
-	m_Light[1]->SetDiffuseColour( 0.0f, 1.0f, 0.0f, 1.0f );
+	m_Light[1]->SetDiffuseColour( 0.0f, 0.7f, 0.0f, 1.0f );
+	m_Light[1]->SetSpecularColour( 0.0f, 1.0f, 0.0f, 1.0f );
 }
 
 

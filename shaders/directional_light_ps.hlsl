@@ -52,7 +52,7 @@ float4 main(InputType input) : SV_TARGET
 		reflection = reflect( -lightDir, input.normal );
 
 		// determine the amount of specular light based on the reflection vector, viewing direcion and specular power
-		//TODO: find out why / if its correct to have sharp edges on the specular reflection at extreme angles
+		// TODO: find out why / if its correct to have sharp edges on the specular reflection at extreme angles
 		specular = pow( saturate( dot( reflection, input.viewDirection) + 0.5f), specularPower );
 
 		// sum up specular light

@@ -9,8 +9,8 @@ Light::Light()
 	SetDiffuseColour( 0.5f, 0.5f, 0.5f, 1.0f );
 	SetSpecularColour( 1.0f, 1.0f, 1.0f, 1.0f );
 	SetSpecularPower( 25.0f );
-	SetRange( 32.0f );
-	setAttenuation( 0.5f, 0.125f, 0.0f );
+	SetRange( 64.0f );
+	setAttenuation( 0.5f, 0.125f, 0.02f );
 }
 
 void Light::GenerateViewMatrix()
