@@ -28,7 +28,7 @@ private:
 	PointLightShader* m_LightShader;
 	SphereMesh* m_SphereMesh;
 	PlaneMesh* m_PlaneMesh;
-	Light* m_Light[NUM_LIGHTS];
+	Light* m_Lights[NUM_LIGHTS];
 };
 
 #endif
