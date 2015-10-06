@@ -7,7 +7,7 @@ Lab5::Lab5( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 {
 	// Create Mesh object
 	m_SphereMesh = new SphereMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
-	m_PlaneMesh = new PlaneMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
+	m_PlaneMesh = new PlaneMesh( m_Direct3D->GetDevice(), L"../res/NUKAGE1.png" );
 
 	// create she shaders
 	m_JellyShader = new JellyShader( m_Direct3D->GetDevice( ), hwnd );
