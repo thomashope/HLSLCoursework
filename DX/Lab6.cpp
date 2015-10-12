@@ -116,11 +116,21 @@ bool Lab6::Frame()
 
 bool Lab6::Render()
 {
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
-
-
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Update();
+	// update the world time
+	m_time += m_Timer->GetTime();
+	
+	RenderToTexture();
+
+	RenderToBackBuffer();
+
+	return true;
+}
+
+void Lab6::RenderToTexture()
+{
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
 	m_Direct3D->GetWorldMatrix( worldMatrix );
@@ -129,67 +139,93 @@ bool Lab6::Render()
 	m_Direct3D->GetOrthoMatrix( orthoMatrix );
 	m_Camera->GetBaseViewMatrix( baseViewMatrix );
 
-	m_time += m_Timer->GetTime();
+	// Render to texture	
+	m_RenderTexture->SetRenderTarget( m_Direct3D->GetDeviceContext() );
+	m_RenderTexture->ClearRenderTarget( m_Direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f );
 
-	// render to texture
-	{
-		m_RenderTexture->SetRenderTarget( m_Direct3D->GetDeviceContext() );
-		m_RenderTexture->ClearRenderTarget( m_Direct3D->GetDeviceContext(), 1.0f, 1.0f, 1.0f, 1.0f );
+	// move up
+	worldMatrix = XMMatrixTranslation( 0, 2, 0 );
 
-		// render sphere
-		m_SphereMesh->SendData( m_Direct3D->GetDeviceContext( ) );
-		m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture( ), m_Camera, m_Lights );
-		m_NormalShader->Render( m_Direct3D->GetDeviceContext( ), m_SphereMesh->GetIndexCount( ) );
+	// render sphere
+	m_SphereMesh->SendData( m_Direct3D->GetDeviceContext() );
+	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture() );
+	m_TextureShader->Render( m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount() );
 
-		m_Direct3D->SetBackBufferRenderTarget();
-	}
+	// another far away sphere
+	worldMatrix = XMMatrixTranslation( 20, 0, 20 );
+	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture() );
+	m_TextureShader->Render( m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount() );
 
-	// Clear the render targets
-	m_Direct3D->BeginScene(0.1f, 0.1f, 0.2f, 1.0f);
+	// move down
+	worldMatrix = XMMatrixTranslation( -10, -2, -10 );
 
+	// render wobbly plane
+	//m_PlaneMesh->SendData( m_Direct3D->GetDeviceContext( ) );
+	//m_JellyShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_PlaneMesh->GetTexture( ), m_Camera, m_time, m_Lights );
+	//m_JellyShader->Render( m_Direct3D->GetDeviceContext( ), m_PlaneMesh->GetIndexCount( ) );
+	
+	m_Direct3D->SetBackBufferRenderTarget();	
+}
+
+void Lab6::RenderToBackBuffer()
+{
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
+
+	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
+	m_Direct3D->GetWorldMatrix( worldMatrix );
+	m_Camera->GetViewMatrix( viewMatrix );
+	m_Direct3D->GetProjectionMatrix( projectionMatrix );
+	m_Direct3D->GetOrthoMatrix( orthoMatrix );
+	m_Camera->GetBaseViewMatrix( baseViewMatrix );
+	
+	// Set render target to back buffer
+	m_Direct3D->SetBackBufferRenderTarget();
+	
 	// move the lights
 	{
 		static float radians;
 		float radius = 6.0f;
-		radians += m_Timer->GetTime() * 1.6f;
+		radians += m_Timer->GetTime( ) * 1.6f;
 
 		m_Lights[3]->SetPosition( 30.0f + sinf( radians ) * radius, -1.0f, 20.0f - cosf( radians ) * radius );
 	}
 
+	// Render to back buffer
+	m_Direct3D->BeginScene( 0.1f, 0.1f, 0.2f, 1.0f );
+
 	// move up
-	worldMatrix = XMMatrixTranslation(0, 2, 0);
+	worldMatrix = XMMatrixTranslation( 0, 2, 0 );
 
 	// render sphere
-	m_SphereMesh->SendData( m_Direct3D->GetDeviceContext() );
-	m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture(), m_Camera, m_Lights );
-	m_NormalShader->Render( m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount() );
+	m_SphereMesh->SendData( m_Direct3D->GetDeviceContext( ) );
+	m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture( ), m_Camera, m_Lights );
+	m_NormalShader->Render( m_Direct3D->GetDeviceContext( ), m_SphereMesh->GetIndexCount( ) );
 
 	// another far away sphere
 	worldMatrix = XMMatrixTranslation( 20, 0, 20 );
-	m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture(), m_Camera, m_Lights );
-	m_NormalShader->Render( m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount() );
+	m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture( ), m_Camera, m_Lights );
+	m_NormalShader->Render( m_Direct3D->GetDeviceContext( ), m_SphereMesh->GetIndexCount( ) );
 
 	// move down
 	worldMatrix = XMMatrixTranslation( -10, -2, -10 );
 
 	// render plane
-	m_PlaneMesh->SendData( m_Direct3D->GetDeviceContext() );
-	m_JellyShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_PlaneMesh->GetTexture(), m_Camera, m_time, m_Lights );
-	m_JellyShader->Render( m_Direct3D->GetDeviceContext(), m_PlaneMesh->GetIndexCount() );
-	
-	m_Direct3D->GetWorldMatrix( worldMatrix );
+	m_PlaneMesh->SendData( m_Direct3D->GetDeviceContext( ) );
+	m_JellyShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_PlaneMesh->GetTexture( ), m_Camera, m_time, m_Lights );
+	m_JellyShader->Render( m_Direct3D->GetDeviceContext( ), m_PlaneMesh->GetIndexCount( ) );
 
+	// reset the world matrix
+	m_Direct3D->GetWorldMatrix( worldMatrix );
+	
 	// render ortho plane
-	m_Direct3D->TurnZBufferOff();
+	m_Direct3D->TurnZBufferOff( );
 
 	m_OrthoMesh->SendData( m_Direct3D->GetDeviceContext( ) );
 	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_RenderTexture->GetShaderResourceView( ) );
 	m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_OrthoMesh->GetIndexCount( ) );
 
-	m_Direct3D->TurnZBufferOn();
+	m_Direct3D->TurnZBufferOn( );
 
 	// Present the rendered scene to the screen.
-	m_Direct3D->EndScene();
-
-	return true;
+	m_Direct3D->EndScene( );
 }

@@ -17,6 +17,7 @@
 // demonstrates point lights
 class Lab6 : public BaseApplication
 {
+// functons
 public:
 
 	Lab6(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input*);
@@ -27,8 +28,13 @@ public:
 private:
 	bool Render();
 
-private:
+	void RenderToTexture();
+	void RenderToBackBuffer();
 
+// variables
+public:
+
+private:
 	JellyShader* m_JellyShader;
 	PointLightShader* m_NormalShader;
 	TextureShader* m_TextureShader;
