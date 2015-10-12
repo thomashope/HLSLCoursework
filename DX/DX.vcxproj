@@ -101,6 +101,7 @@
     <ClCompile Include="Lab3.cpp" />
     <ClCompile Include="Lab4.cpp" />
     <ClCompile Include="Lab5.cpp" />
+    <ClCompile Include="Lab6.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="DirectionalLightShader.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Lab3.h" />
     <ClInclude Include="Lab4.h" />
     <ClInclude Include="Lab5.h" />
+    <ClInclude Include="Lab6.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="DirectionalLightShader.h" />
     <ClInclude Include="Model.h" />

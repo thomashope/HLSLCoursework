@@ -11,9 +11,10 @@
 #include "Lab3.h"
 #include "Lab4.h"
 #include "Lab5.h"
+#include "Lab6.h"
 #include "Input.h"
 
-#define CURRENT_LAB Lab5
+#define CURRENT_LAB Lab6
 
 class System
 {

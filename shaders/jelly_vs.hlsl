@@ -49,11 +49,14 @@ OutputType main(InputType input)
 	//input.normal.x = 1 - cos( input.position.x + time );
 	//input.normal.y = abs( cos( input.position.x + time ) );
 	
-	input.position.xyz += input.normal * sin( length(input.position.xz - float2(20.0f, 20.0f)) + time ) * height;
+	input.position.xyz += input.normal * sin( length(input.position.xz - float2(20.0f, 20.0f)) - time ) * height;
 
-	// recalculate normals
-	input.normal.x = 1 - cos( length( input.position.xz - float2(20.0f, 20.0f) ) + time );
-	input.normal.y = abs( cos( length( input.position.xz - float2(20.0f, 20.0f) ) + time ) );
+	// recalculate normals, TODO: find out how this should be
+	input.normal.x = 1 - cos( length( input.position.xz - float2(20.0f, 20.0f) ) - time );
+	input.normal.z = 1 - sin( length( input.position.xz - float2(20.0f, 20.0f) ) - time );
+	input.normal.y = abs( cos( length( input.position.xz - float2(20.0f, 20.0f) ) - time ) );
+
+	input.normal = normalize( input.normal );
 
     // Calculate the position of the vertex against the world, view, and projection matrices.
     output.position = mul(input.position, worldMatrix);
