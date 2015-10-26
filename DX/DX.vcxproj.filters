@@ -129,6 +129,9 @@
     <ClCompile Include="Lab6.cpp">
       <Filter>Source Files\Applications</Filter>
     </ClCompile>
+    <ClCompile Include="Lab8.cpp">
+      <Filter>Source Files\Applications</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -225,6 +228,9 @@
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Lab6.h">
+      <Filter>Source Files\Applications</Filter>
+    </ClInclude>
+    <ClInclude Include="Lab8.h">
       <Filter>Source Files\Applications</Filter>
     </ClInclude>
   </ItemGroup>
