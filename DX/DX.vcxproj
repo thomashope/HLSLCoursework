@@ -94,6 +94,7 @@
     <ClCompile Include="ColourShader.cpp" />
     <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="D3D.cpp" />
+    <ClCompile Include="HorizontalBlurShader.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="JellyShader.cpp" />
     <ClCompile Include="Lab1.cpp" />
@@ -122,6 +123,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TokenStream.cpp" />
     <ClCompile Include="TriangleMesh.cpp" />
+    <ClCompile Include="VerticalBlurShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h" />
@@ -132,6 +134,7 @@
     <ClInclude Include="ColourShader.h" />
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="D3D.h" />
+    <ClInclude Include="HorizontalBlurShader.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="JellyShader.h" />
     <ClInclude Include="Lab1.h" />
@@ -158,6 +161,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TokenStream.h" />
     <ClInclude Include="TriangleMesh.h" />
+    <ClInclude Include="VerticalBlurShader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -181,6 +185,12 @@
     <FxCompile Include="..\shaders\directional_light_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
+    <FxCompile Include="..\shaders\horizontalBlur_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\horizontalBlur_vs.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="..\shaders\jelly_ps.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
@@ -197,6 +207,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\texture_vs.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\verticalBlur_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\verticalBlur_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>

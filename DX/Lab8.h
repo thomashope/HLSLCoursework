@@ -32,6 +32,10 @@ private:
 	void RenderScene();
 	void RenderBlurredScene();
 	void RenderDownsampledScene();
+
+	void RenderHorizontalBlur() {}
+	void RenderGaussianBlur() {}
+
 	void RenderToBackBuffer();
 
 	template<typename T>
@@ -51,9 +55,9 @@ private:
 	RenderTexture* m_StandardSceneTexture;
 	RenderTexture* m_BlurredSceneTexture;
 	RenderTexture* m_DownSampledSceneTexture;
-
-
-	RenderTexture* m_BottomRightTexture;
+	
+	RenderTexture* m_HorizontalyBlurredTexture;
+	RenderTexture* m_GuassianBlurTexture;
 	
 	OrthoMesh* m_FullscreenMesh;
 	OrthoMesh* m_TopLeftMesh;

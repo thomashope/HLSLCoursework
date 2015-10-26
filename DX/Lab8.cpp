@@ -18,7 +18,10 @@ Lab8::Lab8( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 	// Create alternate render targets with meshes to render them on
 	m_StandardSceneTexture = new RenderTexture( m_Direct3D->GetDevice(), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH );
 	m_BlurredSceneTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
-	m_DownSampledSceneTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth/4, screenHeight/4, SCREEN_NEAR, SCREEN_DEPTH);	
+	m_DownSampledSceneTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth / 4, screenHeight / 4, SCREEN_NEAR, SCREEN_DEPTH);
+
+	m_HorizontalyBlurredTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth / 4, screenHeight / 4, SCREEN_NEAR, SCREEN_DEPTH);
+	m_GuassianBlurTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth / 4, screenHeight / 4, SCREEN_NEAR, SCREEN_DEPTH);
 
 	// create the shaders
 	m_JellyShader = new JellyShader( m_Direct3D->GetDevice(), hwnd );
@@ -229,8 +232,6 @@ void Lab8::RenderToBackBuffer()
 	m_Camera->GetBaseViewMatrix( baseViewMatrix );
 	
 	// Set render target to back buffer
-	//m_BlurredSceneTexture->SetRenderTarget(m_Direct3D->GetDeviceContext()); // Have to set the render target to a texture of the correct size
-																			// setting the back buffer as the render target doesn't reset the screenWidth and screenHeight
 	m_Direct3D->SetBackBufferRenderTarget();
 	m_Direct3D->ResetViewport();
 	
