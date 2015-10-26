@@ -132,6 +132,9 @@
     <ClCompile Include="Lab8.cpp">
       <Filter>Source Files\Applications</Filter>
     </ClCompile>
+    <ClCompile Include="BoxBlurShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -233,6 +236,9 @@
     <ClInclude Include="Lab8.h">
       <Filter>Source Files\Applications</Filter>
     </ClInclude>
+    <ClInclude Include="BoxBlurShader.h">
+      <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -266,6 +272,12 @@
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\jelly_ps.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\boxBlur_vs.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\boxBlur_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
   </ItemGroup>

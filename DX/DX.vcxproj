@@ -113,6 +113,7 @@
     <ClCompile Include="PointMesh.cpp" />
     <ClCompile Include="QuadMesh.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
+    <ClCompile Include="BoxBlurShader.cpp" />
     <ClCompile Include="SphereMesh.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="TessellationMesh.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="BaseApplication.h" />
     <ClInclude Include="BaseMesh.h" />
     <ClInclude Include="BaseShader.h" />
+    <ClInclude Include="BoxBlurShader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColourShader.h" />
     <ClInclude Include="CubeMesh.h" />
@@ -161,6 +163,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\shaders\boxBlur_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\boxBlur_vs.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="..\shaders\colour_ps.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>

@@ -6,6 +6,7 @@
 #include "baseapplication.h"
 
 #include "PointLightShader.h"
+#include "BoxBlurShader.h"
 #include "JellyShader.h"
 #include "TextureShader.h"
 #include "SphereMesh.h"
@@ -43,8 +44,10 @@ public:
 
 private:
 	JellyShader* m_JellyShader;
+
 	PointLightShader* m_NormalShader;
 	TextureShader* m_TextureShader;
+	BoxBlurShader* m_BoxBlurShader;
 
 	SphereMesh* m_SphereMesh;
 	PlaneMesh* m_PlaneMesh;

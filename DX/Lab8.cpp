@@ -16,10 +16,11 @@ Lab8::Lab8( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 	m_BlurredSceneMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, screenWidth / 4, screenHeight / 4);
 	
 
-	// create she shaders
+	// create the shaders
 	m_JellyShader = new JellyShader( m_Direct3D->GetDevice(), hwnd );
 	m_NormalShader = new PointLightShader( m_Direct3D->GetDevice(), hwnd );
-	m_TextureShader = new TextureShader( m_Direct3D->GetDevice(), hwnd );
+	m_TextureShader = new TextureShader(m_Direct3D->GetDevice(), hwnd);
+	m_BoxBlurShader = new BoxBlurShader(m_Direct3D->GetDevice(), hwnd, screenWidth, screenHeight);
 
 	// declare all the lights with default values
 	for (int i = 0; i < NUM_LIGHTS; i++)
@@ -173,45 +174,6 @@ void Lab8::RenderToBackBuffer()
 	// Set render target to back buffer
 	m_Direct3D->SetBackBufferRenderTarget();
 	
-	/*
-	// move the lights
-	{
-		static float radians;
-		float radius = 6.0f;
-		radians += m_Timer->GetTime( ) * 1.6f;
-
-		m_Lights[3]->SetPosition( 30.0f + sinf( radians ) * radius, -1.0f, 20.0f - cosf( radians ) * radius );
-	}
-
-	// Render to back buffer
-	m_Direct3D->BeginScene( 0.1f, 0.1f, 0.2f, 1.0f );
-
-	// move up
-	worldMatrix = XMMatrixTranslation( 0, 2, 0 );
-
-	// render sphere
-	m_SphereMesh->SendData( m_Direct3D->GetDeviceContext( ) );
-	m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture( ), m_Camera, m_Lights );
-	m_NormalShader->Render( m_Direct3D->GetDeviceContext( ), m_SphereMesh->GetIndexCount( ) );
-
-	// another far away sphere
-	worldMatrix = XMMatrixTranslation( 20, 0, 20 );
-	m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture( ), m_Camera, m_Lights );
-	m_NormalShader->Render( m_Direct3D->GetDeviceContext( ), m_SphereMesh->GetIndexCount( ) );
-
-	// move down
-	worldMatrix = XMMatrixTranslation( -10, -2, -10 );
-
-	// render plane
-	m_PlaneMesh->SendData( m_Direct3D->GetDeviceContext( ) );
-	m_JellyShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_PlaneMesh->GetTexture( ), m_Camera, m_time, m_Lights );
-	m_JellyShader->Render( m_Direct3D->GetDeviceContext( ), m_PlaneMesh->GetIndexCount( ) );
-	*/
-
-	// reset the world matrix
-	m_Direct3D->GetWorldMatrix( worldMatrix );
-	
-	// render ortho planes
 	m_Direct3D->TurnZBufferOff( );
 
 	// render the scene normally in the top right
@@ -221,8 +183,8 @@ void Lab8::RenderToBackBuffer()
 
 	// blurred scene in top left
 	m_BlurredSceneMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_StandardSceneTexture->GetShaderResourceView());
-	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_StandardSceneMesh->GetIndexCount());
+	m_BoxBlurShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_StandardSceneTexture->GetShaderResourceView() );
+	m_BoxBlurShader->Render(m_Direct3D->GetDeviceContext(), m_StandardSceneMesh->GetIndexCount());
 
 	m_Direct3D->TurnZBufferOn( );
 

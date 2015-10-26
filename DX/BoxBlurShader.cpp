@@ -1,14 +1,14 @@
-// texture shader.cpp
-#include "textureshader.h"
+#include "BoxBlurShader.h"
 
-
-TextureShader::TextureShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
+BoxBlurShader::BoxBlurShader(ID3D11Device* device, HWND hwnd, float width, float height) : BaseShader(device, hwnd)
 {
-	InitShader(L"../shaders/texture_vs.hlsl", L"../shaders/texture_ps.hlsl");
+	InitShader(L"../shaders/boxBlur_vs.hlsl", L"../shaders/boxBlur_ps.hlsl");
+
+	screenWidth = width;
+	screenHeight = height;
 }
 
-
-TextureShader::~TextureShader()
+BoxBlurShader::~BoxBlurShader()
 {
 	// Release the sampler state.
 	if (m_sampleState)
@@ -35,10 +35,9 @@ TextureShader::~TextureShader()
 	BaseShader::~BaseShader();
 }
 
-
-void TextureShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
+void BoxBlurShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 {
-	D3D11_BUFFER_DESC matrixBufferDesc;
+	D3D11_BUFFER_DESC matrixBufferDesc, screenBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
 
 	// Load (+ compile) shader files
@@ -55,7 +54,16 @@ void TextureShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 
 	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
 	m_device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
-	
+
+	screenBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	screenBufferDesc.ByteWidth = sizeof(ScreenBufferType);
+	screenBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	screenBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	screenBufferDesc.MiscFlags = 0;
+	screenBufferDesc.StructureByteStride = 0;
+
+	m_device->CreateBuffer(&matrixBufferDesc, NULL, &m_ScreenSizeBuffer);
+
 	// Create a texture sampler state description.
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
@@ -72,19 +80,18 @@ void TextureShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	// Create the texture sampler state.
-	m_device->CreateSamplerState(&samplerDesc, &m_sampleState);	
+	m_device->CreateSamplerState(&samplerDesc, &m_sampleState);
 }
 
-
-void TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture)
+void BoxBlurShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	MatrixBufferType* dataPtr;
+	ScreenBufferType* screenPtr;
 	unsigned int bufferNumber;
 	XMMATRIX tworld, tview, tproj;
-
-
+	
 	// Transpose the matrices to prepare them for the shader.
 	tworld = XMMatrixTranspose(worldMatrix);
 	tview = XMMatrixTranspose(viewMatrix);
@@ -92,7 +99,7 @@ void TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, cons
 
 	// Lock the constant buffer so it can be written to.
 	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	
+
 	// Get a pointer to the data in the constant buffer.
 	dataPtr = (MatrixBufferType*)mappedResource.pData;
 
@@ -103,7 +110,7 @@ void TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, cons
 
 	// Unlock the constant buffer.
 	deviceContext->Unmap(m_matrixBuffer, 0);
-
+	
 	// Set the position of the constant buffer in the vertex shader.
 	bufferNumber = 0;
 
@@ -112,9 +119,20 @@ void TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, cons
 
 	// Set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
+	
+	// lock the screen size buffer and pass data to it
+	result = deviceContext->Map(m_ScreenSizeBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	screenPtr = (ScreenBufferType*)mappedResource.pData;
+
+	screenPtr->screenHeight = screenWidth;
+	screenPtr->screenWidth = screenHeight;
+
+	deviceContext->Unmap(m_ScreenSizeBuffer, 0);
+	bufferNumber = 1;
+	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_ScreenSizeBuffer);
 }
 
-void TextureShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
+void BoxBlurShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
 {
 	// Set the sampler state in the pixel shader.
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
@@ -122,6 +140,3 @@ void TextureShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
 	// Base render function.
 	BaseShader::Render(deviceContext, indexCount);
 }
-
-
-

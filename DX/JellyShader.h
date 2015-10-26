@@ -54,7 +54,7 @@ public:
 							  ID3D11ShaderResourceView* texture,
 							  Camera* camera,
 							  float time,
-							  Light* light[2]);
+							  Light* light[2] );
 
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
 
