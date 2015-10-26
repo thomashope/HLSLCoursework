@@ -62,7 +62,7 @@ void BoxBlurShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 	screenBufferDesc.MiscFlags = 0;
 	screenBufferDesc.StructureByteStride = 0;
 
-	m_device->CreateBuffer(&matrixBufferDesc, NULL, &m_ScreenSizeBuffer);
+	m_device->CreateBuffer(&screenBufferDesc, NULL, &m_ScreenSizeBuffer);
 
 	// Create a texture sampler state description.
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;

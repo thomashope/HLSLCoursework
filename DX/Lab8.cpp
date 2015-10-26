@@ -9,12 +9,16 @@ Lab8::Lab8( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 	m_SphereMesh = new SphereMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
 	m_PlaneMesh = new PlaneMesh( m_Direct3D->GetDevice(), L"../res/NUKAGE1.png" );
 
+	m_FullscreenMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth, screenHeight, 0, 0);
+	m_TopLeftMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, -screenWidth / 4, screenHeight / 4);
+	m_TopRightMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, screenWidth / 4, screenHeight / 4);
+	m_BottomLeftMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, -screenWidth / 4, -screenHeight / 4);
+	m_BottomRightMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, screenWidth / 4, -screenHeight / 4);
+
 	// Create alternate render targets with meshes to render them on
 	m_StandardSceneTexture = new RenderTexture( m_Direct3D->GetDevice(), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH );
-	m_StandardSceneMesh = new OrthoMesh( m_Direct3D->GetDevice(), screenWidth/2, screenHeight/2, -screenWidth/4, screenHeight/4 );
 	m_BlurredSceneTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
-	m_BlurredSceneMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, screenWidth / 4, screenHeight / 4);
-	
+	m_DownSampledSceneTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth/4, screenHeight/4, SCREEN_NEAR, SCREEN_DEPTH);	
 
 	// create the shaders
 	m_JellyShader = new JellyShader( m_Direct3D->GetDevice(), hwnd );
@@ -58,12 +62,16 @@ Lab8::~Lab8()
 	deleteIfNotNull<SphereMesh>(m_SphereMesh);
 	deleteIfNotNull<PlaneMesh>(m_PlaneMesh);
 
-	deleteIfNotNull<OrthoMesh>(m_StandardSceneMesh);
-	deleteIfNotNull<OrthoMesh>(m_BlurredSceneMesh);
+	deleteIfNotNull<OrthoMesh>(m_FullscreenMesh);
+	deleteIfNotNull<OrthoMesh>(m_TopLeftMesh);
+	deleteIfNotNull<OrthoMesh>(m_TopRightMesh);
+	deleteIfNotNull<OrthoMesh>(m_BottomLeftMesh);
+	deleteIfNotNull<OrthoMesh>(m_BottomRightMesh);
 	
 	// release the textures
 	deleteIfNotNull<RenderTexture>(m_StandardSceneTexture);
 	deleteIfNotNull<RenderTexture>(m_BlurredSceneTexture);
+	deleteIfNotNull<RenderTexture>(m_DownSampledSceneTexture);
 	
 	// Release the shaders
 	deleteIfNotNull<JellyShader>(m_JellyShader);
@@ -76,7 +84,6 @@ Lab8::~Lab8()
 		deleteIfNotNull<Light>(m_Lights[i]);
 	}
 }
-
 
 bool Lab8::Frame()
 {
@@ -105,14 +112,18 @@ bool Lab8::Render()
 	// update the world time
 	m_time += m_Timer->GetTime();
 	
-	RenderToTexture();
+	RenderScene();
+
+	RenderBlurredScene();
+
+	RenderDownsampledScene();
 
 	RenderToBackBuffer();
 
 	return true;
 }
 
-void Lab8::RenderToTexture()
+void Lab8::RenderScene()
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 
@@ -160,6 +171,52 @@ void Lab8::RenderToTexture()
 	m_Direct3D->SetBackBufferRenderTarget();	
 }
 
+void Lab8::RenderBlurredScene()
+{
+	XMMATRIX worldMatrix, viewMatrix, baseViewMatrix, orthoMatrix;
+
+	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetOrthoMatrix(orthoMatrix);
+	m_Camera->GetBaseViewMatrix(baseViewMatrix);
+	
+	// set Render target to texture	
+	m_BlurredSceneTexture->SetRenderTarget(m_Direct3D->GetDeviceContext());
+	m_BlurredSceneTexture->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.1f, 0.1f, 0.1f, 1.0f);
+
+	m_Direct3D->TurnZBufferOff();
+	
+	m_FullscreenMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_BoxBlurShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_StandardSceneTexture->GetShaderResourceView());
+	m_BoxBlurShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
+
+	m_Direct3D->TurnZBufferOn();
+}
+
+void Lab8::RenderDownsampledScene()
+{
+	XMMATRIX worldMatrix, viewMatrix, baseViewMatrix, orthoMatrix;
+
+	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetOrthoMatrix(orthoMatrix);
+	m_Camera->GetBaseViewMatrix(baseViewMatrix);
+
+	// set Render target to texture	
+	m_DownSampledSceneTexture->SetRenderTarget(m_Direct3D->GetDeviceContext());
+	m_DownSampledSceneTexture->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.1f, 0.1f, 0.1f, 1.0f);
+
+	m_Direct3D->TurnZBufferOff();
+
+	m_FullscreenMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_StandardSceneTexture->GetShaderResourceView());
+	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
+
+	m_Direct3D->TurnZBufferOn();
+}
+
 void Lab8::RenderToBackBuffer()
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
@@ -172,21 +229,28 @@ void Lab8::RenderToBackBuffer()
 	m_Camera->GetBaseViewMatrix( baseViewMatrix );
 	
 	// Set render target to back buffer
+	//m_BlurredSceneTexture->SetRenderTarget(m_Direct3D->GetDeviceContext()); // Have to set the render target to a texture of the correct size
+																			// setting the back buffer as the render target doesn't reset the screenWidth and screenHeight
 	m_Direct3D->SetBackBufferRenderTarget();
+	m_Direct3D->ResetViewport();
 	
-	m_Direct3D->TurnZBufferOff( );
+	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
-	// render the scene normally in the top right
-	m_StandardSceneMesh->SendData( m_Direct3D->GetDeviceContext( ) );
+	m_Direct3D->TurnZBufferOff();
+
+	m_TopLeftMesh->SendData( m_Direct3D->GetDeviceContext( ) );
 	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_StandardSceneTexture->GetShaderResourceView( ) );
-	m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_StandardSceneMesh->GetIndexCount( ) );
+	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_TopLeftMesh->GetIndexCount());
 
-	// blurred scene in top left
-	m_BlurredSceneMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_BoxBlurShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_StandardSceneTexture->GetShaderResourceView() );
-	m_BoxBlurShader->Render(m_Direct3D->GetDeviceContext(), m_StandardSceneMesh->GetIndexCount());
+	m_TopRightMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_BlurredSceneTexture->GetShaderResourceView());
+	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_TopRightMesh->GetIndexCount());
 
-	m_Direct3D->TurnZBufferOn( );
+	m_BottomLeftMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_DownSampledSceneTexture->GetShaderResourceView());
+	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_BottomLeftMesh->GetIndexCount());
+
+	m_Direct3D->TurnZBufferOn();
 
 	// Present the rendered scene to the screen.
 	m_Direct3D->EndScene( );

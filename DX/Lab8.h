@@ -29,9 +29,9 @@ public:
 private:
 	bool Render();
 
-	void RenderToTexture();
-	void BlurTexture();
-	void DisplayTextures();
+	void RenderScene();
+	void RenderBlurredScene();
+	void RenderDownsampledScene();
 	void RenderToBackBuffer();
 
 	template<typename T>
@@ -44,19 +44,25 @@ public:
 
 private:
 	JellyShader* m_JellyShader;
-
 	PointLightShader* m_NormalShader;
 	TextureShader* m_TextureShader;
 	BoxBlurShader* m_BoxBlurShader;
 
+	RenderTexture* m_StandardSceneTexture;
+	RenderTexture* m_BlurredSceneTexture;
+	RenderTexture* m_DownSampledSceneTexture;
+
+
+	RenderTexture* m_BottomRightTexture;
+	
+	OrthoMesh* m_FullscreenMesh;
+	OrthoMesh* m_TopLeftMesh;
+	OrthoMesh* m_TopRightMesh;
+	OrthoMesh* m_BottomLeftMesh;
+	OrthoMesh* m_BottomRightMesh;
+
 	SphereMesh* m_SphereMesh;
 	PlaneMesh* m_PlaneMesh;
-
-	RenderTexture* m_StandardSceneTexture;
-	OrthoMesh* m_StandardSceneMesh;
-
-	RenderTexture* m_BlurredSceneTexture;
-	OrthoMesh* m_BlurredSceneMesh;
 
 	Light* m_Lights[NUM_LIGHTS];
 	float m_time;
