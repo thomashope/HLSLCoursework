@@ -20,14 +20,16 @@ Lab8::Lab8( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 	m_BlurredSceneTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
 	m_DownSampledSceneTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth / 4, screenHeight / 4, SCREEN_NEAR, SCREEN_DEPTH);
 
-	m_HorizontalyBlurredTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth / 4, screenHeight / 4, SCREEN_NEAR, SCREEN_DEPTH);
-	m_GuassianBlurTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth / 4, screenHeight / 4, SCREEN_NEAR, SCREEN_DEPTH);
+	m_HorizontalyBlurredTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
+	m_GuassianBlurTexture = new RenderTexture(m_Direct3D->GetDevice(), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
 
 	// create the shaders
 	m_JellyShader = new JellyShader( m_Direct3D->GetDevice(), hwnd );
 	m_NormalShader = new PointLightShader( m_Direct3D->GetDevice(), hwnd );
 	m_TextureShader = new TextureShader(m_Direct3D->GetDevice(), hwnd);
 	m_BoxBlurShader = new BoxBlurShader(m_Direct3D->GetDevice(), hwnd, screenWidth, screenHeight);
+	m_horizontalBlurShader = new HorizontalBlurShader(m_Direct3D->GetDevice(), hwnd);
+	m_verticalBlurShader = new VerticalBlurShader(m_Direct3D->GetDevice(), hwnd);
 
 	// declare all the lights with default values
 	for (int i = 0; i < NUM_LIGHTS; i++)
@@ -75,11 +77,15 @@ Lab8::~Lab8()
 	deleteIfNotNull<RenderTexture>(m_StandardSceneTexture);
 	deleteIfNotNull<RenderTexture>(m_BlurredSceneTexture);
 	deleteIfNotNull<RenderTexture>(m_DownSampledSceneTexture);
+	deleteIfNotNull<RenderTexture>(m_HorizontalyBlurredTexture);
+	deleteIfNotNull<RenderTexture>(m_GuassianBlurTexture);
 	
 	// Release the shaders
 	deleteIfNotNull<JellyShader>(m_JellyShader);
 	deleteIfNotNull<PointLightShader>(m_NormalShader);
 	deleteIfNotNull<TextureShader>(m_TextureShader);
+	deleteIfNotNull<HorizontalBlurShader>(m_horizontalBlurShader);
+	deleteIfNotNull<VerticalBlurShader>(m_verticalBlurShader);
 
 	// Release the lights
 	for( int i = 0; i < NUM_LIGHTS; i++ )
@@ -116,8 +122,12 @@ bool Lab8::Render()
 	m_time += m_Timer->GetTime();
 	
 	RenderScene();
+	
+	RenderBoxBlurredScene();
 
-	RenderBlurredScene();
+	RenderHorizontalBlur();
+
+	RenderGaussianBlur();
 
 	RenderDownsampledScene();
 
@@ -174,7 +184,7 @@ void Lab8::RenderScene()
 	m_Direct3D->SetBackBufferRenderTarget();	
 }
 
-void Lab8::RenderBlurredScene()
+void Lab8::RenderBoxBlurredScene()
 {
 	XMMATRIX worldMatrix, viewMatrix, baseViewMatrix, orthoMatrix;
 
@@ -220,6 +230,57 @@ void Lab8::RenderDownsampledScene()
 	m_Direct3D->TurnZBufferOn();
 }
 
+void Lab8::RenderHorizontalBlur()
+{
+	XMMATRIX worldMatrix, viewMatrix, baseViewMatrix, orthoMatrix;
+
+	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetOrthoMatrix(orthoMatrix);
+	m_Camera->GetBaseViewMatrix(baseViewMatrix);
+
+	// set Render target to texture	
+	m_HorizontalyBlurredTexture->SetRenderTarget(m_Direct3D->GetDeviceContext());
+	m_HorizontalyBlurredTexture->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.1f, 0.1f, 0.1f, 1.0f);
+
+	m_Direct3D->TurnZBufferOff();
+
+	m_FullscreenMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_horizontalBlurShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix,
+												m_DownSampledSceneTexture->GetShaderResourceView(), 800);
+
+	m_horizontalBlurShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
+
+	m_Direct3D->TurnZBufferOn();
+}
+
+void Lab8::RenderGaussianBlur()
+{
+	XMMATRIX worldMatrix, viewMatrix, baseViewMatrix, orthoMatrix;
+
+	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetOrthoMatrix(orthoMatrix);
+	m_Camera->GetBaseViewMatrix(baseViewMatrix);
+
+	// set Render target to texture	
+	m_GuassianBlurTexture->SetRenderTarget(m_Direct3D->GetDeviceContext());
+	m_GuassianBlurTexture->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.1f, 0.1f, 0.1f, 1.0f);
+
+	m_Direct3D->TurnZBufferOff();
+
+	m_FullscreenMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_verticalBlurShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix,
+												m_HorizontalyBlurredTexture->GetShaderResourceView(), 800);
+
+	m_verticalBlurShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
+
+	m_Direct3D->TurnZBufferOn();
+}
+
+
 void Lab8::RenderToBackBuffer()
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
@@ -238,7 +299,7 @@ void Lab8::RenderToBackBuffer()
 	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	m_Direct3D->TurnZBufferOff();
-
+	
 	m_TopLeftMesh->SendData( m_Direct3D->GetDeviceContext( ) );
 	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_StandardSceneTexture->GetShaderResourceView( ) );
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_TopLeftMesh->GetIndexCount());
@@ -250,6 +311,10 @@ void Lab8::RenderToBackBuffer()
 	m_BottomLeftMesh->SendData(m_Direct3D->GetDeviceContext());
 	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_DownSampledSceneTexture->GetShaderResourceView());
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_BottomLeftMesh->GetIndexCount());
+	
+	m_BottomRightMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_GuassianBlurTexture->GetShaderResourceView());
+	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_BottomRightMesh->GetIndexCount());
 
 	m_Direct3D->TurnZBufferOn();
 

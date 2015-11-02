@@ -9,6 +9,8 @@
 #include "BoxBlurShader.h"
 #include "JellyShader.h"
 #include "TextureShader.h"
+#include "HorizontalBlurShader.h"
+#include "VerticalBlurShader.h"
 #include "SphereMesh.h"
 #include "PlaneMesh.h"
 #include "OrthoMesh.h"
@@ -30,11 +32,11 @@ private:
 	bool Render();
 
 	void RenderScene();
-	void RenderBlurredScene();
+	void RenderBoxBlurredScene();
 	void RenderDownsampledScene();
-
-	void RenderHorizontalBlur() {}
-	void RenderGaussianBlur() {}
+	
+	void RenderHorizontalBlur();
+	void RenderGaussianBlur();
 
 	void RenderToBackBuffer();
 
@@ -55,9 +57,11 @@ private:
 	RenderTexture* m_StandardSceneTexture;
 	RenderTexture* m_BlurredSceneTexture;
 	RenderTexture* m_DownSampledSceneTexture;
-	
-	RenderTexture* m_HorizontalyBlurredTexture;
-	RenderTexture* m_GuassianBlurTexture;
+
+	HorizontalBlurShader* m_horizontalBlurShader;
+	VerticalBlurShader* m_verticalBlurShader;
+	RenderTexture* m_HorizontalyBlurredTexture;			// the normal scene after a horizontal blur
+	RenderTexture* m_GuassianBlurTexture;				// horizontal and verticle blurs combined
 	
 	OrthoMesh* m_FullscreenMesh;
 	OrthoMesh* m_TopLeftMesh;

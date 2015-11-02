@@ -13,6 +13,7 @@
 #include "Lab5.h"
 #include "Lab6.h"
 #include "Lab8.h"
+#include "Lab9.h"
 #include "Input.h"
 
 #define CURRENT_LAB Lab8
