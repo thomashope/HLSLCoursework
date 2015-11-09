@@ -32,12 +32,13 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 		m_Lights[i] = new Light;
 	}
 
-	m_Lights[0]->SetPosition( -5.0f, 5.0f, -5.0f );
+	m_Lights[0]->SetPosition( -5.0f, 4.0f, -5.0f );
 	m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
 	m_Lights[0]->SetAmbientColour( 0.2f, 0.2f, 0.2f, 1.0f );
 	m_Lights[0]->SetDiffuseColour( 1.0f, 1.0f, 1.0f, 1.0f );
 	m_Lights[0]->SetSpecularColour( 1.0f, 0.0f, 0.0f, 1.0f );
-	m_Lights[0]->SetRange( 4.0f );
+	m_Lights[0]->SetRange( 30.0f );
+	m_Lights[0]->setAttenuation(0.1f, 0.1f, 0.0f);
 
 	/*
 	m_Lights[1]->SetPosition( 10.0f, 0.0f, 10.0f );
@@ -117,13 +118,13 @@ bool Lab10::Render()
 	
 	// move the lights
 	{
-		static double radians;
-		double radius = 5;
-		radians += m_Timer->GetTime() * 1.0;
+		static float radians;
+		float radius = 5;
+		radians += m_Timer->GetTime() * 1.0f;
 
 		m_Lights[0]->SetPosition(
 			sin(radians) * radius,
-			5,
+			m_Lights[0]->GetPosition().y,
 			cos(radians) * radius);
 
 		m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
@@ -160,14 +161,14 @@ void Lab10::RenderScene()
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
 	// another far away sphere
-	worldMatrix = XMMatrixTranslation(20, 0, 20);
+	worldMatrix = XMMatrixTranslation(5, -1, 5);
 	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
 	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture());
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
 	// render a sphere at the light
 	worldMatrix = XMMatrixTranslation(m_Lights[0]->GetPosition().x, m_Lights[0]->GetPosition().y, m_Lights[0]->GetPosition().z);
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(0.2f, 0.2f, 0.2f));
+	worldMatrix = XMMatrixMultiply(XMMatrixScaling(0.2f, 0.2f, 0.2f), worldMatrix);
 	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
 	m_DepthShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
 	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
@@ -190,7 +191,7 @@ void Lab10::RenderSceneDepthOnly()
 	XMMATRIX viewMatrix( m_Lights[0]->GetViewMatrix() );
 
 	//TODO: add attenuation, make the screen depth = the light range
-	m_Lights[0]->GenerateProjectionMatrix(SCREEN_NEAR, SCREEN_DEPTH);
+	m_Lights[0]->GenerateProjectionMatrix(SCREEN_NEAR, m_Lights[0]->GetRange());
 	XMMATRIX projectionMatrix( m_Lights[0]->GetProjectionMatrix() );
 
 	// set Render target to texture	
@@ -205,7 +206,7 @@ void Lab10::RenderSceneDepthOnly()
 	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
 	// another far away sphere
-	worldMatrix = XMMatrixTranslation(20, 0, 20);
+	worldMatrix = XMMatrixTranslation(5, -1, 5);
 	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
 	m_DepthShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
 	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
@@ -242,7 +243,7 @@ void Lab10::RenderSceneWithShadows()
 	m_ShadowShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
 	// another far away sphere
-	worldMatrix = XMMatrixTranslation(20, 0, 20);
+	worldMatrix = XMMatrixTranslation(5, -1, 5);
 	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
 	m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
 		m_SphereMesh->GetTexture(), m_SceneDepth->GetShaderResourceView(), m_Lights[0]);

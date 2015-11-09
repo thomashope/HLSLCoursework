@@ -28,6 +28,8 @@ struct OutputType
 	float3 normal : NORMAL;
     float4 lightViewPosition : TEXCOORD1;
 	float3 lightPos : TEXCOORD2;
+
+	float3 position3D : TEXCOORD3;
 };
 
 
@@ -60,6 +62,9 @@ OutputType main(InputType input)
 
     // Calculate the position of the vertex in the world.
     worldPosition = mul(input.position, worldMatrix);
+
+	// convert the world position to a float3 and pass to output
+	output.position3D = worldPosition.xyz;
 
     // Determine the light position based on the position of the light and the position of the vertex in the world.
     output.lightPos = lightPosition.xyz - worldPosition.xyz;

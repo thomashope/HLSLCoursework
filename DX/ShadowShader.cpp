@@ -169,7 +169,14 @@ void ShadowShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const
 	deviceContext->Map(m_LightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	lightPtr = (LightBufferType*)mappedResource.pData;
 	lightPtr->ambient = light->GetAmbientColour();
+	lightPtr->position = light->GetPosition4();
 	lightPtr->diffuse = light->GetDiffuseColour();
+
+	lightPtr->attenuation.x = light->GetRange();
+	lightPtr->attenuation.y = light->GetConstantAttenuation();
+	lightPtr->attenuation.z = light->GetLinearAttenuation();
+	lightPtr->attenuation.w = light->GetQuadraticAttenuation();
+
 	deviceContext->Unmap(m_LightBuffer, 0);
 	bufferNumber = 0;
 	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_LightBuffer);

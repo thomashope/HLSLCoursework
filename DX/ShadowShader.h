@@ -25,7 +25,11 @@ private:
 	struct LightBufferType
 	{
 		XMFLOAT4 ambient;
+		XMFLOAT4 position;
 		XMFLOAT4 diffuse;
+
+		// attenuation x, y, z, w == range, constant, linear, quadratic
+		XMFLOAT4 attenuation;
 	};
 
 	struct LightBufferType2

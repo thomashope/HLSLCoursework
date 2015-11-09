@@ -70,7 +70,7 @@ float4 main(InputType input) : SV_TARGET
 									attenuation[i].z * distance +
 									attenuation[i].w * distance * distance);
 
-				// Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
+				// Determine the final amount of diffuse color based on the diffuse color combined with the light intensity and attenuation.
 				finalColour += diffuseColour[i] * diffuseIntensity * attenuationFactor;
 				finalColour = saturate( finalColour );
 
