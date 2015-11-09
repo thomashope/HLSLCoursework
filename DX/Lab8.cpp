@@ -248,7 +248,7 @@ void Lab8::RenderHorizontalBlur()
 
 	m_FullscreenMesh->SendData(m_Direct3D->GetDeviceContext());
 	m_horizontalBlurShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix,
-												m_DownSampledSceneTexture->GetShaderResourceView(), 800);
+												m_StandardSceneTexture->GetShaderResourceView(), 800);
 
 	m_horizontalBlurShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
 

@@ -145,8 +145,7 @@ bool Lab9::Render()
 								  -1,
 								  20 - cos( radians ) * radius );
 	}
-
-
+	
 	// move up
 	worldMatrix = XMMatrixTranslation(0, 2, 0);
 

@@ -94,10 +94,12 @@
     <ClCompile Include="ColourShader.cpp" />
     <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="D3D.cpp" />
+    <ClCompile Include="DepthShader.cpp" />
     <ClCompile Include="HorizontalBlurShader.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="JellyShader.cpp" />
     <ClCompile Include="Lab1.cpp" />
+    <ClCompile Include="Lab10.cpp" />
     <ClCompile Include="Lab2.cpp" />
     <ClCompile Include="Lab3.cpp" />
     <ClCompile Include="Lab4.cpp" />
@@ -116,6 +118,7 @@
     <ClCompile Include="QuadMesh.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="BoxBlurShader.cpp" />
+    <ClCompile Include="ShadowShader.cpp" />
     <ClCompile Include="SphereMesh.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="TessellationMesh.cpp" />
@@ -136,10 +139,12 @@
     <ClInclude Include="ColourShader.h" />
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="D3D.h" />
+    <ClInclude Include="DepthShader.h" />
     <ClInclude Include="HorizontalBlurShader.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="JellyShader.h" />
     <ClInclude Include="Lab1.h" />
+    <ClInclude Include="Lab10.h" />
     <ClInclude Include="Lab2.h" />
     <ClInclude Include="Lab3.h" />
     <ClInclude Include="Lab4.h" />
@@ -156,6 +161,7 @@
     <ClInclude Include="PointMesh.h" />
     <ClInclude Include="QuadMesh.h" />
     <ClInclude Include="RenderTexture.h" />
+    <ClInclude Include="ShadowShader.h" />
     <ClInclude Include="SphereMesh.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="TessellationMesh.h" />
@@ -183,6 +189,12 @@
     <FxCompile Include="..\shaders\colour_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
+    <FxCompile Include="..\shaders\depth_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\depth_vs.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="..\shaders\directional_light_ps.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
@@ -205,6 +217,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\point_light_vs.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\shadow_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\shadow_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_ds.hlsl">
