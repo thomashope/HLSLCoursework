@@ -17,8 +17,8 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	m_BottomRightMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, screenWidth / 4, -screenHeight / 4);
 
 	// Create alternate render targets with meshes to render them on
-	m_SceneDepth = new RenderTexture(m_Direct3D->GetDevice(), 2048, 2048, SCREEN_NEAR, SCREEN_DEPTH);
 	m_Scene = new RenderTexture(m_Direct3D->GetDevice(), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
+	m_SceneDepth = new RenderTexture(m_Direct3D->GetDevice(), 2048, 2048, SCREEN_NEAR, SCREEN_DEPTH);
 	m_SceneWithShadows = new RenderTexture(m_Direct3D->GetDevice(), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
 
 	// create the shaders
@@ -115,6 +115,20 @@ bool Lab10::Render()
 	// update the world time
 	m_time += m_Timer->GetTime();
 	
+	// move the lights
+	{
+		static double radians;
+		double radius = 5;
+		radians += m_Timer->GetTime() * 1.0;
+
+		m_Lights[0]->SetPosition(
+			sin(radians) * radius,
+			5,
+			cos(radians) * radius);
+
+		m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
+	}
+
 	RenderScene();
 
 	RenderSceneDepthOnly();
@@ -128,14 +142,11 @@ bool Lab10::Render()
 
 void Lab10::RenderScene()
 {
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
-
-	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
+	// Get the world, view and projection matricies from the camera and Direct3D objects.
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 	m_Direct3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
-	m_Direct3D->GetOrthoMatrix(orthoMatrix);
-	m_Camera->GetBaseViewMatrix(baseViewMatrix);
 
 	// set Render target to texture	
 	m_Scene->SetRenderTarget(m_Direct3D->GetDeviceContext());
@@ -154,6 +165,13 @@ void Lab10::RenderScene()
 	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture());
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
+	// render a sphere at the light
+	worldMatrix = XMMatrixTranslation(m_Lights[0]->GetPosition().x, m_Lights[0]->GetPosition().y, m_Lights[0]->GetPosition().z);
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(0.2f, 0.2f, 0.2f));
+	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_DepthShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
+	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
+
 	// render plane
 	worldMatrix = XMMatrixTranslation(-10, -2, -10);
 	m_PlaneMesh->SendData(m_Direct3D->GetDeviceContext());
@@ -165,13 +183,14 @@ void Lab10::RenderScene()
 
 void Lab10::RenderSceneDepthOnly()
 {
+	// Get the world, view and projection matricies from the camera and Direct3D objects.
 	XMMATRIX worldMatrix;
-
-	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
 	m_Direct3D->GetWorldMatrix( worldMatrix );
 	m_Lights[0]->GenerateViewMatrix();
-	m_Lights[0]->GenerateProjectionMatrix(SCREEN_NEAR, SCREEN_DEPTH);
 	XMMATRIX viewMatrix( m_Lights[0]->GetViewMatrix() );
+
+	//TODO: add attenuation, make the screen depth = the light range
+	m_Lights[0]->GenerateProjectionMatrix(SCREEN_NEAR, SCREEN_DEPTH);
 	XMMATRIX projectionMatrix( m_Lights[0]->GetProjectionMatrix() );
 
 	// set Render target to texture	
@@ -202,14 +221,12 @@ void Lab10::RenderSceneDepthOnly()
 
 void Lab10::RenderSceneWithShadows()
 {
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
 	m_Direct3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
-	m_Direct3D->GetOrthoMatrix(orthoMatrix);
-	m_Camera->GetBaseViewMatrix(baseViewMatrix);
 
 	// set Render target to texture	
 	m_SceneWithShadows->SetRenderTarget(m_Direct3D->GetDeviceContext());
@@ -262,8 +279,8 @@ void Lab10::ShowScene()
 
 	m_Direct3D->TurnZBufferOff();
 	
-	m_TopLeftMesh->SendData( m_Direct3D->GetDeviceContext() );
-	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_Scene->GetShaderResourceView( ) );
+	m_TopLeftMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, baseViewMatrix, orthoMatrix, m_Scene->GetShaderResourceView());
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
 	
 	m_TopRightMesh->SendData(m_Direct3D->GetDeviceContext());
