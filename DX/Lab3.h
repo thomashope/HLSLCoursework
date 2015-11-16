@@ -7,6 +7,7 @@
 
 #include "DirectionalLightShader.h"
 #include "SphereMesh.h"
+#include "Texture.h"
 #include "Light.h"
 
 class Lab3 : public BaseApplication
@@ -23,9 +24,11 @@ private:
 
 private:
 
-	DirectionalLightShader* m_LightShader;
+	DirectionalLightShader* m_LightShader;	
 	SphereMesh* m_SphereMesh;
 	Light* m_Light;
+
+	Texture* m_SpecularMap;
 };
 
 #endif

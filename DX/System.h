@@ -18,7 +18,7 @@
 #include "Lab11.h"
 #include "Input.h"
 
-#define CURRENT_LAB Lab11
+#define CURRENT_LAB Lab3
 
 class System
 {

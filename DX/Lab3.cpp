@@ -8,7 +8,8 @@ Lab3::Lab3(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, In
 	// Create Mesh object
 	m_SphereMesh = new SphereMesh(m_Direct3D->GetDevice(), L"../res/brick1.dds");
 	m_LightShader = new DirectionalLightShader(m_Direct3D->GetDevice(), hwnd);
-	
+	m_SpecularMap = new Texture(m_Direct3D->GetDevice(), L"../res/test.png");
+
 	m_Light = new Light;
 	m_Light->SetDiffuseColour( 0.2f, 0.2f, 0.4f, 1.0f );
 	m_Light->SetAmbientColour( 0.2f, 0.2f, 0.2f, 1.0f );
@@ -83,7 +84,7 @@ bool Lab3::Render()
 	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
 	// Set shader parameters (matrices and texture)
 	m_LightShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
-										m_SphereMesh->GetTexture(), m_Camera, m_Light );
+		m_SphereMesh->GetTexture(), m_SpecularMap->GetTexture(), m_Camera, m_Light);
 	// Render object (combination of mesh geometry and shader process
 	m_LightShader->Render( m_Direct3D->GetDeviceContext( ), m_SphereMesh->GetIndexCount( ) );
 

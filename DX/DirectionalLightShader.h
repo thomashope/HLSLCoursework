@@ -34,7 +34,7 @@ public:
 	DirectionalLightShader(ID3D11Device* device, HWND hwnd);
 	~DirectionalLightShader();
 
-	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, Camera* camera, Light* light);
+	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* specular, Camera* camera, Light* light);
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
 
 private:

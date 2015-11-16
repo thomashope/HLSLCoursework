@@ -32,9 +32,87 @@ cbuffer PositionBuffer
 	};
 };
 
+//[maxvertexcount(2)]
+//'void main(triangle InputType input[3], inout TriangleStream<OutputType> triStream)
 [maxvertexcount(4)]
 void main(point InputType input[1], inout TriangleStream<OutputType> triStream)
 {
+	/*
+	OutputType output;
+	float Explode = 1.0f;
+    
+    // Calculate the face normal
+    float3 faceEdgeA = input[1].position - input[0].position;
+    float3 faceEdgeB = input[2].position - input[0].position;
+    float3 faceNormal = normalize( cross(faceEdgeA, faceEdgeB) );
+    float3 ExplodeAmt = faceNormal*Explode;
+    
+    // Calculate the face center
+    float3 centerPos = (input[0].position.xyz + input[1].position.xyz + input[2].position.xyz)/3.0;
+    float2 centerTex = (input[0].tex + input[1].tex + input[2].tex)/3.0;
+    centerPos += faceNormal*Explode;
+
+	// center of triangle
+	output.position = float4(centerPos, 1);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
+	output.normal = faceNormal;
+	output.tex = centerTex;
+	triStream.Append(output);
+		
+	// farther out
+	output.position = float4(centerPos, 1) + float4(ExplodeAmt, 0);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
+	output.normal = faceNormal;
+	output.tex = centerTex;
+	triStream.Append(output);
+
+	triStream.RestartStrip();
+    //*/
+
+    // Output the pyramid
+    /*
+    for( int i=0; i<3; i++ )
+    {
+        output.position = input[i].position + float4(ExplodeAmt,0);
+        output.position = mul( output.position, viewMatrix );
+        output.position = mul( output.position, projectionMatrix );
+        output.normal = input[i].normal;
+        output.tex = input[i].tex;
+        triStream.Append( output );
+        
+        int iNext = (i+1)%3;
+        output.position = input[iNext].position + float4(ExplodeAmt,0);
+        output.position = mul( output.position, viewMatrix );
+        output.position = mul( output.position, projectionMatrix );
+        output.normal = input[iNext].normal;
+        output.tex = input[iNext].tex;
+        triStream.Append( output );
+        
+        output.position = float4(centerPos,1) + float4(ExplodeAmt,0);
+        output.position = mul( output.position, viewMatrix );
+        output.position = mul( output.position, projectionMatrix );
+        output.normal = faceNormal;
+        output.tex = centerTex;
+        triStream.Append( output );
+        
+        triStream.RestartStrip();
+    }
+    
+    for( int i=2; i>=0; i-- )
+    {
+        output.position = input[i].position + float4(ExplodeAmt,0);
+        output.position = mul( output.position, viewMatrix );
+        output.position = mul( output.position, projectionMatrix );
+        output.normal = -input[i].normal;
+        output.tex = input[i].tex;
+        triStream.Append( output );
+    }
+    triStream.RestartStrip();	
+	*/
+
+	//*
 	OutputType output;
 	
 	for (int i = 0; i < 4; i++)
@@ -48,6 +126,9 @@ void main(point InputType input[1], inout TriangleStream<OutputType> triStream)
 		output.normal = input[0].normal;
 		triStream.Append(output);
 	}
+
+	triStream.RestartStrip();
+	//*/
 
 	/*
 	// Change the position vector to be 4 units for proper matrix calculations.
@@ -94,7 +175,8 @@ void main(point InputType input[1], inout TriangleStream<OutputType> triStream)
     output.normal = normalize(output.normal);
 
 	triStream.Append(output);
-	*/
 
 	triStream.RestartStrip();
+	*/
+
 }

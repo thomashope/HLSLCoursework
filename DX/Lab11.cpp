@@ -279,9 +279,9 @@ void Lab11::RenderGeometryShader()
 	m_GeometryTest->SetRenderTarget(m_Direct3D->GetDeviceContext());
 	m_GeometryTest->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
 
-	m_PointMesh->SendData(m_Direct3D->GetDeviceContext());
+	m_Teapot->SendData(m_Direct3D->GetDeviceContext());
 	m_GeometryShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_PointMesh->GetTexture());
-	m_GeometryShader->Render(m_Direct3D->GetDeviceContext(), m_PointMesh->GetIndexCount());
+	m_GeometryShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
 	m_Direct3D->SetBackBufferRenderTarget();
 }

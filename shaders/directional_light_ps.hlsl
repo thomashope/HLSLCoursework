@@ -2,6 +2,8 @@
 // Calculate ambient and diffuse lighting for a single light (also texturing)
 
 Texture2D shaderTexture : register(t0);
+Texture2D specularTexture : register(t1);
+
 SamplerState SampleType : register(s0);
 
 cbuffer LightBuffer : register(cb0)
@@ -25,14 +27,17 @@ float4 main(InputType input) : SV_TARGET
 {
 	float4 finalColour = { 0, 0, 0, 0 };
 	float4 finalSpec = { 0, 0, 0, 0 };
-    float4 textureColour;
+    float4 textureSample;
+	float4 specularSample;
 	float4 specular;
 	float3 lightDir;
 	float3 reflection;
     float lightIntensity;
 
     // Sample the pixel color from the texture using the sampler at this texture coordinate location.
-    textureColour = shaderTexture.Sample(SampleType, input.tex);
+    textureSample = shaderTexture.Sample(SampleType, input.tex);
+
+	specularSample = specularTexture.Sample(SampleType, input.tex);
 
 	// set the default output finalColour to the ambient light value
 	finalColour = ambientColour;
@@ -56,11 +61,11 @@ float4 main(InputType input) : SV_TARGET
 		specular = pow( saturate( dot( reflection, input.viewDirection) + 0.5f), specularPower );
 
 		// sum up specular light
-		finalSpec = specularColour * specular;
+		finalSpec = specularColour * specular * specularSample;
 	}
     
 	// Multiply the texture pixel and the final diffuse color to get the final pixel color result.
-    finalColour = finalColour * textureColour;
+    finalColour = finalColour * textureSample;
 
 	finalColour = saturate( finalColour + finalSpec );
 

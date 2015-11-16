@@ -108,7 +108,7 @@ void DirectionalLightShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 }
 
 
-void DirectionalLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, Camera* camera, Light* light)
+void DirectionalLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* specular, Camera* camera, Light* light)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -168,6 +168,8 @@ void DirectionalLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCont
 
 	// Set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
+	// Set specular texture resource
+	deviceContext->PSSetShaderResources(1, 1, &specular);
 }
 
 void DirectionalLightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
