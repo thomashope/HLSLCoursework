@@ -95,11 +95,13 @@
     <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="D3D.cpp" />
     <ClCompile Include="DepthShader.cpp" />
+    <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="HorizontalBlurShader.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="JellyShader.cpp" />
     <ClCompile Include="Lab1.cpp" />
     <ClCompile Include="Lab10.cpp" />
+    <ClCompile Include="Lab11.cpp" />
     <ClCompile Include="Lab2.cpp" />
     <ClCompile Include="Lab3.cpp" />
     <ClCompile Include="Lab4.cpp" />
@@ -140,11 +142,13 @@
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="D3D.h" />
     <ClInclude Include="DepthShader.h" />
+    <ClInclude Include="GeometryShader.h" />
     <ClInclude Include="HorizontalBlurShader.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="JellyShader.h" />
     <ClInclude Include="Lab1.h" />
     <ClInclude Include="Lab10.h" />
+    <ClInclude Include="Lab11.h" />
     <ClInclude Include="Lab2.h" />
     <ClInclude Include="Lab3.h" />
     <ClInclude Include="Lab4.h" />
@@ -241,6 +245,15 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\texture_vs.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\triangle_gs.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\triangle_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\triangle_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\verticalBlur_ps.hlsl">

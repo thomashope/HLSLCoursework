@@ -314,6 +314,10 @@ void BaseShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
 	{
 		deviceContext->GSSetShader(m_geometryShader, NULL, 0);
 	}
+	else
+	{
+		deviceContext->GSSetShader(NULL, NULL, 0);
+	}
 
 	// Render the triangle.
 	deviceContext->DrawIndexed(indexCount, 0, 0);
