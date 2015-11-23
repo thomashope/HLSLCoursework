@@ -5,8 +5,10 @@
 // Includes
 #include "baseapplication.h"
 
-#include "DirectionalLightShader.h"
+#include "PointLightNormalShader.h"
+#include "ColourShader.h"
 #include "SphereMesh.h"
+#include "PlaneMesh.h"
 #include "Texture.h"
 #include "Light.h"
 
@@ -24,11 +26,15 @@ private:
 
 private:
 
-	DirectionalLightShader* m_LightShader;	
-	SphereMesh* m_SphereMesh;
+	PointLightNormalShader* m_LightShader;	
+	ColourShader* m_colourShader;
+
+	PlaneMesh* m_PlaneMesh;
 	Light* m_Light;
+	SphereMesh* m_LightSphere;
 
 	Texture* m_SpecularMap;
+	Texture* m_NormalMap;
 };
 
 #endif

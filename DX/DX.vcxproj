@@ -115,6 +115,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="OrthoMesh.cpp" />
     <ClCompile Include="PlaneMesh.cpp" />
+    <ClCompile Include="PointLightNormalShader.cpp" />
     <ClCompile Include="PointLightShader.cpp" />
     <ClCompile Include="PointMesh.cpp" />
     <ClCompile Include="QuadMesh.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="OrthoMesh.h" />
     <ClInclude Include="PlaneMesh.h" />
+    <ClInclude Include="PointLightNormalShader.h" />
     <ClInclude Include="PointLightShader.h" />
     <ClInclude Include="PointMesh.h" />
     <ClInclude Include="QuadMesh.h" />
@@ -215,6 +217,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\jelly_vs.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\point_light_normal_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\point_light_normal_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\point_light_ps.hlsl">

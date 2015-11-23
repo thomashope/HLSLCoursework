@@ -1,7 +1,7 @@
 // Light shader.h
 // Basic single light shader setup
-#ifndef _DIRECTIONAL_LIGHTSHADER_H_
-#define _DIRECTIONAL_LIGHTSHADER_H_
+#ifndef _POINT_LIGHTNORMAL_SHADER_H_
+#define _POINT_LIGHTNORMAL_SHADER_H_
 
 #include "BaseShader.h"
 #include "light.h"
@@ -11,7 +11,7 @@ using namespace std;
 using namespace DirectX;
 
 
-class DirectionalLightShader : public BaseShader
+class PointLightNormalShader : public BaseShader
 {
 private:
 	struct LightBufferType
@@ -31,8 +31,10 @@ private:
 
 public:
 
-	DirectionalLightShader(ID3D11Device* device, HWND hwnd);
-	~DirectionalLightShader();
+	PointLightNormalShader(ID3D11Device* device, HWND hwnd);
+	~PointLightNormalShader();
+	
+	void loadVertexShader(WCHAR* filename) override;
 
 	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* specular, ID3D11ShaderResourceView* normal, Camera* camera, Light* light);
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);

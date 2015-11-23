@@ -1,12 +1,13 @@
 // texture shader.cpp
-#include "DirectionalLightshader.h"
+#include "PointLightNormalShader.h"
+#include "winbase.h"
 
-DirectionalLightShader::DirectionalLightShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
+PointLightNormalShader::PointLightNormalShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
 {
-	InitShader(L"../shaders/directional_light_vs.hlsl", L"../shaders/directional_light_ps.hlsl");
+	InitShader(L"../shaders/point_light_normal_vs.hlsl", L"../shaders/point_light_normal_ps.hlsl");
 }
 
-DirectionalLightShader::~DirectionalLightShader()
+PointLightNormalShader::~PointLightNormalShader()
 {
 	// Release the sampler state.
 	if (m_sampleState)
@@ -40,8 +41,105 @@ DirectionalLightShader::~DirectionalLightShader()
 	BaseShader::~BaseShader();
 }
 
+void PointLightNormalShader::loadVertexShader(WCHAR* filename)
+{
+	OutputDebugStringA("load vertex override");
 
-void DirectionalLightShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
+	HRESULT result;
+	ID3DBlob* errorMessage;
+	ID3DBlob* vertexShaderBuffer;
+	//D3D11_INPUT_ELEMENT_DESC polygonLayout[3];
+	D3D11_INPUT_ELEMENT_DESC polygonLayout[5];
+	unsigned int numElements;
+
+	// Initialize the pointers this function will use to null.
+	errorMessage = 0;
+	vertexShaderBuffer = 0;
+
+	// Compile the vertex shader code.
+	result = D3DCompileFromFile(filename, NULL, NULL, "main", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
+	if (FAILED(result))
+	{
+		// If the shader failed to compile it should have writen something to the error message.
+		if (errorMessage)
+		{
+			OutputShaderErrorMessage(errorMessage, m_hwnd, filename);
+		}
+		// If there was nothing in the error message then it simply could not find the shader file itself.
+		else
+		{
+			MessageBox(m_hwnd, filename, L"Missing Shader File", MB_OK);
+		}
+		exit(0);
+	}
+
+	// Create the vertex shader from the buffer.
+	result = m_device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
+	if (FAILED(result))
+	{
+		//return false;
+	}
+
+	// Create the vertex input layout description.
+	// This setup needs to match the VertexType stucture in the MeshClass and in the shader.
+	polygonLayout[0].SemanticName = "POSITION";
+	polygonLayout[0].SemanticIndex = 0;
+	polygonLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	polygonLayout[0].InputSlot = 0;
+	polygonLayout[0].AlignedByteOffset = 0;
+	polygonLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	polygonLayout[0].InstanceDataStepRate = 0;
+
+	polygonLayout[1].SemanticName = "TEXCOORD";
+	polygonLayout[1].SemanticIndex = 0;
+	polygonLayout[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+	polygonLayout[1].InputSlot = 0;
+	polygonLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	polygonLayout[1].InstanceDataStepRate = 0;
+
+	polygonLayout[2].SemanticName = "NORMAL";
+	polygonLayout[2].SemanticIndex = 0;
+	polygonLayout[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	polygonLayout[2].InputSlot = 0;
+	polygonLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	polygonLayout[2].InstanceDataStepRate = 0;
+
+	// For Bump Mapping
+	polygonLayout[3].SemanticName = "TANGENT";
+	polygonLayout[3].SemanticIndex = 0;
+	polygonLayout[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	polygonLayout[3].InputSlot = 0;
+	polygonLayout[3].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	polygonLayout[3].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	polygonLayout[3].InstanceDataStepRate = 0;
+
+	polygonLayout[4].SemanticName = "BINORMAL";
+	polygonLayout[4].SemanticIndex = 0;
+	polygonLayout[4].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	polygonLayout[4].InputSlot = 0;
+	polygonLayout[4].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	polygonLayout[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	polygonLayout[4].InstanceDataStepRate = 0;
+
+	// Get a count of the elements in the layout.
+	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
+
+	// Create the vertex input layout.
+	result = m_device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(),
+		&m_layout);
+	if (FAILED(result))
+	{
+		//return false;
+	}
+
+	// Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
+	vertexShaderBuffer->Release();
+	vertexShaderBuffer = 0;
+}
+
+void PointLightNormalShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 {
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -108,7 +206,7 @@ void DirectionalLightShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 }
 
 
-void DirectionalLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* specular, ID3D11ShaderResourceView* normal, Camera* camera, Light* light)
+void PointLightNormalShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* specular, ID3D11ShaderResourceView* normal, Camera* camera, Light* light)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -174,7 +272,7 @@ void DirectionalLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCont
 	deviceContext->PSSetShaderResources(2, 1, &normal);
 }
 
-void DirectionalLightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
+void PointLightNormalShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
 {
 	// Set the sampler state in the pixel shader.
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);

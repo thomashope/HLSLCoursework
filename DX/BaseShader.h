@@ -42,7 +42,7 @@ protected:
 	virtual void InitShader(WCHAR*, WCHAR*) = 0;
 	void ShutdownShader();
 	void OutputShaderErrorMessage(ID3D10Blob*, HWND, WCHAR*);
-	void loadVertexShader(WCHAR* filename);
+	virtual void loadVertexShader(WCHAR* filename);
 	void loadHullShader(WCHAR* filename);
 	void loadDomainShader(WCHAR* filename);
 	void loadGeometryShader(WCHAR* filename);

@@ -162,6 +162,9 @@
     <ClCompile Include="GeometryShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="PointLightNormalShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -293,6 +296,9 @@
     <ClInclude Include="GeometryShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="PointLightNormalShader.h">
+      <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -377,6 +383,12 @@
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\triangle_vs.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\point_light_normal_ps.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\point_light_normal_vs.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
   </ItemGroup>
