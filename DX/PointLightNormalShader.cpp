@@ -48,7 +48,6 @@ void PointLightNormalShader::loadVertexShader(WCHAR* filename)
 	HRESULT result;
 	ID3DBlob* errorMessage;
 	ID3DBlob* vertexShaderBuffer;
-	//D3D11_INPUT_ELEMENT_DESC polygonLayout[3];
 	D3D11_INPUT_ELEMENT_DESC polygonLayout[5];
 	unsigned int numElements;
 
@@ -106,7 +105,7 @@ void PointLightNormalShader::loadVertexShader(WCHAR* filename)
 	polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	polygonLayout[2].InstanceDataStepRate = 0;
 
-	// For Bump Mapping
+	// For Bump Mapping, requires meshs to send tangent and binormal data
 	polygonLayout[3].SemanticName = "TANGENT";
 	polygonLayout[3].SemanticIndex = 0;
 	polygonLayout[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;

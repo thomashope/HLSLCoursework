@@ -9,7 +9,7 @@ Lab3::Lab3(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, In
 	m_PlaneMesh = new PlaneMesh(m_Direct3D->GetDevice(), L"../res/test_diffuse.png");
 	m_LightShader = new PointLightNormalShader(m_Direct3D->GetDevice(), hwnd);
 	m_colourShader = new ColourShader(m_Direct3D->GetDevice(), hwnd);
-	m_SpecularMap = new Texture(m_Direct3D->GetDevice(), L"../res/test_specular.png");
+	m_SpecularMap = new Texture(m_Direct3D->GetDevice(), L"../res/test_diffuse_light.png");
 	m_NormalMap = new Texture(m_Direct3D->GetDevice(), L"../res/test_normal.png");
 
 	m_LightSphere = new SphereMesh(m_Direct3D->GetDevice(), L"../res/test_diffuse_light.png");

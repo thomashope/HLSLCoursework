@@ -61,8 +61,6 @@ void PlaneMesh::InitBuffers(ID3D11Device* device)
 			vertices[index].position = XMFLOAT3(positionX, 0.0f, positionZ);
 			vertices[index].texture = XMFLOAT2(u, v);
 			vertices[index].normal = XMFLOAT3(0.0, 1.0, 0.0);
-			vertices[index].binormal = XMFLOAT3(0.0, 0.0, 1.0);
-			vertices[index].tangent = XMFLOAT3(1.0, 0.0, 0.0);
 			indices[index] = index;
 			index++;
 
@@ -73,8 +71,6 @@ void PlaneMesh::InitBuffers(ID3D11Device* device)
 			vertices[index].position = XMFLOAT3(positionX, 0.0f, positionZ);
 			vertices[index].texture = XMFLOAT2(u + increment, v + increment);
 			vertices[index].normal = XMFLOAT3(0.0, 1.0, 0.0);
-			vertices[index].binormal = XMFLOAT3(0.0, 0.0, 1.0);
-			vertices[index].tangent = XMFLOAT3(1.0, 0.0, 0.0);
 			indices[index] = index;
 			index++;
 
@@ -87,8 +83,6 @@ void PlaneMesh::InitBuffers(ID3D11Device* device)
 			vertices[index].position = XMFLOAT3(positionX, 0.0f, positionZ);
 			vertices[index].texture = XMFLOAT2(u, v + increment);
 			vertices[index].normal = XMFLOAT3(0.0, 1.0, 0.0);
-			vertices[index].binormal = XMFLOAT3(0.0, 0.0, 1.0);
-			vertices[index].tangent = XMFLOAT3(1.0, 0.0, 0.0);
 			indices[index] = index;
 			index++;
 
@@ -99,8 +93,6 @@ void PlaneMesh::InitBuffers(ID3D11Device* device)
 			vertices[index].position = XMFLOAT3(positionX, 0.0f, positionZ);
 			vertices[index].texture = XMFLOAT2(u, v);
 			vertices[index].normal = XMFLOAT3(0.0, 1.0, 0.0);
-			vertices[index].binormal = XMFLOAT3(0.0, 0.0, 1.0);
-			vertices[index].tangent = XMFLOAT3(1.0, 0.0, 0.0);
 			indices[index] = index;
 			index++;
 
@@ -111,8 +103,6 @@ void PlaneMesh::InitBuffers(ID3D11Device* device)
 			vertices[index].position = XMFLOAT3(positionX, 0.0f, positionZ);
 			vertices[index].texture = XMFLOAT2(u + increment, v);
 			vertices[index].normal = XMFLOAT3(0.0, 1.0, 0.0);
-			vertices[index].binormal = XMFLOAT3(0.0, 0.0, 1.0);
-			vertices[index].tangent = XMFLOAT3(1.0, 0.0, 0.0);
 			indices[index] = index;
 			index++;
 
@@ -123,8 +113,6 @@ void PlaneMesh::InitBuffers(ID3D11Device* device)
 			vertices[index].position = XMFLOAT3(positionX, 0.0f, positionZ);
 			vertices[index].texture = XMFLOAT2(u + increment, v + increment);
 			vertices[index].normal = XMFLOAT3(0.0, 1.0, 0.0);
-			vertices[index].binormal = XMFLOAT3(0.0, 0.0, 1.0);
-			vertices[index].tangent = XMFLOAT3(1.0, 0.0, 0.0);
 			indices[index] = index;
 			index++;
 
@@ -135,6 +123,15 @@ void PlaneMesh::InitBuffers(ID3D11Device* device)
 		u = 0;
 		v += increment;
 	}
+
+#ifdef INCLUDE_NORMALDATA
+	// set the normal, tangent, and binormal of every vertex
+	if (int index = 0; index < m_vertexCount; index++)
+	{
+		vertices[index].binormal = XMFLOAT3(0.0, 0.0, 1.0);
+		vertices[index].tangent = XMFLOAT3(1.0, 0.0, 0.0);
+	}
+#endif
 
 	// Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;

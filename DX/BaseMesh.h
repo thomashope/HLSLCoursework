@@ -6,6 +6,9 @@
 #include <directxmath.h>
 #include "texture.h"
 
+// uncomment to ask meshes to build and send the tangent and binormal data for use with bump mapping
+//#define INCLUDE_NORMALDATA
+
 using namespace DirectX;
 
 class BaseMesh
@@ -17,9 +20,12 @@ protected:
 		XMFLOAT3 position;
 		XMFLOAT2 texture;
 		XMFLOAT3 normal;
+
 		// FOR NORMAL MAPPING
+#ifdef INCLUDE_NORMALDATA
 		XMFLOAT3 tangent;
 		XMFLOAT3 binormal;
+#endif
 	};
 
 public:
