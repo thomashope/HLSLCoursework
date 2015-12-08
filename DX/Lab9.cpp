@@ -136,7 +136,13 @@ bool Lab9::Render()
 	m_time += m_Timer->GetTime();
 	while( m_time > 360 ) m_time -= 360;
 
-	m_Direct3D->TurnOnWireframe();
+	worldMatrix = XMMatrixTranslation( -50, -2, -50 );
+
+	m_PlaneMesh->SendData( m_Direct3D->GetDeviceContext() );
+	m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_PlaneMesh->GetTexture(), m_Camera, m_Lights );
+	m_NormalShader->Render( m_Direct3D->GetDeviceContext(), m_PlaneMesh->GetIndexCount() );
+
+	worldMatrix = XMMatrixTranslation( 0,0,0 );
 
 	if (m_Input->isKeyDown('U')) tesselationFactor += m_Timer->GetTime() * 2;
 	if (m_Input->isKeyDown('Y')) tesselationFactor -= m_Timer->GetTime() * 2;
@@ -146,9 +152,7 @@ bool Lab9::Render()
 	m_TesselationMesh->SendData(m_Direct3D->GetDeviceContext());
 	m_TesselationShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_TesselationMesh->GetTexture( ), tesselationFactor, m_time );
 	m_TesselationShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
-
-	m_Direct3D->TurnOffWireframe();
-
+	
 	// Present the rendered scene to the screen.
 	m_Direct3D->EndScene();
 

@@ -29,6 +29,7 @@ struct InputType
 struct OutputType
 {
     float4 position : SV_POSITION;
+	float4 depthPosition : TEXCOORD0;
 	float4 normal : NORMAL;
     float4 colour : COLOR;
 };
@@ -39,11 +40,6 @@ OutputType main(ConstantOutputType input, float2 uvwCoord : SV_DomainLocation, c
     float3 position;
 	float3 normal;
     OutputType output;
- 
-    // Determine the position of the new vertex.
-	// Invert the y and Z components of uvwCoord as these coords are generated in UV space and therefore y is positive downward.
-	// Alternatively you can set the output topology of the hull shader to cw instead of ccw (or vice versa).
-	//vertexPosition = uvwCoord.x * patch[0].position + -uvwCoord.y * patch[1].position + -uvwCoord.z * patch[2].position;
     
 	// The new vertex position interpolated across the quad
 	float3 v1 = lerp(patch[0].position, patch[1].position, 1 - uvwCoord.y);
@@ -52,23 +48,30 @@ OutputType main(ConstantOutputType input, float2 uvwCoord : SV_DomainLocation, c
 
 	// create the sphere
 	position = normalize( position );
-	normal = position;
+	normal = position + position;
+	
+	// distort the sphere
+	float3 freq = float3(
+		sin( time * 3.4f ),
+		sin( time * 5.3f ),
+		sin( time * 2.7f ) );
+	float amp = 0.5f + sin( time * 2.0f ) * 0.3f;
+	freq *= position * amp;
+	position += position * freq;
 
-	float fx = 1.0f + sin( time * 1.0f ) * 3.0f;
-	float fy = 1.0f + sin( time * 1.3f ) * 2.0f;
-	float fz = 1.0f + sin( time * 1.1f ) * 4.0f;
-
-	position += normal * float3(fx, fy, fz);
+	// aproximation of the normal, good enough
+	output.normal = float4( normalize( normal - position ), 1.0f);
 
     // Calculate the position of the new vertex against the world, view, and projection matrices.
 	output.position = mul( float4(position, 1.0f), worldMatrix );
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
 
-	output.normal = float4( normal, 1.0f );
-
+	// Store the position value in a second input value for depth value calculations.
+	output.depthPosition = output.position;
+	
     // Send the input color into the pixel shader.
-    output.colour = patch[0].colour;
+	output.colour = saturate( float4( abs(position), 1.0f) );
 
     return output;
 }

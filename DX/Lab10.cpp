@@ -9,6 +9,7 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	m_SphereMesh = new SphereMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
 	m_PlaneMesh = new PlaneMesh(m_Direct3D->GetDevice(), L"../res/NUKAGE1.png");
 	m_Teapot = new Model(m_Direct3D->GetDevice(), L"../res/hellknight.png", L"../res/hellknight.obj");
+	m_MagicSphere = new TessellationMesh( m_Direct3D->GetDevice(), L"" );
 
 	m_FullscreenMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth, screenHeight, 0, 0);
 	m_TopLeftMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, -screenWidth / 4, screenHeight / 4);
@@ -25,6 +26,7 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	m_DepthShader = new DepthShader(m_Direct3D->GetDevice(), hwnd);
 	m_TextureShader = new TextureShader(m_Direct3D->GetDevice(), hwnd);
 	m_ShadowShader = new ShadowShader(m_Direct3D->GetDevice(), hwnd);
+	m_TesselationShader = new TessellationShader( m_Direct3D->GetDevice(), hwnd );
 
 	// declare all the lights with default values
 	for (int i = 0; i < 1; i++)
@@ -32,7 +34,7 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 		m_Lights[i] = new Light;
 	}
 
-	m_Lights[0]->SetPosition( -5.0f, 4.0f, -5.0f );
+	m_Lights[0]->SetPosition( -5.0f, 3.0f, -5.0f );
 	m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
 	m_Lights[0]->SetAmbientColour( 0.2f, 0.2f, 0.2f, 1.0f );
 	m_Lights[0]->SetDiffuseColour( 1.0f, 1.0f, 1.0f, 1.0f );
@@ -65,7 +67,8 @@ Lab10::~Lab10()
 	// Release the meshs
 	deleteIfNotNull<SphereMesh>(m_SphereMesh);
 	deleteIfNotNull<PlaneMesh>(m_PlaneMesh);
-	deleteIfNotNull<Model>(m_Teapot);
+	deleteIfNotNull<Model>( m_Teapot );
+	deleteIfNotNull<TessellationMesh>( m_MagicSphere );
 
 	deleteIfNotNull<OrthoMesh>(m_FullscreenMesh);
 	deleteIfNotNull<OrthoMesh>(m_TopLeftMesh);
@@ -80,7 +83,8 @@ Lab10::~Lab10()
 	
 	// Release the shaders
 	deleteIfNotNull<DepthShader>(m_DepthShader);
-	deleteIfNotNull<ShadowShader>(m_ShadowShader);
+	deleteIfNotNull<ShadowShader>( m_ShadowShader );
+	deleteIfNotNull<TessellationShader>( m_TesselationShader );
 
 	// Release the lights
 	for( int i = 0; i < 1; i++ )
@@ -119,7 +123,7 @@ bool Lab10::Render()
 	// move the lights
 	{
 		static float radians;
-		float radius = 5;
+		float radius = 9;
 		radians += m_Timer->GetTime() * 1.0f;
 
 		m_Lights[0]->SetPosition(
@@ -130,7 +134,7 @@ bool Lab10::Render()
 		m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
 	}
 
-	RenderScene();
+	//RenderScene();
 
 	RenderSceneDepthOnly();
 
@@ -161,10 +165,13 @@ void Lab10::RenderScene()
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
 	// another far away sphere
-	worldMatrix = XMMatrixTranslation(5, -1, 5);
-	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture());
-	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
+	worldMatrix = XMMatrixTranslation( 3.0f, 0.5f, 3.0f );
+	m_MagicSphere->SendData( m_Direct3D->GetDeviceContext() );
+	m_TesselationShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_MagicSphere->GetTexture(), 16, m_time );
+	m_TesselationShader->Render( m_Direct3D->GetDeviceContext(), m_MagicSphere->GetIndexCount() );
+	//m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
+	//m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture());
+	//m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
 	// render a sphere at the light
 	worldMatrix = XMMatrixTranslation(m_Lights[0]->GetPosition().x, m_Lights[0]->GetPosition().y, m_Lights[0]->GetPosition().z);
@@ -206,10 +213,13 @@ void Lab10::RenderSceneDepthOnly()
 	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
 	// another far away sphere
-	worldMatrix = XMMatrixTranslation(5, -1, 5);
-	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_DepthShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
-	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
+	worldMatrix = XMMatrixTranslation( 3.0f, 0.5f, 3.0f );
+	m_MagicSphere->SendData( m_Direct3D->GetDeviceContext( ) );
+	m_TesselationShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_MagicSphere->GetTexture( ), 16, m_time );
+	m_TesselationShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
+	//m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
+	//m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture());
+	//m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
 	// render plane
 	worldMatrix = XMMatrixTranslation( -10, -2, -10 );
@@ -243,12 +253,13 @@ void Lab10::RenderSceneWithShadows()
 	m_ShadowShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
 	// another far away sphere
-	worldMatrix = XMMatrixTranslation(5, -1, 5);
-	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
-		m_SphereMesh->GetTexture(), m_SceneDepth->GetShaderResourceView(), m_Lights[0]);
-
-	m_ShadowShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
+	worldMatrix = XMMatrixTranslation( 3.0f, 0.5f, 3.0f );
+	m_MagicSphere->SendData( m_Direct3D->GetDeviceContext( ) );
+	m_TesselationShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_MagicSphere->GetTexture( ), 16, m_time );
+	m_TesselationShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
+	//m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
+	//m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture(), m_SceneDepth->GetShaderResourceView(), m_Lights[0]);
+	//m_ShadowShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
 	// render plane
 	worldMatrix = XMMatrixTranslation(-10, -2, -10);

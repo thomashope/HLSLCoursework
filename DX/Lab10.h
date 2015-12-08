@@ -11,11 +11,13 @@
 #include "PointLightShader.h"
 #include "DepthShader.h"
 #include "ShadowShader.h"
+#include "TessellationShader.h"
 
 #include "SphereMesh.h"
 #include "PlaneMesh.h"
 #include "OrthoMesh.h"
 #include "Model.h"
+#include "TessellationMesh.h"
 
 // demonstrates point lights
 class Lab10 : public BaseApplication
@@ -53,6 +55,7 @@ private:
 	DepthShader* m_DepthShader;
 	TextureShader* m_TextureShader;
 	ShadowShader* m_ShadowShader;
+	TessellationShader* m_TesselationShader;
 
 	RenderTexture* m_SceneDepth;
 	RenderTexture* m_Scene;
@@ -67,6 +70,7 @@ private:
 	SphereMesh* m_SphereMesh;
 	PlaneMesh* m_PlaneMesh;
 	Model* m_Teapot;
+	TessellationMesh* m_MagicSphere;
 
 	Light* m_Lights[1];
 	float m_time;
