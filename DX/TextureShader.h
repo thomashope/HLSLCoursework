@@ -10,7 +10,6 @@ using namespace DirectX;
 
 class TextureShader: public BaseShader
 {
-
 public:
 
 	TextureShader(ID3D11Device* device, HWND hwnd);

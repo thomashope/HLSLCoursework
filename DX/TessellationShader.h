@@ -18,12 +18,18 @@ private:
 		XMFLOAT3 padding;
 	};
 
+	struct VertexManipBufferType
+	{
+		float time;
+		XMFLOAT3 padding;
+	};
+
 public:
 
 	TessellationShader(ID3D11Device* device, HWND hwnd);
 	~TessellationShader();
 
-	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, float tesselationFactor);
+	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, float tesselationFactor, float time);
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
 
 private:
@@ -34,6 +40,7 @@ private:
 	ID3D11Buffer* m_matrixBuffer;
 	ID3D11SamplerState* m_sampleState;
 	ID3D11Buffer* m_tessellationBuffer;
+	ID3D11Buffer* m_vertexManipBuffer;
 };
 
 #endif

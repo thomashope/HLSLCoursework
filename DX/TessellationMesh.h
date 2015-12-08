@@ -8,7 +8,6 @@ using namespace DirectX;
 
 class TessellationMesh : public BaseMesh
 {
-
 public:
 	TessellationMesh(ID3D11Device* device, WCHAR* textureFilename);
 	~TessellationMesh();

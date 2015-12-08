@@ -134,48 +134,17 @@ bool Lab9::Render()
 	m_Direct3D->GetProjectionMatrix( projectionMatrix );
 
 	m_time += m_Timer->GetTime();
-
-	// move the lights
-	{
-		static double radians;
-		double radius = 6;
-		radians += m_Timer->GetTime() * 1.6;
-
-		m_Lights[3]->SetPosition( 30 + sin( radians ) * radius,
-								  -1,
-								  20 - cos( radians ) * radius );
-	}
-	
-	// move up
-	worldMatrix = XMMatrixTranslation(0, 2, 0);
-
-	// render sphere
-	m_SphereMesh->SendData( m_Direct3D->GetDeviceContext() );
-	m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture(), m_Camera, m_Lights );
-	m_NormalShader->Render( m_Direct3D->GetDeviceContext( ), m_SphereMesh->GetIndexCount( ) );
-
-	// another far away sphere
-	worldMatrix = XMMatrixTranslation( 20, 0, 20 );
-	m_NormalShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture(), m_Camera, m_Lights );
-	m_NormalShader->Render( m_Direct3D->GetDeviceContext( ), m_SphereMesh->GetIndexCount( ) );
-
-	// move down
-	worldMatrix = XMMatrixTranslation( -10, -2, -10 );
-
-	// render plane
-	m_PlaneMesh->SendData( m_Direct3D->GetDeviceContext() );
-	m_JellyShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_PlaneMesh->GetTexture(), m_Camera, m_time, m_Lights );
-	m_JellyShader->Render( m_Direct3D->GetDeviceContext(), m_PlaneMesh->GetIndexCount() );
-	
-	worldMatrix = XMMatrixTranslation(0, 0, 0);
+	while( m_time > 360 ) m_time -= 360;
 
 	m_Direct3D->TurnOnWireframe();
 
 	if (m_Input->isKeyDown('U')) tesselationFactor += m_Timer->GetTime() * 2;
 	if (m_Input->isKeyDown('Y')) tesselationFactor -= m_Timer->GetTime() * 2;
+	if( tesselationFactor < 1.0f ) tesselationFactor = 1.0f;
+	if( tesselationFactor > 31.0f ) tesselationFactor = 31.0f;
 
 	m_TesselationMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TesselationShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_TesselationMesh->GetTexture(), tesselationFactor);
+	m_TesselationShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_TesselationMesh->GetTexture( ), tesselationFactor, m_time );
 	m_TesselationShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
 	m_Direct3D->TurnOffWireframe();

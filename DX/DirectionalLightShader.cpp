@@ -124,25 +124,24 @@ void DirectionalLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCont
 	tview = XMMatrixTranspose(viewMatrix);
 	tproj = XMMatrixTranspose(projectionMatrix);
 
-	// Lock the constant buffer so it can be written to.
-	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-
-	// Get a pointer to the data in the constant buffer.
-	dataPtr = (MatrixBufferType*)mappedResource.pData;
-
+	result = deviceContext->Map( m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );	// Lock the constant buffer so it can be written to.
+	dataPtr = (MatrixBufferType*)mappedResource.pData;	// Get a pointer to the data in the constant buffer.
 	// Copy the matrices into the constant buffer.
-	dataPtr->world = tworld;// worldMatrix;
+	dataPtr->world = tworld;
 	dataPtr->view = tview;
 	dataPtr->projection = tproj;
-
-	// Unlock the constant buffer.
-	deviceContext->Unmap(m_matrixBuffer, 0);
-
-	// Set the position of the constant buffer in the vertex shader.
-	bufferNumber = 0;
-
-	// Now set the constant buffer in the vertex shader with the updated values.
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
+	deviceContext->Unmap( m_matrixBuffer, 0 );			// Unlock the constant buffer.
+	bufferNumber = 0;									// Set the position of the constant buffer in the vertex shader.
+	deviceContext->VSSetConstantBuffers( bufferNumber, 1, &m_matrixBuffer );	// Now set the constant buffer in the vertex shader with the updated values.
+	
+	// send the camera data to pixel shader
+	deviceContext->Map( m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );
+	cameraPtr = (CameraBufferType*)mappedResource.pData;
+	cameraPtr->position = camera->GetPosition( );
+	cameraPtr->padding = 0.0f;
+	deviceContext->Unmap( m_cameraBuffer, 0 );
+	bufferNumber = 1;
+	deviceContext->VSSetConstantBuffers( bufferNumber, 1, &m_cameraBuffer );
 
 	//Additional
 	// Send light data to pixel shader
@@ -156,15 +155,6 @@ void DirectionalLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCont
 	deviceContext->Unmap(m_lightBuffer, 0);
 	bufferNumber = 0;
 	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
-
-	// send the camera data to pixel shader
-	deviceContext->Map( m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );
-	cameraPtr = (CameraBufferType*)mappedResource.pData;
-	cameraPtr->position = camera->GetPosition();
-	cameraPtr->padding = 0.0f;
-	deviceContext->Unmap( m_cameraBuffer, 0 );
-	bufferNumber = 1;
-	deviceContext->VSSetConstantBuffers( bufferNumber, 1, &m_cameraBuffer );
 
 	// Set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);

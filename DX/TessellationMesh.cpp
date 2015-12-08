@@ -25,12 +25,13 @@ void TessellationMesh::InitBuffers(ID3D11Device* device)
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	D3D11_BUFFER_DESC timeBufferDesc;
 
 	// Set the number of vertices in the vertex array.
-	m_vertexCount = 3;
+	m_vertexCount = 8;
 
 	// Set the number of indices in the index array.
-	m_indexCount = 3;
+	m_indexCount = 24;
 
 	// Create the vertex array.
 	vertices = new VertexType[m_vertexCount];
@@ -39,22 +40,65 @@ void TessellationMesh::InitBuffers(ID3D11Device* device)
 	indices = new unsigned long[m_indexCount];
 
 	// Load the vertex array with data.
-	vertices[0].position = XMFLOAT3(0.0f, 1.0f, 0.0f);  // Top.
+
+	// front
+	vertices[0].position = XMFLOAT3(-0.5f, 0.5f, -0.5f);  // Top left.
 	vertices[0].texture = XMFLOAT2(0.0f, 1.0f);
 	vertices[0].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
-
-	vertices[1].position = XMFLOAT3(-1.0f, 0.0f, 0.0f);  // Bottom left.
-	vertices[1].texture = XMFLOAT2(0.0f, 0.0f);
+	vertices[1].position = XMFLOAT3(0.5f, 0.5f, -0.5f);  // Top right.
+	vertices[1].texture = XMFLOAT2(1.0f, 1.0f);
 	vertices[1].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
-
-	vertices[2].position = XMFLOAT3(1.0f, 0.0f, 0.0f);  // Bottom right.
-	vertices[2].texture = XMFLOAT2(1.0f, 0.0f);
+	vertices[2].position = XMFLOAT3(-0.5f, -0.5f, -0.5f);  // Bottom left.
+	vertices[2].texture = XMFLOAT2(0.0f, 0.0f);
 	vertices[2].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
+	vertices[3].position = XMFLOAT3(0.5f, -0.5f, -0.5f);  // Bottom right.
+	vertices[3].texture = XMFLOAT2(1.0f, 0.0f);
+	vertices[3].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
+
+	// back
+	vertices[4].position = XMFLOAT3( -0.5f, 0.5f, 0.5f );  // Top left.
+	vertices[4].texture = XMFLOAT2( 0.0f, 1.0f );
+	vertices[4].normal = XMFLOAT3( 0.0f, 0.0f, -1.0f );
+	vertices[5].position = XMFLOAT3( 0.5f, 0.5f, 0.5f );  // Top right.
+	vertices[5].texture = XMFLOAT2( 1.0f, 1.0f );
+	vertices[5].normal = XMFLOAT3( 0.0f, 0.0f, -1.0f );
+	vertices[6].position = XMFLOAT3( -0.5f, -0.5f, 0.5f );  // Bottom left.
+	vertices[6].texture = XMFLOAT2( 0.0f, 0.0f );
+	vertices[6].normal = XMFLOAT3( 0.0f, 0.0f, -1.0f );
+	vertices[7].position = XMFLOAT3( 0.5f, -0.5f, 0.5f );  // Bottom right.
+	vertices[7].texture = XMFLOAT2( 1.0f, 0.0f );
+	vertices[7].normal = XMFLOAT3( 0.0f, 0.0f, -1.0f );
 
 	// Load the index array with data.
-	indices[0] = 0;  // Top/
-	indices[1] = 1;  // Bottom left.
-	indices[2] = 2;  // Bottom right.
+	indices[0] = 0;  // front
+	indices[1] = 1;  
+	indices[2] = 2;  
+	indices[3] = 3;
+
+	indices[4] = 5; // back
+	indices[5] = 4;
+	indices[6] = 7;
+	indices[7] = 6;
+	
+	indices[8] = 4; // top
+	indices[9] = 5;
+	indices[10] = 0;
+	indices[11] = 1;
+
+	indices[12] = 2; // bottom
+	indices[13] = 3;
+	indices[14] = 6;
+	indices[15] = 7;
+
+	indices[16] = 1; // right
+	indices[17] = 5;
+	indices[18] = 3;
+	indices[19] = 7;
+
+	indices[20] = 4; // left
+	indices[21] = 0;
+	indices[22] = 6;
+	indices[23] = 2;
 
 	// Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -112,6 +156,6 @@ void TessellationMesh::SendData(ID3D11DeviceContext* deviceContext)
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case control patch for tessellation.
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_4_CONTROL_POINT_PATCHLIST);
 }
 

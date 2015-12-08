@@ -41,6 +41,12 @@ TessellationShader::~TessellationShader()
 		m_tessellationBuffer = 0;
 	}
 
+	if( m_vertexManipBuffer )
+	{
+		m_vertexManipBuffer->Release();
+		m_vertexManipBuffer = 0;
+	}
+
 	//Release base shader components
 	BaseShader::~BaseShader();
 }
@@ -50,6 +56,7 @@ void TessellationShader::InitShader(WCHAR* vsFilename,  WCHAR* psFilename)
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
 	D3D11_BUFFER_DESC tessellationBufferDesc;
+	D3D11_BUFFER_DESC vertexManipBufferDesc;
 
 	// Load (+ compile) shader files
 	loadVertexShader(vsFilename);
@@ -84,9 +91,7 @@ void TessellationShader::InitShader(WCHAR* vsFilename,  WCHAR* psFilename)
 
 	// Create the texture sampler state.
 	m_device->CreateSamplerState(&samplerDesc, &m_sampleState);
-
-	// Setup light buffer
-	// Setup the description of the light dynamic constant buffer that is in the pixel shader.
+	
 	// Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.
 	tessellationBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	tessellationBufferDesc.ByteWidth = sizeof(TessellationBufferType);
@@ -94,9 +99,17 @@ void TessellationShader::InitShader(WCHAR* vsFilename,  WCHAR* psFilename)
 	tessellationBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	tessellationBufferDesc.MiscFlags = 0;
 	tessellationBufferDesc.StructureByteStride = 0;
+	m_device->CreateBuffer( &tessellationBufferDesc, NULL, &m_tessellationBuffer );
 
+	// Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.
+	vertexManipBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vertexManipBufferDesc.ByteWidth = sizeof(VertexManipBufferType);
+	vertexManipBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	vertexManipBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	vertexManipBufferDesc.MiscFlags = 0;
+	vertexManipBufferDesc.StructureByteStride = 0;
 	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	m_device->CreateBuffer(&tessellationBufferDesc, NULL, &m_tessellationBuffer);
+	m_device->CreateBuffer( &vertexManipBufferDesc, NULL, &m_vertexManipBuffer );
 }
 
 void TessellationShader::InitShader(WCHAR* vsFilename, WCHAR* hsFilename, WCHAR* dsFilename, WCHAR* psFilename)
@@ -110,15 +123,15 @@ void TessellationShader::InitShader(WCHAR* vsFilename, WCHAR* hsFilename, WCHAR*
 }
 
 
-void TessellationShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, float tesselationFactor)
+void TessellationShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, float tesselationFactor, float time)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	MatrixBufferType* dataPtr;
 	TessellationBufferType* tessellationPtr;
+	VertexManipBufferType* VertexManipPtr;
 	unsigned int bufferNumber;
 	XMMATRIX tworld, tview, tproj;
-
 
 	// Transpose the matrices to prepare them for the shader.
 	tworld = XMMatrixTranspose(worldMatrix);
@@ -127,33 +140,36 @@ void TessellationShader::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 
 	// Lock the constant buffer so it can be written to.
 	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-
 	// Get a pointer to the data in the constant buffer.
 	dataPtr = (MatrixBufferType*)mappedResource.pData;
-
 	// Copy the matrices into the constant buffer.
-	dataPtr->world = tworld;// worldMatrix;
+	dataPtr->world = tworld;	// worldMatrix;
 	dataPtr->view = tview;
 	dataPtr->projection = tproj;
-
 	// Unlock the constant buffer.
 	deviceContext->Unmap(m_matrixBuffer, 0);
-
-	// Set the position of the constant buffer in the vertex shader.
+	// Set the position of the constant buffer in the domain shader.
 	bufferNumber = 0;
-
-	// Now set the constant buffer in the vertex shader with the updated values.
+	// Now set the constant buffer in the domain shader with the updated values.
 	deviceContext->DSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
+	
+	// Send vertex manip info to domain shader
+	deviceContext->Map( m_vertexManipBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );
+	VertexManipPtr = (VertexManipBufferType*)mappedResource.pData;
+	VertexManipPtr->time = time;
+	VertexManipPtr->padding = XMFLOAT3( 1.0f, 1.0f, 1.0f );
+	deviceContext->Unmap( m_vertexManipBuffer, 0 );
+	bufferNumber = 1;
+	deviceContext->DSSetConstantBuffers( bufferNumber, 1, &m_vertexManipBuffer );
 
-	//Additional
-	// Send light data to pixel shader
+	// Send tesselation info to hull shader
 	deviceContext->Map(m_tessellationBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	tessellationPtr = (TessellationBufferType*)mappedResource.pData;
 	tessellationPtr->tessellationFactor = tesselationFactor;
 	tessellationPtr->padding = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	deviceContext->Unmap(m_tessellationBuffer, 0);
 	bufferNumber = 0;
-	deviceContext->HSSetConstantBuffers(bufferNumber, 1, &m_tessellationBuffer);
+	deviceContext->HSSetConstantBuffers(bufferNumber, 1, &m_tessellationBuffer);	
 
 	// Set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);

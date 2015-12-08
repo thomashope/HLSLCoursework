@@ -165,8 +165,8 @@ void Lab8::RenderScene()
 
 	// render sphere
 	m_SphereMesh->SendData( m_Direct3D->GetDeviceContext() );
-	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture() );
-	m_TextureShader->Render( m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount() );
+	m_NormalShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture(), m_Camera, m_Lights);
+	m_NormalShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
 	// another far away sphere
 	worldMatrix = XMMatrixTranslation( 20, 0, 20 );
