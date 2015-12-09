@@ -18,24 +18,24 @@ private:
 		XMMATRIX world;
 		XMMATRIX view;
 		XMMATRIX projection;
-		XMMATRIX lightView;
-		XMMATRIX lightProjection;
+		XMMATRIX lightView[2];
+		XMMATRIX lightProjection[2];
 	};
 
-	struct LightBufferType
+	struct PSLightBufferType
 	{
-		XMFLOAT4 ambient;
-		XMFLOAT4 position;
-		XMFLOAT4 diffuse;
+		XMFLOAT4 ambient[2];
+		XMFLOAT4 position[2];
+		XMFLOAT4 diffuse[2];
 
 		// attenuation x, y, z, w == range, constant, linear, quadratic
-		XMFLOAT4 attenuation;
+		XMFLOAT4 attenuation[2];
 	};
 
-	struct LightBufferType2
+	struct VSLightBufferType
 	{
-		XMFLOAT3 position;
-		float padding;
+		XMFLOAT3 position[2];
+		XMFLOAT2 padding;
 	};
 
 public:
@@ -43,7 +43,8 @@ public:
 	ShadowShader(ID3D11Device* device, HWND hwnd);
 	~ShadowShader();
 
-	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView*depthMap, Light* light);
+	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture,
+		ID3D11ShaderResourceView* depthMap1, ID3D11ShaderResourceView* depthMap2, Light* lights[] );
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
 
 private:

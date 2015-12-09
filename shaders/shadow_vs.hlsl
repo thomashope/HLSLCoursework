@@ -1,17 +1,20 @@
 
+#define NUM_LIGHTS 2
+
 cbuffer MatrixBuffer : register(cb0)
 {
 	matrix worldMatrix;
 	matrix viewMatrix;
 	matrix projectionMatrix;
-	matrix lightViewMatrix;
-	matrix lightProjectionMatrix;
+
+	matrix lightViewMatrix[2];
+	matrix lightProjectionMatrix[2];
 };
 
-cbuffer LightBuffer2 : register(cb1)
+cbuffer LightBuffer : register(cb1)
 {
-    float3 lightPosition;
-	float padding;
+	float3 lightPosition[NUM_LIGHTS];
+	float2 padding;
 };
 
 struct InputType
@@ -23,13 +26,15 @@ struct InputType
 
 struct OutputType
 {
-	float4 position : SV_POSITION;
-    float2 tex : TEXCOORD0;
-	float3 normal : NORMAL;
-    float4 lightViewPosition : TEXCOORD1;
-	float3 lightPos : TEXCOORD2;
-	float3 position3D : TEXCOORD3;
-	float4 depthPosition : TEXCOORD4;
+	float4 position				: SV_POSITION;
+    float2 tex					: TEXCOORD0;
+	float3 normal				: NORMAL;
+
+	float3 position3D			: TEXCOORD1;
+	float4 depthPosition		: TEXCOORD2;
+
+	float4 lightViewPosition	[NUM_LIGHTS] : TEXCOORD3;
+	float3 lightPos				[NUM_LIGHTS] : TEXCOORD5;
 };
 
 
@@ -51,10 +56,6 @@ OutputType main(InputType input)
 	output.position = mul( output.position, viewMatrix );
 	output.position = mul( output.position, projectionMatrix );
 
-	// Calculate the position of the vertice as viewed by the light source.
-	output.lightViewPosition = mul( input.position, worldMatrix );
-	output.lightViewPosition = mul( output.lightViewPosition, lightViewMatrix );
-	output.lightViewPosition = mul( output.lightViewPosition, lightProjectionMatrix );
 
 	// Store the texture coordinates for the pixel shader.
     output.tex = input.tex;
@@ -69,9 +70,18 @@ OutputType main(InputType input)
 	// convert the world position to a float3 and pass to output
 	output.position3D = worldPosition.xyz;
 
-    // Determine the light position based on the position of the light and the position of the vertex in the world.
-    output.lightPos = lightPosition.xyz - worldPosition.xyz;
-    output.lightPos = normalize(output.lightPos);
+	for( int i = 0; i < NUM_LIGHTS; i++ )
+	{
+		// Calculate the position of the vertice as viewed by the light source.
+		output.lightViewPosition[i] = mul( input.position, worldMatrix );
+		output.lightViewPosition[i] = mul( output.lightViewPosition[i], lightViewMatrix[i] );
+		output.lightViewPosition[i] = mul( output.lightViewPosition[i], lightProjectionMatrix[i] );
+
+		// Determine the light position based on the position of the light and the position of the vertex in the world.
+		output.lightPos[i] = lightPosition[i].xyz - worldPosition.xyz;
+		output.lightPos[i] = normalize( output.lightPos[i] );
+	}
+
 
 	return output;
 }

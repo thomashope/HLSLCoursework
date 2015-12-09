@@ -37,7 +37,8 @@ private:
 	bool Render();
 
 	// Renders the scene depth information to a texture
-	void RenderSceneDepthOnly();
+	void RenderShadowmap1();
+	void RenderShadowmap2();
 
 	// Renders the scene without lighting or shadows
 	void RenderScene();
@@ -74,7 +75,8 @@ private:
 	TessNormalShader* m_TessNormalShader;
 	BlendShader* m_BlendShader;
 
-	RenderTexture* m_SceneDepth;
+	RenderTexture* m_ShadowMap1;
+	RenderTexture* m_ShadowMap2;
 	RenderTexture* m_BlobDepth;
 	RenderTexture* m_SceneLighting;
 	RenderTexture* m_BlobLighting;
@@ -92,8 +94,9 @@ private:
 	Model* m_Teapot;
 	TessellationMesh* m_MagicSphere;
 
-	Light* m_Lights[1];
+	Light* m_Lights[2];
 	float m_time;
+	XMFLOAT4 m_frequency;
 };
 
 #endif

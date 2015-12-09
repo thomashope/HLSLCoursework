@@ -15,11 +15,6 @@ cbuffer LightBuffer : register(cb0)
 
 	// attenuation x, y, z, w == range, constant, linear, quadratic
 	float4 attenuation[NUM_LIGHTS];
-	//float4 range[NUM_LIGHTS];
-	//float4 constantAttenuation[NUM_LIGHTS];
-	//float4 linearAttenuation[NUM_LIGHTS];
-	//float4 quadraticAttenuation[NUM_LIGHTS];
-
 	float4 specularPower[NUM_LIGHTS];
 };
 

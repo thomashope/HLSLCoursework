@@ -10,8 +10,7 @@ cbuffer MatrixBuffer : register(cb0)
 
 cbuffer VertexManipBuffer : register(cb1)
 {
-	float time;
-	float3 padding;
+	float4 frequency;
 }
 
 struct ConstantOutputType
@@ -23,13 +22,11 @@ struct ConstantOutputType
 struct InputType
 {
     float3 position : POSITION;
-    //float4 colour : COLOR;
 };
 
 struct OutputType
 {
     float4 position : SV_POSITION;
-	float4 normal : NORMAL;
     float4 colour : COLOR;
 };
 
@@ -49,29 +46,17 @@ OutputType main(ConstantOutputType input, float2 uvwCoord : SV_DomainLocation, c
 	position = normalize( position );
 	normal = position + position;
 	
-	// distort the sphere
-	float3 freq = float3(
-		sin( time * 3.4f ),
-		sin( time * 5.3f ),
-		sin( time * 2.7f ) );
-	float amp = 0.5f + sin( time * 2.0f ) * 0.3f;
-	freq *= position * amp;
-	position += position * freq;
-
-	// aproximation of the normal, good enough
-	output.normal = float4( normalize( normal - position ), 1.0f);
+	// Distort the sphere
+	float3 f = frequency.xyz * position * frequency.w;
+	position += position * f;
 
     // Calculate the position of the new vertex against the world, view, and projection matrices.
 	output.position = mul( float4(position, 1.0f), worldMatrix );
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
-
-	// Store the position value in a second input value for depth value calculations.
-	//output.depthPosition = output.position;
 	
     // Send the input color into the pixel shader.
-	//output.colour = saturate( float4( abs(position), 1.0f) );
-	output.colour = float4((output.normal.xyz + 1.0f) * 0.5f, 1.0f);
+	output.colour = float4((normalize( normal - position ) + 1.0f) * 0.5f, 1.0f);
 
     return output;
 }

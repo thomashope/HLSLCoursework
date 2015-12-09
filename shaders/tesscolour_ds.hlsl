@@ -10,8 +10,7 @@ cbuffer MatrixBuffer : register(cb0)
 
 cbuffer VertexManipBuffer : register(cb1)
 {
-	float time;
-	float3 padding;
+	float4 frequency;
 }
 
 struct ConstantOutputType
@@ -50,14 +49,9 @@ OutputType main(ConstantOutputType input, float2 uvwCoord : SV_DomainLocation, c
 	position = normalize( position );
 	normal = position + position;
 	
-	// distort the sphere
-	float3 freq = float3(
-		sin( time * 3.4f ),
-		sin( time * 5.3f ),
-		sin( time * 2.7f ) );
-	float amp = 0.5f + sin( time * 2.0f ) * 0.3f;
-	freq *= position * amp;
-	position += position * freq;
+	// Distort the sphere
+	float3 f = frequency.xyz * position * frequency.w;
+	position += position * f;
 
 	// aproximation of the normal, good enough
 	output.normal = float4( normalize( normal - position ), 1.0f);

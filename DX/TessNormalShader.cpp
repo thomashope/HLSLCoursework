@@ -123,7 +123,7 @@ void TessNormalShader::InitShader(WCHAR* vsFilename, WCHAR* hsFilename, WCHAR* d
 }
 
 
-void TessNormalShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, float tesselationFactor, float time)
+void TessNormalShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, float tesselationFactor, XMFLOAT4 frequency )
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -156,8 +156,7 @@ void TessNormalShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, c
 	// Send vertex manip info to domain shader
 	deviceContext->Map( m_vertexManipBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );
 	VertexManipPtr = (VertexManipBufferType*)mappedResource.pData;
-	VertexManipPtr->time = time;
-	VertexManipPtr->padding = XMFLOAT3( 1.0f, 1.0f, 1.0f );
+	VertexManipPtr->frequency = frequency;
 	deviceContext->Unmap( m_vertexManipBuffer, 0 );
 	bufferNumber = 1;
 	deviceContext->DSSetConstantBuffers( bufferNumber, 1, &m_vertexManipBuffer );
@@ -169,10 +168,7 @@ void TessNormalShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, c
 	tessellationPtr->padding = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	deviceContext->Unmap(m_tessellationBuffer, 0);
 	bufferNumber = 0;
-	deviceContext->HSSetConstantBuffers(bufferNumber, 1, &m_tessellationBuffer);	
-
-	// Set shader texture resource in the pixel shader.
-	deviceContext->PSSetShaderResources(0, 1, &texture);
+	deviceContext->HSSetConstantBuffers( bufferNumber, 1, &m_tessellationBuffer );
 }
 
 void TessNormalShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)

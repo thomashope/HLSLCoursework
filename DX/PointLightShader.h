@@ -27,13 +27,6 @@ private:
 
 		// attenuation x, y, z, w == range, constant, linear, quadratic
 		XMFLOAT4 attenuation[NUM_LIGHTS];
-		// TODO turn below variables back into floats
-		// have to be float4 due to some strange allignment issue
-		//XMFLOAT4 range[NUM_LIGHTS];
-		//XMFLOAT4 constAttenuation[NUM_LIGHTS];
-		//XMFLOAT4 linearAttenuation[NUM_LIGHTS];
-		//XMFLOAT4 quadraticAttenuation[NUM_LIGHTS];
-
 		XMFLOAT4 specularPower[NUM_LIGHTS];
 	};
 

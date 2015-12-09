@@ -244,24 +244,24 @@ void Lab11::RenderSceneWithShadows()
 	worldMatrix = XMMatrixMultiply(XMMatrixTranslation(0, 2, 0), XMMatrixScaling(0.3f, 0.3f, 0.3f));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationRollPitchYaw(0, XM_PI * 0.5f, 0));
 	m_Teapot->SendData(m_Direct3D->GetDeviceContext());
-	m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Teapot->GetTexture(), m_SceneDepth->GetShaderResourceView(), m_Lights[0]);
+	//m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
+	//	m_Teapot->GetTexture(), m_SceneDepth->GetShaderResourceView(), m_Lights);
 
 	m_ShadowShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
 	// another far away sphere
 	worldMatrix = XMMatrixTranslation(5, -1, 5);
 	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
-		m_SphereMesh->GetTexture(), m_SceneDepth->GetShaderResourceView(), m_Lights[0]);
+	//m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
+	//	m_SphereMesh->GetTexture(), m_SceneDepth->GetShaderResourceView(), m_Lights);
 
 	m_ShadowShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
 	// render plane
 	worldMatrix = XMMatrixTranslation(-10, -2, -10);
 	m_PlaneMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
-	m_PlaneMesh->GetTexture(), m_SceneDepth->GetShaderResourceView(), m_Lights[0]);
+	//m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
+	//	m_PlaneMesh->GetTexture(), m_SceneDepth->GetShaderResourceView(), m_Lights);
 
 	m_ShadowShader->Render(m_Direct3D->GetDeviceContext(), m_PlaneMesh->GetIndexCount());
 

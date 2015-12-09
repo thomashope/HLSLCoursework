@@ -4,7 +4,6 @@
 struct InputType
 {
 	float4 position : SV_POSITION;
-	float4 normal : NORMAL;
     float4 colour : COLOR;
 };
 
