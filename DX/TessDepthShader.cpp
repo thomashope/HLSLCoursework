@@ -1,8 +1,8 @@
 // tessellation shader.cpp
-#include "tessellationshader.h"
+#include "TessDepthShader.h"
 
 
-TessellationShader::TessellationShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
+TessDepthShader::TessDepthShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
 {
 	InitShader(	L"../shaders/tessellation_vs.hlsl",
 				L"../shaders/tessellation_hs.hlsl",
@@ -11,7 +11,7 @@ TessellationShader::TessellationShader(ID3D11Device* device, HWND hwnd) : BaseSh
 }
 
 
-TessellationShader::~TessellationShader()
+TessDepthShader::~TessDepthShader()
 {
 	// Release the sampler state.
 	if (m_sampleState)
@@ -51,7 +51,7 @@ TessellationShader::~TessellationShader()
 	BaseShader::~BaseShader();
 }
 
-void TessellationShader::InitShader(WCHAR* vsFilename,  WCHAR* psFilename)
+void TessDepthShader::InitShader(WCHAR* vsFilename,  WCHAR* psFilename)
 {
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -112,7 +112,7 @@ void TessellationShader::InitShader(WCHAR* vsFilename,  WCHAR* psFilename)
 	m_device->CreateBuffer( &vertexManipBufferDesc, NULL, &m_vertexManipBuffer );
 }
 
-void TessellationShader::InitShader(WCHAR* vsFilename, WCHAR* hsFilename, WCHAR* dsFilename, WCHAR* psFilename)
+void TessDepthShader::InitShader(WCHAR* vsFilename, WCHAR* hsFilename, WCHAR* dsFilename, WCHAR* psFilename)
 {
 	// InitShader must be overwritten and it will load both vertex and pixel shaders + setup buffers
 	InitShader(vsFilename, psFilename);
@@ -123,7 +123,7 @@ void TessellationShader::InitShader(WCHAR* vsFilename, WCHAR* hsFilename, WCHAR*
 }
 
 
-void TessellationShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, float tesselationFactor, float time)
+void TessDepthShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, float tesselationFactor, float time)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -175,7 +175,7 @@ void TessellationShader::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 }
 
-void TessellationShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
+void TessDepthShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
 {
 	// Set the sampler state in the pixel shader.
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);

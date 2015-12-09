@@ -6,7 +6,7 @@
 #include "baseapplication.h"
 
 #include "PointLightShader.h"
-#include "TessellationShader.h"
+#include "TessDepthShader.h"
 #include "TessellationMesh.h"
 #include "JellyShader.h"
 #include "SphereMesh.h"
@@ -30,7 +30,7 @@ private:
 
 	JellyShader* m_JellyShader;
 	PointLightShader* m_NormalShader;
-	TessellationShader* m_TesselationShader;
+	TessDepthShader* m_TesselationShader;
 
 	TessellationMesh* m_TesselationMesh;
 	SphereMesh* m_SphereMesh;

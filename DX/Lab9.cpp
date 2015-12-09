@@ -13,7 +13,7 @@ Lab9::Lab9( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 	// create she shaders
 	m_JellyShader = new JellyShader(m_Direct3D->GetDevice(), hwnd);
 	m_NormalShader = new PointLightShader(m_Direct3D->GetDevice(), hwnd);
-	m_TesselationShader = new TessellationShader(m_Direct3D->GetDevice(), hwnd);
+	m_TesselationShader = new TessDepthShader( m_Direct3D->GetDevice( ), hwnd );
 
 	// declare all the lights with default values
 	for (int i = 0; i < NUM_LIGHTS; i++)

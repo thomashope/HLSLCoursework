@@ -12,7 +12,7 @@ float4 main(InputType input) : SV_TARGET
 	// Get the depth value of the pixel by dividing the Z pixel depth by the homogeneous W coordinate.
 	depthValue = input.depthPosition.z / input.depthPosition.w;
 
-	color = float4(depthValue, depthValue, depthValue, 1.0f);
+	color = float4(1.0f, 1.0f, 1.0f, depthValue);
 	//color = float4(1.0f - depthValue, 1.0f - depthValue, 1.0f - depthValue, 1.0f);
 	//color *= 4;
 	saturate(color);

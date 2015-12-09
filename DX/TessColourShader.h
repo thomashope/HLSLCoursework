@@ -1,7 +1,7 @@
 // Light shader.h
 // Basic single light shader setup
-#ifndef _TESSELLATIONSHADER_H_
-#define _TESSELLATIONSHADER_H_
+#ifndef _TESSCOLOURSHADER_H_
+#define _TESSCOLOURSHADER_H_
 
 #include "BaseShader.h"
 
@@ -9,7 +9,7 @@ using namespace std;
 using namespace DirectX;
 
 
-class TessellationShader : public BaseShader
+class TessColourShader : public BaseShader
 {
 private:
 	struct TessellationBufferType
@@ -26,8 +26,8 @@ private:
 
 public:
 
-	TessellationShader(ID3D11Device* device, HWND hwnd);
-	~TessellationShader();
+	TessColourShader(ID3D11Device* device, HWND hwnd);
+	~TessColourShader();
 
 	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, float tesselationFactor, float time);
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);

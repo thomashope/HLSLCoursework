@@ -37,6 +37,7 @@ float4 main(InputType input) : SV_TARGET
 	float attenuationFactor;	// Result of the atenuation equation, affects how lights fade over distance
 	float lightDepthValue;		//
     float lightIntensity;		//
+	float3 projectionTint;		// Used when light is cast through a transparent object
 	float4 textureColor;		//
 	
 	// Set the bias value for fixing the floating point precision issues.
@@ -57,7 +58,8 @@ float4 main(InputType input) : SV_TARGET
 		(saturate(projectTexCoord.y) == projectTexCoord.y) )
 	{
 		// Sample the shadow map depth value from the depth texture using the sampler at the projected texture coordinate location.
-		depthValue = depthMapTexture.Sample(SampleTypeClamp, projectTexCoord).r;
+		depthValue = depthMapTexture.Sample( SampleTypeClamp, projectTexCoord ).a;
+		projectionTint = depthMapTexture.Sample( SampleTypeClamp, projectTexCoord ).rgb;
 
 		// Calculate the depth of the light.
 		lightDepthValue = input.lightViewPosition.z / input.lightViewPosition.w;
@@ -67,7 +69,7 @@ float4 main(InputType input) : SV_TARGET
 
 		// Compare the depth of the shadow map value and the depth of the light to determine whether to shadow or to light this pixel.
 		// If the light is in front of the object then light the pixel, if not then shadow this pixel since an object (occluder) is casting a shadow on it.
-		if(lightDepthValue < depthValue && distance < attenuation.x)
+		if(lightDepthValue < depthValue && distance < attenuation.x )
 		{
 			// The fragment is receiving light
 
@@ -81,8 +83,11 @@ float4 main(InputType input) : SV_TARGET
 					attenuation.z * distance +
 					attenuation.w * distance * distance);
 
-				// Determine the final diffuse color based on the diffuse color and the amount of light intensity.
+				// Determine the diffuse color based on the diffuse color and the amount of light intensity.
 				color += (diffuseColor * lightIntensity * attenuationFactor);
+
+				// Tint by the projection colour
+				color *= float4( projectionTint, 1.0f);
 
 				// Saturate the final light color.
 				color = saturate(color);

@@ -23,7 +23,7 @@ struct ConstantOutputType
 struct InputType
 {
     float3 position : POSITION;
-    float4 colour : COLOR;
+    //float4 colour : COLOR;
 };
 
 struct OutputType

@@ -10,7 +10,6 @@ cbuffer TessellationBuffer : register(cb)
 struct InputType
 {
     float3 position : POSITION;
-    float4 colour : COLOR;
 };
 
 struct ConstantOutputType
@@ -22,7 +21,6 @@ struct ConstantOutputType
 struct OutputType
 {
     float3 position : POSITION;
-    float4 colour : COLOR;
 };
 
 ConstantOutputType PatchConstantFunction(InputPatch<InputType, 4> inputPatch, uint patchId : SV_PrimitiveID)
@@ -54,9 +52,6 @@ OutputType main(InputPatch<InputType, 4> patch, uint pointId : SV_OutputControlP
 
     // Set the position for this control point as the output position.
     output.position = patch[pointId].position;
-
-    // Set the input color as the output color.
-    output.colour = patch[pointId].colour;
 
     return output;
 }

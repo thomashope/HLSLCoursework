@@ -16,12 +16,13 @@ float4 main(InputType input) : SV_TARGET
 	float3 lightDir = normalize(float3(1.0f, 1.0f, 0.0f));
 	float lightIntensity;
 	
-	lightIntensity = saturate( dot( lightDir, input.normal.xyz ) );
-	finalColour *= lightIntensity;
+	// Do lighting
+	//lightIntensity = saturate( dot( lightDir, input.normal.xyz ) );
+	//finalColour *= lightIntensity;
 	
 	// calculate the depth of the pixel
-	//float depthValue = input.depthPosition.z / input.depthPosition.w;
-	//finalColour = float4(depthValue, depthValue, depthValue, 1.0f);
+	float depthValue = input.depthPosition.z / input.depthPosition.w;
+	finalColour = float4( input.colour.xyz, 1.0f);
 
 
 	return finalColour;

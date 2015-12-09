@@ -26,7 +26,7 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	m_DepthShader = new DepthShader(m_Direct3D->GetDevice(), hwnd);
 	m_TextureShader = new TextureShader(m_Direct3D->GetDevice(), hwnd);
 	m_ShadowShader = new ShadowShader(m_Direct3D->GetDevice(), hwnd);
-	m_TesselationShader = new TessellationShader( m_Direct3D->GetDevice(), hwnd );
+	m_TesselationShader = new TessDepthShader( m_Direct3D->GetDevice( ), hwnd );
 
 	// declare all the lights with default values
 	for (int i = 0; i < 1; i++)
@@ -84,7 +84,7 @@ Lab10::~Lab10()
 	// Release the shaders
 	deleteIfNotNull<DepthShader>(m_DepthShader);
 	deleteIfNotNull<ShadowShader>( m_ShadowShader );
-	deleteIfNotNull<TessellationShader>( m_TesselationShader );
+	deleteIfNotNull<TessDepthShader>( m_TesselationShader );
 
 	// Release the lights
 	for( int i = 0; i < 1; i++ )

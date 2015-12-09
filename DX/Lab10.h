@@ -11,7 +11,7 @@
 #include "PointLightShader.h"
 #include "DepthShader.h"
 #include "ShadowShader.h"
-#include "TessellationShader.h"
+#include "TessDepthShader.h"
 
 #include "SphereMesh.h"
 #include "PlaneMesh.h"
@@ -55,7 +55,7 @@ private:
 	DepthShader* m_DepthShader;
 	TextureShader* m_TextureShader;
 	ShadowShader* m_ShadowShader;
-	TessellationShader* m_TesselationShader;
+	TessDepthShader* m_TesselationShader;
 
 	RenderTexture* m_SceneDepth;
 	RenderTexture* m_Scene;
