@@ -13,6 +13,7 @@
 #include "ShadowShader.h"
 #include "TessDepthShader.h"
 #include "TessColourShader.h"
+#include "TessNormalShader.h"
 #include "BlendShader.h"
 
 #include "SphereMesh.h"
@@ -70,6 +71,7 @@ private:
 	ShadowShader* m_ShadowShader;
 	TessDepthShader* m_TessDepthShader;
 	TessColourShader* m_TessColourShader;
+	TessNormalShader* m_TessNormalShader;
 	BlendShader* m_BlendShader;
 
 	RenderTexture* m_SceneDepth;

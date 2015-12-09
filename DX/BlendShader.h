@@ -15,7 +15,7 @@ public:
 	~BlendShader();
 
 	void SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection,
-		ID3D11ShaderResourceView* scene, ID3D11ShaderResourceView* trnsparents );
+		ID3D11ShaderResourceView* scene, ID3D11ShaderResourceView* trnsparents, ID3D11ShaderResourceView* distortion );
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
 
 private:

@@ -75,7 +75,8 @@ void BlendShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 }
 
 
-void BlendShader::SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* scene, ID3D11ShaderResourceView* trnsparent )
+void BlendShader::SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix,
+	ID3D11ShaderResourceView* scene, ID3D11ShaderResourceView* trnsparent, ID3D11ShaderResourceView* distortion )
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -112,7 +113,11 @@ void BlendShader::SetShaderParameters( ID3D11DeviceContext* deviceContext, const
 	// Set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources( 0, 1, &scene );
 
+	// send the transparent stuff to be overlaid
 	deviceContext->PSSetShaderResources( 1, 1, &trnsparent );
+
+	// send a distrotion texture of normals
+	deviceContext->PSSetShaderResources( 2, 1, &distortion );
 }
 
 void BlendShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)

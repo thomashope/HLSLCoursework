@@ -129,6 +129,7 @@
     <ClCompile Include="TessColourShader.cpp" />
     <ClCompile Include="TessellationMesh.cpp" />
     <ClCompile Include="TessDepthShader.cpp" />
+    <ClCompile Include="TessNormalShader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureShader.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="TessColourShader.h" />
     <ClInclude Include="TessellationMesh.h" />
     <ClInclude Include="TessDepthShader.h" />
+    <ClInclude Include="TessNormalShader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="Timer.h" />
@@ -293,6 +295,12 @@
     <FxCompile Include="..\shaders\tessellation_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\tessnormal_ds.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\tessnormal_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\texture_ps.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
