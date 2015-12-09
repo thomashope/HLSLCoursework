@@ -168,6 +168,9 @@
     <ClCompile Include="TessColourShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="BlendShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -305,6 +308,9 @@
     <ClInclude Include="TessColourShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="BlendShader.h">
+      <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -361,13 +367,7 @@
     <FxCompile Include="..\shaders\tessellation_hs.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\shaders\tessellation_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
-    </FxCompile>
     <FxCompile Include="..\shaders\tessellation_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\tessellation_ds.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\shadow_ps.hlsl">
@@ -395,6 +395,21 @@
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\point_light_normal_vs.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\tessdepth_ps.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\tessdepth_ds.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\tesscolour_ps.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\tesscolour_ds.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\blend_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
   </ItemGroup>

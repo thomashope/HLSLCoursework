@@ -42,6 +42,8 @@ public:
 	void TurnZBufferOff();
 	void TurnOnAlphaBlending();
 	void TurnOffAlphaBlending();
+	void TurnOnColourOnly();
+	void TurnOffColourOnly();
 	void TurnOnWireframe();
 	void TurnOffWireframe();
 
@@ -67,6 +69,7 @@ private:
 	ID3D11DepthStencilState* m_depthDisabledStencilState;
 	ID3D11BlendState* m_alphaEnableBlendingState;
 	ID3D11BlendState* m_alphaDisableBlendingState;
+	ID3D11BlendState* m_colourOnlyBlendingState;
 	D3D11_VIEWPORT viewport;
 };
 

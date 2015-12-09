@@ -306,6 +306,19 @@ D3D::D3D(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscre
 
 	// Create the second blend state using the description.
 	m_device->CreateBlendState(&blendStateDescription, &m_alphaDisableBlendingState);
+
+	// Modify the blend description to do colour only blending
+	blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
+	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
+	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_MAX;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+	// create the colour only blend state
+	m_device->CreateBlendState( &blendStateDescription, &m_colourOnlyBlendingState );
 }
 
 D3D::~D3D()
@@ -499,7 +512,6 @@ void D3D::TurnOffAlphaBlending()
 {
 	float blendFactor[4];
 
-
 	// Setup the blend factor.
 	blendFactor[0] = 0.0f;
 	blendFactor[1] = 0.0f;
@@ -510,6 +522,32 @@ void D3D::TurnOffAlphaBlending()
 	m_deviceContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
 
 	return;
+}
+
+void D3D::TurnOnColourOnly()
+{
+	float blendFactor[4];
+
+	// Setup the blend factor.
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	m_deviceContext->OMSetBlendState( m_colourOnlyBlendingState, blendFactor, 0xffffffff );
+}
+
+void D3D::TurnOffColourOnly()
+{
+	float blendFactor[4];
+
+	// Setup the blend factor.
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	m_deviceContext->OMSetBlendState( m_alphaDisableBlendingState, blendFactor, 0xffffffff );
 }
 
 void D3D::SetBackBufferRenderTarget()
@@ -528,6 +566,7 @@ void D3D::ResetViewport()
 
 	return;
 }
+
 void D3D::TurnOnWireframe()
 {
 	// Now set the rasterizer state.

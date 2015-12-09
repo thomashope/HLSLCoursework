@@ -17,13 +17,13 @@ cbuffer LightBuffer : register(cb0)
 
 struct InputType
 {
-    float4 position : SV_POSITION;
+	float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
 	float3 normal : NORMAL;
     float4 lightViewPosition : TEXCOORD1;
 	float3 lightPos : TEXCOORD2;
-
 	float3 position3D : TEXCOORD3;
+	float4 depthPosition : TEXCOORD4;
 };
 
 
@@ -100,6 +100,9 @@ float4 main(InputType input) : SV_TARGET
 
 	// Combine the light and texture color.
 	color = color * textureColor;
+
+	// store the depth
+	color.a = input.depthPosition.z / input.depthPosition.w;
 
     return color;
 }

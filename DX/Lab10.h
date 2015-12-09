@@ -12,6 +12,8 @@
 #include "DepthShader.h"
 #include "ShadowShader.h"
 #include "TessDepthShader.h"
+#include "TessColourShader.h"
+#include "BlendShader.h"
 
 #include "SphereMesh.h"
 #include "PlaneMesh.h"
@@ -33,12 +35,23 @@ public:
 private:
 	bool Render();
 
-	// renders the complete scene
+	// Renders the scene depth information to a texture
 	void RenderSceneDepthOnly();
 
+	// Renders the scene without lighting or shadows
 	void RenderScene();
 
-	void RenderSceneWithShadows();
+	// Renders the scene with lighting and shadows
+	void RenderSceneLighting();
+
+	// Renders the blob in isolation, with any lighting and shadows
+	void RenderBlobLighting();
+
+	// Renders the blob normals + alpha for blending + distortion
+	void RenderBlobNormals();
+
+	// Blends the various stages together
+	void BlendScene();
 
 	// takes all the textures and displays them
 	void ShowScene();
@@ -55,11 +68,16 @@ private:
 	DepthShader* m_DepthShader;
 	TextureShader* m_TextureShader;
 	ShadowShader* m_ShadowShader;
-	TessDepthShader* m_TesselationShader;
+	TessDepthShader* m_TessDepthShader;
+	TessColourShader* m_TessColourShader;
+	BlendShader* m_BlendShader;
 
 	RenderTexture* m_SceneDepth;
-	RenderTexture* m_Scene;
-	RenderTexture* m_SceneWithShadows;
+	RenderTexture* m_BlobDepth;
+	RenderTexture* m_SceneLighting;
+	RenderTexture* m_BlobLighting;
+	RenderTexture* m_BlobNormals;
+	RenderTexture* m_BlendedScene;
 	
 	OrthoMesh* m_FullscreenMesh;
 	OrthoMesh* m_TopLeftMesh;

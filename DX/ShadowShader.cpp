@@ -85,7 +85,6 @@ void ShadowShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 	samplerDesc.BorderColor[3] = 0;
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
 	// Create the texture sampler state.
 	m_device->CreateSamplerState(&samplerDesc, &m_sampleState);
 
@@ -95,8 +94,7 @@ void ShadowShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 	// Create the texture sampler state.
 	m_device->CreateSamplerState(&samplerDesc, &m_sampleStateClamp);
-
-
+	
 	// Setup light buffer
 	// Setup the description of the light dynamic constant buffer that is in the pixel shader.
 	// Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.

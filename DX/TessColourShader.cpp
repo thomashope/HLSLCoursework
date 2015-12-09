@@ -6,8 +6,8 @@ TessColourShader::TessColourShader(ID3D11Device* device, HWND hwnd) : BaseShader
 {
 	InitShader(	L"../shaders/tessellation_vs.hlsl",
 				L"../shaders/tessellation_hs.hlsl",
-				L"../shaders/tessellation_ds.hlsl",
-				L"../shaders/tessellation_ps.hlsl" );
+				L"../shaders/tesscolour_ds.hlsl",
+				L"../shaders/tesscolour_ps.hlsl" );
 }
 
 
