@@ -227,8 +227,8 @@ void Lab10::RenderShadowmap1()
 	m_ShadowMap1->ClearRenderTarget( m_Direct3D->GetDeviceContext( ), 0.0f, 0.0f, 0.0f, 1.0f );
 	
 	// render model
-	worldMatrix = XMMatrixMultiply(XMMatrixTranslation(0, 2, 0), XMMatrixScaling(0.3f, 0.3f, 0.3f));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationRollPitchYaw(0, XM_PI * 0.5f, 0));
+	worldMatrix = XMMatrixMultiply(XMMatrixTranslation(0, 2, 0), XMMatrixScaling(0.3f, 0.3f, 0.3f));;
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationRollPitchYaw(0, XM_PI * 1.0f, 0));
 	m_Teapot->SendData( m_Direct3D->GetDeviceContext() );
 	m_DepthShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
 	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
@@ -268,8 +268,8 @@ void Lab10::RenderShadowmap2()
 	m_ShadowMap2->ClearRenderTarget( m_Direct3D->GetDeviceContext( ), 0.0f, 0.0f, 0.0f, 1.0f );
 
 	// render model
-	worldMatrix = XMMatrixMultiply( XMMatrixTranslation( 0, 2, 0 ), XMMatrixScaling( 0.3f, 0.3f, 0.3f ) );
-	worldMatrix = XMMatrixMultiply( worldMatrix, XMMatrixRotationRollPitchYaw( 0, XM_PI * 0.5f, 0 ) );
+	worldMatrix = XMMatrixMultiply(XMMatrixTranslation(0, 2, 0), XMMatrixScaling(0.3f, 0.3f, 0.3f));;
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationRollPitchYaw(0, XM_PI * 1.0f, 0));
 	m_Teapot->SendData( m_Direct3D->GetDeviceContext( ) );
 	m_DepthShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix );
 	m_DepthShader->Render( m_Direct3D->GetDeviceContext( ), m_Teapot->GetIndexCount( ) );
@@ -307,7 +307,7 @@ void Lab10::RenderSceneLighting()
 
 	// render model
 	worldMatrix = XMMatrixMultiply(XMMatrixTranslation(0, 2, 0), XMMatrixScaling(0.3f, 0.3f, 0.3f));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationRollPitchYaw(0, XM_PI * 0.5f, 0));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationRollPitchYaw(0, XM_PI * 1.0f, 0));
 	m_Teapot->SendData(m_Direct3D->GetDeviceContext());
 	m_ShadowShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
 		m_Teapot->GetTexture( ), m_ShadowMap1->GetShaderResourceView( ), m_ShadowMap2->GetShaderResourceView( ), m_Lights );
