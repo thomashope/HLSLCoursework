@@ -34,8 +34,7 @@ private:
 
 	struct VSLightBufferType
 	{
-		XMFLOAT3 position[2];
-		XMFLOAT2 padding;
+		XMFLOAT4 position[2];
 	};
 
 public:

@@ -7,21 +7,20 @@ cbuffer MatrixBuffer : register(cb0)
 	matrix viewMatrix;
 	matrix projectionMatrix;
 
-	matrix lightViewMatrix[2];
-	matrix lightProjectionMatrix[2];
+	matrix lightViewMatrix[NUM_LIGHTS];
+	matrix lightProjectionMatrix[NUM_LIGHTS];
 };
 
 cbuffer LightBuffer : register(cb1)
 {
-	float3 lightPosition[NUM_LIGHTS];
-	float2 padding;
+	float4 lightPosition[NUM_LIGHTS];
 };
 
 struct InputType
 {
     float4 position : POSITION;
-    float2 tex : TEXCOORD0;
-	float3 normal : NORMAL;
+    float2 tex		: TEXCOORD0;
+	float3 normal	: NORMAL;
 };
 
 struct OutputType

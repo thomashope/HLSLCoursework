@@ -128,7 +128,7 @@ void ShadowShader::SetShaderParameters( ID3D11DeviceContext* deviceContext, cons
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	MatrixBufferType* dataPtr;
 	PSLightBufferType* PSlightPtr;
-	VSLightBufferType* lightPtr2;
+	VSLightBufferType* VSlightPtr;
 	unsigned int bufferNumber;
 	XMMATRIX tworld, tview, tproj;
 	XMMATRIX tLightViewMatrix[2];
@@ -196,9 +196,9 @@ void ShadowShader::SetShaderParameters( ID3D11DeviceContext* deviceContext, cons
 
 	// Send light data to vertex shader
 	deviceContext->Map(m_LightBuffer2, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	lightPtr2 = (VSLightBufferType*)mappedResource.pData;
-	lightPtr2->position[0] = lights[0]->GetPosition();
-	lightPtr2->padding = XMFLOAT2( 1.0f, 1.0f);
+	VSlightPtr = (VSLightBufferType*)mappedResource.pData;
+	VSlightPtr->position[0] = lights[0]->GetPosition4();
+	VSlightPtr->position[1] = lights[1]->GetPosition4();
 	deviceContext->Unmap(m_LightBuffer2, 0);
 	bufferNumber = 1;
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_LightBuffer2);

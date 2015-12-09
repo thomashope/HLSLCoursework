@@ -40,21 +40,21 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 		m_Lights[i] = new Light;
 	}
 
-	m_Lights[0]->SetPosition( -5.0f, 3.0f, -5.0f );
+	m_Lights[0]->SetPosition( -4.0f, 4.0f, -4.0f );
 	m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
 	m_Lights[0]->SetAmbientColour( 0.1f, 0.1f, 0.1f, 1.0f );
-	m_Lights[0]->SetDiffuseColour( 1.0f, 0.0f, 1.0f, 1.0f );
+	m_Lights[0]->SetDiffuseColour( 0.8f, 0.8f, 1.0f, 1.0f );
 	m_Lights[0]->SetSpecularColour( 1.0f, 0.0f, 0.0f, 1.0f );
 	m_Lights[0]->SetRange( 40.0f );
 	m_Lights[0]->setAttenuation(0.1f, 0.1f, 0.0f);
 
 	
-	m_Lights[1]->SetPosition( 10.0f, 0.0f, 10.0f );
+	m_Lights[1]->SetPosition( 6.0f, 1.5f, 6.0f );
 	m_Lights[1]->SetLookAt( 0.0f, 0.0f, 0.0f );
 	m_Lights[1]->SetAmbientColour( 0.0f, 0.0f, 0.0f, 1.0f );
-	m_Lights[1]->SetDiffuseColour( 0.0f, 1.0f, 0.0f, 1.0f );
-	m_Lights[1]->SetSpecularColour( 1.0f, 0.0f, 0.0f, 1.0f );
-	m_Lights[1]->SetRange( 40.0f );
+	m_Lights[1]->SetDiffuseColour( 0.6f, 0.7f, 0.6f, 1.0f );
+	m_Lights[1]->SetSpecularColour( 0.0f, 0.0f, 0.0f, 1.0f );
+	m_Lights[1]->SetRange( 60.0f );
 	m_Lights[1]->setAttenuation( 0.1f, 0.1f, 0.0f );
 
 	/*
@@ -143,6 +143,7 @@ bool Lab10::Render()
 	m_frequency.w = 0.5f + sin( m_time * 2.0f ) * 0.3f;
 
 	// move the lights
+	/*
 	{
 		static float radians;
 		float radius = 9;
@@ -154,7 +155,7 @@ bool Lab10::Render()
 			cos(radians) * radius);
 
 		m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
-	}
+	}*/
 
 	//RenderScene();
 
@@ -165,7 +166,7 @@ bool Lab10::Render()
 	RenderBlobNormals();
 	BlendScene();
 
-	ShowScene();
+	//ShowScene();
 
 	return true;
 }
@@ -365,11 +366,11 @@ void Lab10::BlendScene()
 	m_Direct3D->GetOrthoMatrix( orthoMatrix );
 	m_Camera->GetBaseViewMatrix( baseViewMatrix );
 
-	m_BlendedScene->SetRenderTarget( m_Direct3D->GetDeviceContext() );
-	m_BlendedScene->ClearRenderTarget( m_Direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 0.0f );
-	//m_Direct3D->SetBackBufferRenderTarget( );
-	//m_Direct3D->ResetViewport( );
-	//m_Direct3D->BeginScene( 0.0f, 0.0f, 0.0f, 1.0f );
+	//m_BlendedScene->SetRenderTarget( m_Direct3D->GetDeviceContext() );
+	//m_BlendedScene->ClearRenderTarget( m_Direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 0.0f );
+	m_Direct3D->SetBackBufferRenderTarget( );
+	m_Direct3D->ResetViewport( );
+	m_Direct3D->BeginScene( 0.0f, 0.0f, 0.0f, 1.0f );
 
 	m_Direct3D->TurnZBufferOff();
 
@@ -380,7 +381,7 @@ void Lab10::BlendScene()
 	m_BlendShader->Render( m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount() );
 
 	m_Direct3D->TurnZBufferOn( );
-	//m_Direct3D->EndScene( );
+	m_Direct3D->EndScene( );
 }
 
 void Lab10::ShowScene()

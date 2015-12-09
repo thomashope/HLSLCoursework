@@ -1,5 +1,5 @@
 
-Texture2D shaderTexture : register(t0);
+Texture2D diffuseTexture : register(t0);
 Texture2D depthMapTexture1 : register(t1);
 Texture2D depthMapTexture2 : register(t2);
 
@@ -33,76 +33,79 @@ struct InputType
 float4 main(InputType input) : SV_TARGET
 {
 	float bias = 0.0001f;					// Set the bias value for fixing the floating point precision issues.
-    float4 color;							// final fragment colour
+	float4 color;							// final fragment colour
 	float2 projectTexCoord[NUM_LIGHTS];		//
 	float depthValue;						//
 	float distance;							// distance from the light to the fragment in world space
 	float attenuationFactor;				// Result of the atenuation equation, affects how lights fade over distance
 	float lightDepthValue;					//
-    float lightIntensity;					//
+	float lightIntensity;					//
 	float3 projectionTint;					// Used when light is cast through a transparent object
-	float4 textureColor;					//
 
 	// Set the default output color to the ambient light value for all pixels.
-    color = ambientColor[0];
+	color = ambientColor[0];
 
-	// Calculate the projected texture coordinates.
-	for( int i = 0; i < NUM_LIGHTS; i++ )
+	// For each light
+	for (int i = 0; i < NUM_LIGHTS; i++)
 	{
+		// Calculate the projected texture coordinates.
 		projectTexCoord[i].x = input.lightViewPosition[i].x / input.lightViewPosition[i].w / 2.0f + 0.5f;
 		projectTexCoord[i].y = -input.lightViewPosition[i].y / input.lightViewPosition[i].w / 2.0f + 0.5f;
-	}
 
-	// Calculate the world space distance from the light to the fragment
-	distance = length(lightPosition[0].xyz - input.position3D);
-
-	// Determine if the projected coordinates are in the 0 to 1 range.  If so then this pixel is in the view of the light.
-	if(	(saturate(projectTexCoord[0].x) == projectTexCoord[0].x) &&
-		(saturate(projectTexCoord[0].y) == projectTexCoord[0].y) )
-	{
-		// Sample the shadow map depth value from the depth texture using the sampler at the projected texture coordinate location.
-		depthValue = depthMapTexture1.Sample( SampleTypeClamp, projectTexCoord[0] ).a;
-		projectionTint = depthMapTexture1.Sample( SampleTypeClamp, projectTexCoord[0] ).rgb;
-
-		// Calculate the depth of the light.
-		lightDepthValue = input.lightViewPosition[0].z / input.lightViewPosition[0].w;
-
-		// Subtract the bias from the lightDepthValue.
-		lightDepthValue = lightDepthValue - bias;
-
-		// Compare the depth of the shadow map value and the depth of the light to determine whether to shadow or to light this pixel.
-		// If the light is in front of the object then light the pixel, if not then shadow this pixel since an object (occluder) is casting a shadow on it.
-		if(lightDepthValue < depthValue && distance < attenuation[0].x )
+		// Determine if the projected coordinates are in the 0 to 1 range.  If so then this pixel is in the view of the light.
+		if ((saturate(projectTexCoord[i].x) == projectTexCoord[i].x) &&
+			(saturate(projectTexCoord[i].y) == projectTexCoord[i].y))
 		{
-			// The fragment is receiving light
+			// Sample the shadow map depth value from the depth texture using the sampler at the projected texture coordinate location.
+			if (i == 0) {
+				depthValue = depthMapTexture1.Sample(SampleTypeClamp, projectTexCoord[i]).a;
+				projectionTint = depthMapTexture1.Sample(SampleTypeClamp, projectTexCoord[i]).rgb;
+			} else {
+				depthValue = depthMapTexture2.Sample(SampleTypeClamp, projectTexCoord[i]).a;
+				projectionTint = depthMapTexture2.Sample(SampleTypeClamp, projectTexCoord[i]).rgb;
 
-		    // Calculate the amount of light on this pixel.
-			lightIntensity = saturate(dot(input.normal, input.lightPos[0]));
+			}	
+			// Calculate the world space distance from the light to the fragment
+			distance = length(lightPosition[i].xyz - input.position3D);
 
-		    if(lightIntensity > 0.0f)
+			// Calculate the depth of the light.
+			lightDepthValue = input.lightViewPosition[i].z / input.lightViewPosition[i].w;
+
+			// Subtract the bias from the lightDepthValue.
+			lightDepthValue = lightDepthValue - bias;
+
+			// Compare the depth of the shadow map value and the depth of the light to determine whether to shadow or to light this pixel.
+			// If the light is in front of the object then light the pixel, if not then shadow this pixel since an object (occluder) is casting a shadow on it.
+			if (lightDepthValue < depthValue && distance < attenuation[i].x)
 			{
-				// Calculate Attenuation
-				attenuationFactor = 1 / (attenuation[0].y +
-					attenuation[0].z * distance +
-					attenuation[0].w * distance * distance);
+				// The fragment is receiving light
 
-				// Determine the diffuse color based on the diffuse color and the amount of light intensity.
-				color += (diffuseColor[0] * lightIntensity * attenuationFactor);
+				// Calculate the amount of light on this pixel.
+				lightIntensity = saturate(dot(input.normal, input.lightPos[i]));
 
-				// Tint by the projection colour
-				color *= float4( projectionTint, 1.0f);
+				if (lightIntensity > 0.0f)
+				{
+					// Calculate Attenuation
+					attenuationFactor = 1 / (attenuation[i].y +
+						attenuation[i].z * distance +
+						attenuation[i].w * distance * distance);
 
-				// Saturate the final light color.
-				color = saturate(color);
+					// Determine the diffuse color based on the diffuse color and the amount of light intensity.
+					// 
+					color += (diffuseColor[i] * lightIntensity * attenuationFactor) * float4(projectionTint, 1.0f);
+
+					// Tint by the projection colour
+					//color *= float4(projectionTint, 1.0f);
+				}
 			}
 		}
 	}
 
-	// Sample the pixel color from the texture using the sampler at this texture coordinate location.
-	textureColor = shaderTexture.Sample(SampleTypeWrap, input.tex);
-
 	// Combine the light and texture color.
-	color = color * textureColor;
+	color = color * diffuseTexture.Sample(SampleTypeWrap, input.tex);
+
+	// Saturate the final light color.
+	color = saturate(color);
 
 	// store the depth
 	color.a = input.depthPosition.z / input.depthPosition.w;
