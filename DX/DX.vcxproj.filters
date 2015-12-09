@@ -412,5 +412,11 @@
     <FxCompile Include="..\shaders\blend_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\shaders\tesselation_vs.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\tesselation_hs.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
