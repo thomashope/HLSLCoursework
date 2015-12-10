@@ -18,13 +18,16 @@ public:
 	~DepthShader();
 
 	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection);
-	//void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
+
+	void Render( ID3D11DeviceContext* deviceContext, int indexCount, bool hasNormalData = false );
+
 
 private:
 	void InitShader(WCHAR*, WCHAR*);
 
 private:
 	ID3D11Buffer* m_matrixBuffer;
+	ID3D11VertexShader* m_vertexNormalShader;
 };
 
 #endif

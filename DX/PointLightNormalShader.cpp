@@ -41,7 +41,7 @@ PointLightNormalShader::~PointLightNormalShader()
 	BaseShader::~BaseShader();
 }
 
-void PointLightNormalShader::loadVertexShader(WCHAR* filename)
+void PointLightNormalShader::loadVertexShader(WCHAR* filename, ID3D11VertexShader* targetVS)
 {
 	OutputDebugStringA("load vertex override");
 

@@ -7,7 +7,6 @@ BaseMesh::BaseMesh()
 {
 }
 
-
 BaseMesh::~BaseMesh()
 {
 	// Release the index buffer.

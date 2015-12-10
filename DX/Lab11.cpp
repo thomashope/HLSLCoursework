@@ -138,13 +138,13 @@ bool Lab11::Render()
 		m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
 	}
 
-	//RenderScene();
+	RenderScene();
 
 	//RenderSceneDepthOnly();
 	
 	//RenderSceneWithShadows();
 
-	RenderGeometryShader();
+	//RenderGeometryShader();
 
 	//ShowScene();
 
@@ -188,7 +188,10 @@ void Lab11::RenderScene()
 	worldMatrix = XMMatrixMultiply(XMMatrixScaling(0.2f, 0.2f, 0.2f), worldMatrix);
 	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
 	m_DepthShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
-	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
+	m_DepthShader->Render( m_Direct3D->GetDeviceContext( ), m_SphereMesh->GetIndexCount( ) );
+	//m_GeometryShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix,
+	//	m_Teapot->GetTexture( ), m_Teapot->GetNormals( ), m_Teapot->GetSpecular( ) );
+	//m_GeometryShader->Render( m_Direct3D->GetDeviceContext( ), m_Teapot->GetIndexCount( ) );
 
 	// render plane
 	//worldMatrix = XMMatrixTranslation(-10, -2, -10);

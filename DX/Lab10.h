@@ -15,6 +15,8 @@
 #include "TessColourShader.h"
 #include "TessNormalShader.h"
 #include "BlendShader.h"
+#include "ShowNormalShader.h"
+#include "NormalShadowShader.h"
 
 #include "SphereMesh.h"
 #include "PlaneMesh.h"
@@ -70,10 +72,12 @@ private:
 	DepthShader* m_DepthShader;
 	TextureShader* m_TextureShader;
 	ShadowShader* m_ShadowShader;
+	NormalShadowShader* m_NormalShadowShader;
 	TessDepthShader* m_TessDepthShader;
 	TessColourShader* m_TessColourShader;
 	TessNormalShader* m_TessNormalShader;
 	BlendShader* m_BlendShader;
+	ShowNormalShader* m_ShowNormalShader;
 
 	RenderTexture* m_ShadowMap1;
 	RenderTexture* m_ShadowMap2;
@@ -89,14 +93,16 @@ private:
 	OrthoMesh* m_BottomLeftMesh;
 	OrthoMesh* m_BottomRightMesh;
 
-	SphereMesh* m_SphereMesh;
-	PlaneMesh* m_PlaneMesh;
-	Model* m_Teapot;
+	PlaneMesh* m_FloorMesh;
+	Model* m_Hellknight;
 	TessellationMesh* m_MagicSphere;
 
 	Light* m_Lights[2];
 	float m_time;
 	XMFLOAT4 m_frequency;
+
+	bool m_showNormals;
+	float m_tesselation;
 };
 
 #endif

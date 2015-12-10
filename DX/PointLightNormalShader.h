@@ -34,7 +34,7 @@ public:
 	PointLightNormalShader(ID3D11Device* device, HWND hwnd);
 	~PointLightNormalShader();
 	
-	void loadVertexShader(WCHAR* filename) override;
+	void loadVertexShader(WCHAR* filename, ID3D11VertexShader* targetVS = nullptr) override;
 
 	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* specular, ID3D11ShaderResourceView* normal, Camera* camera, Light* light);
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);

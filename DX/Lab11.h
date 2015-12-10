@@ -60,7 +60,6 @@ private:
 	GeometryShader* m_GeometryShader;
 	PointLightNormalShader* m_MapShader;
 
-
 	RenderTexture* m_SceneDepth;
 	RenderTexture* m_Scene;
 	RenderTexture* m_SceneWithShadows;

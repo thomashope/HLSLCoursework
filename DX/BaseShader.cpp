@@ -8,7 +8,6 @@ BaseShader::BaseShader(ID3D11Device* device, HWND hwnd)
 	m_hwnd = hwnd;
 }
 
-
 BaseShader::~BaseShader()
 {
 	// Shutdown the vertex and pixel shaders as well as the related objects.
@@ -48,8 +47,7 @@ BaseShader::~BaseShader()
 	}
 }
 
-
-void BaseShader::loadVertexShader(WCHAR* filename)
+void BaseShader::loadVertexShader(WCHAR* filename, ID3D11VertexShader* targetVS)
 {
 
 	HRESULT result;
@@ -81,7 +79,14 @@ void BaseShader::loadVertexShader(WCHAR* filename)
 	}
 
 	// Create the vertex shader from the buffer.
-	result = m_device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
+	if( targetVS )
+	{
+		result = m_device->CreateVertexShader( vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &targetVS );
+	}
+	else
+	{
+		result = m_device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
+	}
 	if (FAILED(result))
 	{
 		//return false;
@@ -306,7 +311,6 @@ void BaseShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, W
 
 	return;
 }
-
 
 void BaseShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
 {

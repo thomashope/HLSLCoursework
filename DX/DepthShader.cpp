@@ -5,6 +5,8 @@
 DepthShader::DepthShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
 {
 	InitShader(L"../shaders/depth_vs.hlsl", L"../shaders/depth_ps.hlsl");
+	
+	loadVertexShader( L"../shaders/depthnormal_vs.hlsl", m_vertexNormalShader);
 }
 
 
@@ -86,11 +88,44 @@ void DepthShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const 
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 }
 
-//void DepthShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)
-//{
-//	// Base render function.
-//	BaseShader::Render(deviceContext, indexCount);
-//}
+void DepthShader::Render( ID3D11DeviceContext* deviceContext, int indexCount, bool hasNormalData )
+{
+	// Set the vertex input layout.
+	deviceContext->IASetInputLayout( m_layout );
 
+	// Set the vertex and pixel shaders that will be used to render.
+	if( hasNormalData )
+	{
+		// The mesh that has been sent includes binormal and tangent data, so we need to use a vertex shader that takes account of that
+	}
+	else
+	{
+		deviceContext->VSSetShader( m_vertexShader, NULL, 0 );
+	}
+	deviceContext->PSSetShader( m_pixelShader, NULL, 0 );
 
+	// if Hull shader is not null then set HS and DS
+	if( m_hullShader )
+	{
+		deviceContext->HSSetShader( m_hullShader, NULL, 0 );
+		deviceContext->DSSetShader( m_domainShader, NULL, 0 );
+	}
+	else
+	{
+		deviceContext->HSSetShader( NULL, NULL, 0 );
+		deviceContext->DSSetShader( NULL, NULL, 0 );
+	}
 
+	// if geometry shader is not null then set GS
+	if( m_geometryShader )
+	{
+		deviceContext->GSSetShader( m_geometryShader, NULL, 0 );
+	}
+	else
+	{
+		deviceContext->GSSetShader( NULL, NULL, 0 );
+	}
+
+	// Render the triangle.
+	deviceContext->DrawIndexed( indexCount, 0, 0 );
+}
