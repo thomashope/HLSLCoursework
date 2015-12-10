@@ -17,7 +17,8 @@ public:
 	GeometryShader(ID3D11Device* device, HWND hwnd);
 	~GeometryShader();
 
-	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture);
+	void SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection,
+		ID3D11ShaderResourceView* diffuse, ID3D11ShaderResourceView* normal, ID3D11ShaderResourceView* specular );
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
 
 private:

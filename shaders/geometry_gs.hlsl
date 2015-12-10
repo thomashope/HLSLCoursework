@@ -17,10 +17,10 @@ struct InputType
 struct OutputType
 {
 	float4 position : SV_POSITION;
-	float2 tex : TEXCOORD0;
-	float3 normal	: NORMAL;
-	float3 binormal : BINORMAL;
-	float3 tangent	: TANGENT;
+	//float2 tex		: TEXCOORD0;
+	//float3 normal	: NORMAL;
+	//float3 binormal : BINORMAL;
+	//float3 tangent	: TANGENT;
 };
 
 cbuffer PositionBuffer
@@ -34,34 +34,108 @@ cbuffer PositionBuffer
 	};
 };
 
-//[maxvertexcount(2)]
-//'void main(triangle InputType input[3], inout TriangleStream<OutputType> triStream)
-[maxvertexcount(6)]
-void main(triangle InputType input[3], inout TriangleStream<OutputType> Stream)
+[maxvertexcount(3)]
+void main(triangle InputType input[3], inout LineStream<OutputType> Stream)
 {
+	/*
 	OutputType output;
+	float3 crossNormal;
+	float3 v1 = input[1].position.xyz - input[0].position.xyz;
+	float3 v2 = input[2].position.xyz - input[0].position.xyz;
+	crossNormal = normalize( cross( v1, v2 ) );
 
-	output.tex = input[0].tex;
+	float4 pos = lerp( input[0].position, input[1].position, 0.5f );
+	pos = lerp( pos, input[2].position, 0.5f );
 
-	output.position = mul(input[0].position, worldMatrix);
-	output.position = mul(output.position, viewMatrix);
-	output.position = mul(output.position, projectionMatrix);
+	output.position = mul( pos, worldMatrix );
+	output.position = mul( output.position, viewMatrix );
+	output.position = mul( output.position, projectionMatrix );
+	Stream.Append( output );
 
+	output.position = mul( pos + crossNormal * 0.1f, worldMatrix );
+	output.position = mul( output.position, viewMatrix );
+	output.position = mul( output.position, projectionMatrix );
+	Stream.Append( output );
+
+	Stream.RestartStrip();*/
+
+	/*/
+	OutputType output;
+	{
+		// Calculate the first vertex
+		input[0].position.w = 1.0f;
+
+		output.tex = input[0].tex;
+
+		output.position = mul(input[0].position, worldMatrix);
+		output.position = mul(output.position, viewMatrix);
+		output.position = mul(output.position, projectionMatrix);
+
+		output.normal = input[0].normal;
+		output.tangent = output.normal;
+		output.binormal = output.normal;
+
+		//output.tangent = normalize(input[1].position.xyz - input[0].position.xyz);
+		//output.tangent = mul(output.tangent, (float3x3)worldMatrix);
+		//output.tangent = normalize(output.tangent);
+		//output.binormal = normalize( cross( output.tangent, output.normal ) );
+		//output.binormal = mul(output.binormal, (float3x3)worldMatrix);
+		//output.binormal = normalize(output.binormal);
+
+		Stream.Append( output );
+	}
+	{
+		// Calculate the third vertex
+		input[1].position.w = 1.0f;
+
+		output.tex = input[1].tex;
+
+		output.position = mul( input[1].position, worldMatrix );
+		output.position = mul( output.position, viewMatrix );
+		output.position = mul( output.position, projectionMatrix );
+
+		output.normal = input[1].normal;
+		output.tangent = output.normal;
+		output.binormal = output.normal;
+
+		Stream.Append( output );
+	}
+	{
+
+		// Calculate the second vertex
+		input[2].position.w = 1.0f;
+
+		output.tex = input[2].tex;
+
+		output.position = mul( input[2].position, worldMatrix );
+		output.position = mul( output.position, viewMatrix );
+		output.position = mul( output.position, projectionMatrix );
+
+		output.normal = input[2].normal;
+		output.tangent = output.normal;
+		output.binormal = output.normal;
+
+		Stream.Append( output );
+	}
+
+	// finish sending the triangle
+	Stream.RestartStrip();*/
+	
 	// calculate additional values for normal mapping
-	output.normal = input[0].normal;
-	output.normal = mul(output.normal, (float3x3)worldMatrix);
-	output.normal = normalize(output.normal);
-
-	output.tangent = normalize(input[1].position.xyz - input[0].position.xyz);
-	output.tangent = mul(output.tangent, (float3x3)worldMatrix);
-	output.tangent = normalize(output.tangent);
-
-	output.binormal = normalize(cross(input[1].position.xyz - input[0].position.xyz, input[0].normal));
-	output.binormal = mul(output.binormal, (float3x3)worldMatrix);
-	output.binormal = normalize(output.binormal);
-
-	Stream.Append(output);
-	Stream.RestartStrip();
+	//output.normal = input[0].normal;
+	//output.normal = mul(output.normal, (float3x3)worldMatrix);
+	//output.normal = normalize(output.normal);
+	//
+	//output.tangent = normalize(input[1].position.xyz - input[0].position.xyz);
+	//output.tangent = mul(output.tangent, (float3x3)worldMatrix);
+	//output.tangent = normalize(output.tangent);
+	//
+	//output.binormal = normalize(cross(input[1].position.xyz - input[0].position.xyz, input[0].normal));
+	//output.binormal = mul(output.binormal, (float3x3)worldMatrix);
+	//output.binormal = normalize(output.binormal);
+	//
+	//Stream.Append(output);
+	//Stream.RestartStrip();
 
 	/*
 	// Preform vertex transformation
@@ -107,38 +181,38 @@ void main(triangle InputType input[3], inout TriangleStream<OutputType> Stream)
 	Stream.RestartStrip();
 	*/
 
-	/*
+	//*
 	OutputType output;
-	float Explode = 1.0f;
+	float Explode = 0.5f;
     
     // Calculate the face normal
     float3 faceEdgeA = input[1].position - input[0].position;
     float3 faceEdgeB = input[2].position - input[0].position;
-    float3 faceNormal = normalize( cross(faceEdgeA, faceEdgeB) );
+	float3 faceNormal = normalize( cross( faceEdgeB, faceEdgeA ) );
     float3 ExplodeAmt = faceNormal*Explode;
     
     // Calculate the face center
     float3 centerPos = (input[0].position.xyz + input[1].position.xyz + input[2].position.xyz)/3.0;
     float2 centerTex = (input[0].tex + input[1].tex + input[2].tex)/3.0;
-    centerPos += faceNormal*Explode;
+    //centerPos += faceNormal*Explode;
 
 	// center of triangle
 	output.position = float4(centerPos, 1);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
-	output.normal = faceNormal;
-	output.tex = centerTex;
-	triStream.Append(output);
+	//output.normal = faceNormal;
+	//output.tex = centerTex;
+	Stream.Append(output);
 		
 	// farther out
 	output.position = float4(centerPos, 1) + float4(ExplodeAmt, 0);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
-	output.normal = faceNormal;
-	output.tex = centerTex;
-	triStream.Append(output);
+	//output.normal = faceNormal;
+	//output.tex = centerTex;
+	Stream.Append(output);
 
-	triStream.RestartStrip();
+	Stream.RestartStrip();
     //*/
 
     // Output the pyramid

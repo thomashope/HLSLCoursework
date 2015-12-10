@@ -4,9 +4,8 @@
 
 GeometryShader::GeometryShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
 {
-	InitShader(L"../shaders/triangle_vs.hlsl", L"../shaders/triangle_gs.hlsl", L"../shaders/triangle_ps.hlsl");
+	InitShader(L"../shaders/geometry_vs.hlsl", L"../shaders/geometry_gs.hlsl", L"../shaders/geometry_ps.hlsl");
 }
-
 
 GeometryShader::~GeometryShader()
 {
@@ -86,7 +85,8 @@ void GeometryShader::InitShader(WCHAR* vsFilename, WCHAR* gsFilename, WCHAR* psF
 }
 
 
-void GeometryShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture)
+void GeometryShader::SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix,
+	ID3D11ShaderResourceView* diffuse, ID3D11ShaderResourceView* normal, ID3D11ShaderResourceView* specular )
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -117,8 +117,14 @@ void GeometryShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, con
 	bufferNumber = 0;
 
 	// Now set the constant buffer in the vertex shader with the updated values.
-	deviceContext->GSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
+	deviceContext->GSSetConstantBuffers( bufferNumber, 1, &m_matrixBuffer );
 
+	// Send the diffuse texture to the pixel shader
+	deviceContext->PSSetShaderResources( 0, 1, &diffuse );
+	// Send the normal texture to the pixel shader
+	deviceContext->PSSetShaderResources( 1, 1, &normal );
+	// Send the specular texture to the pixel shader
+	deviceContext->PSSetShaderResources( 2, 1, &specular );
 }
 
 void GeometryShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)

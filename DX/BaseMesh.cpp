@@ -42,7 +42,6 @@ ID3D11ShaderResourceView* BaseMesh::GetTexture()
 	return m_Texture->GetTexture();
 }
 
-
 void BaseMesh::SendData(ID3D11DeviceContext* deviceContext)
 {
 	unsigned int stride;

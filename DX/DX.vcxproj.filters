@@ -388,15 +388,6 @@
     <FxCompile Include="..\shaders\depth_vs.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\shaders\triangle_gs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\triangle_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\triangle_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
-    </FxCompile>
     <FxCompile Include="..\shaders\point_light_normal_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
@@ -428,6 +419,17 @@
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessnormal_ds.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
+    <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
+    <FxCompile Include="..\shaders\geometry_gs.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\geometry_ps.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\geometry_vs.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
   </ItemGroup>

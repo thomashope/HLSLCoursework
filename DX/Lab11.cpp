@@ -295,7 +295,8 @@ void Lab11::RenderGeometryShader()
 	m_Teapot->SendData(m_Direct3D->GetDeviceContext());
 	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_Teapot->GetTexture());
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
-	m_GeometryShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_Teapot->GetTexture());
+	m_GeometryShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Teapot->GetTexture(), m_Teapot->GetNormals(), m_Teapot->GetSpecular());
 	m_GeometryShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
 	// Present the rendered scene to the screen.
