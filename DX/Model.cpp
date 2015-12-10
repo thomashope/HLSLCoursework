@@ -20,6 +20,18 @@ Model::~Model()
 	// Run parent deconstructor
 	BaseMesh::~BaseMesh();
 
+	if (m_Normals)
+	{
+		delete m_Normals;
+		m_Normals = nullptr;
+	}
+
+	if (m_Specular)
+	{
+		delete m_Specular;
+		m_Specular = nullptr;
+	}
+
 	if (m_model)
 	{
 		delete[] m_model;

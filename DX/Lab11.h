@@ -8,7 +8,7 @@
 #include "Light.h"
 
 #include "TextureShader.h"
-#include "PointLightShader.h"
+#include "PointLightNormalShader.h"
 #include "DepthShader.h"
 #include "ShadowShader.h"
 #include "GeometryShader.h"
@@ -58,6 +58,8 @@ private:
 	TextureShader* m_TextureShader;
 	ShadowShader* m_ShadowShader;
 	GeometryShader* m_GeometryShader;
+	PointLightNormalShader* m_MapShader;
+
 
 	RenderTexture* m_SceneDepth;
 	RenderTexture* m_Scene;

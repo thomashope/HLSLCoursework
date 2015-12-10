@@ -6,8 +6,10 @@ Lab11::Lab11( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	// Create Mesh objects
 	m_SphereMesh = new SphereMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
 	m_PlaneMesh = new PlaneMesh(m_Direct3D->GetDevice(), L"../res/NUKAGE1.png");
-	m_Teapot = new Model(m_Direct3D->GetDevice(), L"../res/hellknight.png", L"../res/hellknight.obj");
 	m_PointMesh = new PointMesh(m_Direct3D->GetDevice(), L"../res/brick1.dds");
+	m_Teapot = new Model(m_Direct3D->GetDevice(), L"../res/hellknight_diffuse.png", L"../res/hellknight.obj");
+	m_Teapot->LoadNormalMap(m_Direct3D->GetDevice(), L"../res/hellknight_normal.png");
+	m_Teapot->LoadSpecularMap(m_Direct3D->GetDevice(), L"../res/hellknight_specular.png");
 
 	m_FullscreenMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth, screenHeight, 0, 0);
 	m_TopLeftMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, -screenWidth / 4, screenHeight / 4);
@@ -26,6 +28,7 @@ Lab11::Lab11( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	m_TextureShader = new TextureShader(m_Direct3D->GetDevice(), hwnd);
 	m_ShadowShader = new ShadowShader(m_Direct3D->GetDevice(), hwnd);
 	m_GeometryShader = new GeometryShader(m_Direct3D->GetDevice(), hwnd);
+	m_MapShader = new PointLightNormalShader(m_Direct3D->GetDevice(), hwnd);
 
 	// declare all the lights with default values
 	for (int i = 0; i < 1; i++)
@@ -135,15 +138,15 @@ bool Lab11::Render()
 		m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
 	}
 
-	RenderScene();
+	//RenderScene();
 
-	RenderSceneDepthOnly();
-
-	RenderSceneWithShadows();
+	//RenderSceneDepthOnly();
+	
+	//RenderSceneWithShadows();
 
 	RenderGeometryShader();
 
-	ShowScene();
+	//ShowScene();
 
 	return true;
 }
@@ -157,21 +160,28 @@ void Lab11::RenderScene()
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
 
 	// set Render target to texture	
-	m_Scene->SetRenderTarget(m_Direct3D->GetDeviceContext());
-	m_Scene->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.1f, 0.1f, 0.1f, 1.0f);
+	//m_Scene->SetRenderTarget(m_Direct3D->GetDeviceContext());
+	//m_Scene->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.1f, 0.1f, 0.1f, 1.0f);
+	m_Direct3D->SetBackBufferRenderTarget();
+	m_Direct3D->ResetViewport();
+	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// render model
 	worldMatrix = XMMatrixMultiply( XMMatrixTranslation(0,2,0), XMMatrixScaling(0.3f, 0.3f, 0.3f) );
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationRollPitchYaw(0, XM_PI * 0.5f, 0));
-	m_Teapot->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_Teapot->GetTexture());
-	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
+	
+	m_PlaneMesh->SendData(m_Direct3D->GetDeviceContext());
+	// Send texture, specular, normal, camera, lights
+	m_MapShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Teapot->GetTexture(), m_Teapot->GetSpecular(), m_Teapot->GetNormals(), m_Camera, m_Lights[0]);
+	
+	m_MapShader->Render(m_Direct3D->GetDeviceContext(), m_PlaneMesh->GetIndexCount());
 
 	// another far away sphere
-	worldMatrix = XMMatrixTranslation(5, -1, 5);
-	m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture());
-	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
+	//worldMatrix = XMMatrixTranslation(5, -1, 5);
+	//m_SphereMesh->SendData(m_Direct3D->GetDeviceContext());
+	//m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_SphereMesh->GetTexture());
+	//m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
 	// render a sphere at the light
 	worldMatrix = XMMatrixTranslation(m_Lights[0]->GetPosition().x, m_Lights[0]->GetPosition().y, m_Lights[0]->GetPosition().z);
@@ -181,12 +191,12 @@ void Lab11::RenderScene()
 	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 
 	// render plane
-	worldMatrix = XMMatrixTranslation(-10, -2, -10);
-	m_PlaneMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_PlaneMesh->GetTexture());
-	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_PlaneMesh->GetIndexCount());
-
-	m_Direct3D->SetBackBufferRenderTarget();
+	//worldMatrix = XMMatrixTranslation(-10, -2, -10);
+	//m_PlaneMesh->SendData(m_Direct3D->GetDeviceContext());
+	//m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_PlaneMesh->GetTexture());
+	//m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_PlaneMesh->GetIndexCount());
+		
+	m_Direct3D->EndScene();
 }
 
 void Lab11::RenderSceneDepthOnly()
@@ -276,14 +286,20 @@ void Lab11::RenderGeometryShader()
 	m_Camera->GetViewMatrix( viewMatrix );
 	m_Direct3D->GetProjectionMatrix( projectionMatrix );
 
-	m_GeometryTest->SetRenderTarget(m_Direct3D->GetDeviceContext());
-	m_GeometryTest->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
+	//m_GeometryTest->SetRenderTarget(m_Direct3D->GetDeviceContext());
+	//m_GeometryTest->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
+	m_Direct3D->SetBackBufferRenderTarget();
+	m_Direct3D->ResetViewport();
+	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	m_Teapot->SendData(m_Direct3D->GetDeviceContext());
-	m_GeometryShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_PointMesh->GetTexture());
+	m_TextureShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_Teapot->GetTexture());
+	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
+	m_GeometryShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_Teapot->GetTexture());
 	m_GeometryShader->Render(m_Direct3D->GetDeviceContext(), m_Teapot->GetIndexCount());
 
-	m_Direct3D->SetBackBufferRenderTarget();
+	// Present the rendered scene to the screen.
+	m_Direct3D->EndScene();
 }
 
 void Lab11::ShowScene()

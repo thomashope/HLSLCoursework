@@ -18,7 +18,9 @@ struct OutputType
 {
 	float4 position : SV_POSITION;
 	float2 tex : TEXCOORD0;
-	float3 normal : NORMAL;
+	float3 normal	: NORMAL;
+	float3 binormal : BINORMAL;
+	float3 tangent	: TANGENT;
 };
 
 cbuffer PositionBuffer
@@ -34,9 +36,77 @@ cbuffer PositionBuffer
 
 //[maxvertexcount(2)]
 //'void main(triangle InputType input[3], inout TriangleStream<OutputType> triStream)
-[maxvertexcount(4)]
-void main(point InputType input[1], inout TriangleStream<OutputType> triStream)
+[maxvertexcount(6)]
+void main(triangle InputType input[3], inout TriangleStream<OutputType> Stream)
 {
+	OutputType output;
+
+	output.tex = input[0].tex;
+
+	output.position = mul(input[0].position, worldMatrix);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
+
+	// calculate additional values for normal mapping
+	output.normal = input[0].normal;
+	output.normal = mul(output.normal, (float3x3)worldMatrix);
+	output.normal = normalize(output.normal);
+
+	output.tangent = normalize(input[1].position.xyz - input[0].position.xyz);
+	output.tangent = mul(output.tangent, (float3x3)worldMatrix);
+	output.tangent = normalize(output.tangent);
+
+	output.binormal = normalize(cross(input[1].position.xyz - input[0].position.xyz, input[0].normal));
+	output.binormal = mul(output.binormal, (float3x3)worldMatrix);
+	output.binormal = normalize(output.binormal);
+
+	Stream.Append(output);
+	Stream.RestartStrip();
+
+	/*
+	// Preform vertex transformation
+	output.position = mul(input[0].position, worldMatrix);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
+	Stream.Append(output);
+
+	output.position = input[0].position + float4(input[0].normal, 0.0f) * 0.1f;
+	output.position = mul(output.position, worldMatrix);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
+	//Stream.Append(output);
+
+	//Stream.RestartStrip();
+
+	// Preform vertex transformation
+	output.position = mul(input[0].position, worldMatrix);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
+	//Stream.Append(output);
+	
+	output.position = input[0].position + normalize(input[1].position - input[0].position);
+	output.position = mul(output.position, worldMatrix);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
+	Stream.Append(output);
+
+	//Stream.RestartStrip();
+
+	// Preform vertex transformation
+	output.position = mul(input[0].position, worldMatrix);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
+	//Stream.Append(output);
+
+	output.position = input[0].position + float4(cross(normalize(input[1].position.xyz - input[0].position.xyz), input[0].normal), 0.0f);
+	output.position = mul(output.position, worldMatrix);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
+	Stream.Append(output);
+
+	Stream.RestartStrip();
+	*/
+
 	/*
 	OutputType output;
 	float Explode = 1.0f;
@@ -113,6 +183,8 @@ void main(point InputType input[1], inout TriangleStream<OutputType> triStream)
 	*/
 
 	//*
+
+	/*
 	OutputType output;
 	
 	for (int i = 0; i < 4; i++)
@@ -128,6 +200,8 @@ void main(point InputType input[1], inout TriangleStream<OutputType> triStream)
 	}
 
 	triStream.RestartStrip();
+	//*/
+
 	//*/
 
 	/*

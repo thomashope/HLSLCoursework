@@ -91,11 +91,7 @@ float4 main(InputType input) : SV_TARGET
 						attenuation[i].w * distance * distance);
 
 					// Determine the diffuse color based on the diffuse color and the amount of light intensity.
-					// 
 					color += (diffuseColor[i] * lightIntensity * attenuationFactor) * float4(projectionTint, 1.0f);
-
-					// Tint by the projection colour
-					//color *= float4(projectionTint, 1.0f);
 				}
 			}
 		}

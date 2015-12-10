@@ -126,7 +126,7 @@ void PlaneMesh::InitBuffers(ID3D11Device* device)
 
 #ifdef INCLUDE_NORMALDATA
 	// set the normal, tangent, and binormal of every vertex
-	if (int index = 0; index < m_vertexCount; index++)
+	for (int index = 0; index < m_vertexCount; index++)
 	{
 		vertices[index].binormal = XMFLOAT3(0.0, 0.0, 1.0);
 		vertices[index].tangent = XMFLOAT3(1.0, 0.0, 0.0);
