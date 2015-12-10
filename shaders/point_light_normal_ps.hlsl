@@ -55,9 +55,9 @@ float4 main(InputType input) : SV_TARGET
 	// Calculate the normal from the data in the bump map.
 	bumpNormal = (bumpSample.x * input.tangent) + (bumpSample.y * input.binormal) + (bumpSample.z * input.normal);
 	// Normalize the resulting bump normal.
-	bumpNormal = normalize(bumpNormal);
+	bumpNormal = -normalize(bumpNormal);
 	
-	lightDir = -lightDirection;
+	lightDir = lightDirection;
 
     // Calculate the amount of light on this pixel.
 	lightIntensity = saturate(dot(bumpNormal, lightDir));
@@ -92,5 +92,6 @@ float4 main(InputType input) : SV_TARGET
 	finalColour = saturate( finalColour + finalSpec );
 
 	return finalColour;
+	//return float4(bumpNormal, 1.0f);
 }
 

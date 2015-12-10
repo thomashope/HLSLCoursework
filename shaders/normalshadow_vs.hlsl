@@ -73,10 +73,6 @@ OutputType main(InputType input)
 
 	// Store the texture coordinates for the pixel shader.
     output.tex = input.tex;
-    
-	// Calculate the normal vector against the world matrix only.
-    output.normal = mul(input.normal, (float3x3)worldMatrix);	
-    output.normal = normalize(output.normal);
 
     // Calculate the position of the vertex in the world.
     worldPosition = mul(input.position, worldMatrix);

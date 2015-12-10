@@ -24,21 +24,21 @@ float4 main(InputType input) : SV_TARGET
 	colour = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
     // Add the nine surrounding pixels to the colour.
-
+	// Preserve the alpha channel of the center pixel
 	colour += shaderTexture.Sample(SampleType, input.tex);
-	colour += shaderTexture.Sample(SampleType, input.texCoord1);
-	colour += shaderTexture.Sample(SampleType, input.texCoord2);
-	colour += shaderTexture.Sample(SampleType, input.texCoord3);
-	colour += shaderTexture.Sample(SampleType, input.texCoord4);
-	colour += shaderTexture.Sample(SampleType, input.texCoord5);
-	colour += shaderTexture.Sample(SampleType, input.texCoord6);
-	colour += shaderTexture.Sample(SampleType, input.texCoord7);
-	colour += shaderTexture.Sample(SampleType, input.texCoord8);
+	colour.xyz += shaderTexture.Sample(SampleType, input.texCoord1).xyz;
+	colour.xyz += shaderTexture.Sample(SampleType, input.texCoord2).xyz;
+	colour.xyz += shaderTexture.Sample(SampleType, input.texCoord3).xyz;
+	colour.xyz += shaderTexture.Sample(SampleType, input.texCoord4).xyz;
+	colour.xyz += shaderTexture.Sample(SampleType, input.texCoord5).xyz;
+	colour.xyz += shaderTexture.Sample(SampleType, input.texCoord6).xyz;
+	colour.xyz += shaderTexture.Sample(SampleType, input.texCoord7).xyz;
+	colour.xyz += shaderTexture.Sample(SampleType, input.texCoord8).xyz;
 
 	colour /= 9.0f;
 
 	// Set the alpha channel to one.
-	colour.a = 1.0f;
+	//colour.a = 1.0f;
 
 	//colour = float4(1.0f, 0.0f, 1.0f, 1.0f);
 

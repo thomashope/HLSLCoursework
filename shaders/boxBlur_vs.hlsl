@@ -50,18 +50,18 @@ OutputType main(InputType input)
     output.tex = input.tex;
 
 	// Determine the floating point size of a texel for a screen with this specific width.
-    texelWidth = 1.0f / screenWidth;
-	texelHeight = 1.0f / screenHeight;
+	texelWidth = 1.0f / (screenWidth / 4);
+	texelHeight = 1.0f / (screenHeight / 4);
 
 	 // Create UV coordinates for the pixel and its four horizontal neighbors on either side.
-    output.texCoord1 = input.tex + float2(-texelWidth, -texelHeight);
-	output.texCoord2 = input.tex + float2(0.0f, texelHeight);
-	output.texCoord3 = input.tex + float2(texelWidth, -texelHeight);
-	output.texCoord4 = input.tex + float2(-texelWidth, 0.0f);
-	output.texCoord5 = input.tex + float2(texelWidth, 0.0f);
-	output.texCoord6 = input.tex + float2(-texelWidth, texelHeight);
+	output.texCoord1 = input.tex + float2(-texelWidth * 1.5f, -texelHeight * 1.5f);
+	output.texCoord2 = input.tex + float2(0.0f, -texelHeight);
+	output.texCoord3 = input.tex + float2(texelWidth * 1.5f, -texelHeight * 1.5f);
+	output.texCoord4 = input.tex + float2(-texelWidth * 1.5f, 0.0f);
+	output.texCoord5 = input.tex + float2(texelWidth * 1.5f, 0.0f);
+	output.texCoord6 = input.tex + float2(-texelWidth * 1.5f, texelHeight * 1.5f);
 	output.texCoord7 = input.tex + float2(0.0f, texelHeight);
-	output.texCoord8 = input.tex + float2(texelWidth, texelHeight);
+	output.texCoord8 = input.tex + float2(texelWidth * 1.5f, texelHeight * 1.5f);
 
 	// sample verticle stripe
 	//output.texCoord1 = input.tex + float2(0.0f, -texelHeight * 4);

@@ -17,6 +17,8 @@
 #include "BlendShader.h"
 #include "ShowNormalShader.h"
 #include "NormalShadowShader.h"
+#include "BoxBlurShader.h"
+#include "DOFShader.h"
 
 #include "SphereMesh.h"
 #include "PlaneMesh.h"
@@ -57,8 +59,12 @@ private:
 	// Blends the various stages together
 	void BlendScene();
 
+	void BlurScene();
+
 	// takes all the textures and displays them
 	void ShowScene();
+
+	void ShowDOF();
 
 	template<typename T>
 	void deleteIfNotNull(T* resource) {
@@ -78,6 +84,8 @@ private:
 	TessNormalShader* m_TessNormalShader;
 	BlendShader* m_BlendShader;
 	ShowNormalShader* m_ShowNormalShader;
+	BoxBlurShader* m_BlurShader;
+	DOFShader* m_DOFShader;
 
 	RenderTexture* m_ShadowMap1;
 	RenderTexture* m_ShadowMap2;
@@ -86,6 +94,7 @@ private:
 	RenderTexture* m_BlobLighting;
 	RenderTexture* m_BlobNormals;
 	RenderTexture* m_BlendedScene;
+	RenderTexture* m_BluredScene;
 	
 	OrthoMesh* m_FullscreenMesh;
 	OrthoMesh* m_TopLeftMesh;

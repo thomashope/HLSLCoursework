@@ -97,6 +97,7 @@
     <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="D3D.cpp" />
     <ClCompile Include="DepthShader.cpp" />
+    <ClCompile Include="DOFShader.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="HorizontalBlurShader.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="D3D.h" />
     <ClInclude Include="DepthShader.h" />
+    <ClInclude Include="DOFShader.h" />
     <ClInclude Include="GeometryShader.h" />
     <ClInclude Include="HorizontalBlurShader.h" />
     <ClInclude Include="Input.h" />
@@ -232,6 +234,9 @@
     <FxCompile Include="..\shaders\directional_light_vs.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\shaders\dof_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\shaders\horizontalBlur_ps.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

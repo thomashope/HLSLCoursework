@@ -83,8 +83,8 @@ bool Lab3::Render()
 
 	// rotate the light
 	static float angle = 0.0f;
-	//m_Light->SetDirection(sinf(angle), -1.0f, 0.0f);
-	angle += m_Timer->GetTime();
+	m_Light->SetDirection(sinf(angle), -1.0f, 0.0f);
+	angle += m_Timer->GetTime() * 2;
 
 
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
@@ -96,10 +96,8 @@ bool Lab3::Render()
 
 	// Send geometry data (from mesh)
 	m_PlaneMesh->SendData(m_Direct3D->GetDeviceContext());
-	// Set shader parameters (matrices and texture)
 	m_LightShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix,
 		m_PlaneMesh->GetTexture(), m_SpecularMap->GetTexture(), m_NormalMap->GetTexture(), m_Camera, m_Light);
-	// Render object (combination of mesh geometry and shader process
 	m_LightShader->Render(m_Direct3D->GetDeviceContext(), m_PlaneMesh->GetIndexCount());
 
 	// Present the rendered scene to the screen.

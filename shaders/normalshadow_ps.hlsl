@@ -50,6 +50,22 @@ float4 main(InputType input) : SV_TARGET
 	// Set the default output color to the ambient light value for all pixels.
 	color = ambientColor[0];
 
+
+	//TODO: figure out why one corner of the plane is dark
+
+	// Sample the pixel in the bump map.
+	normal = normalTexture.Sample( SampleTypeClamp, input.tex ).rgb;
+	// Expand the range of the normal value from (0, +1) to (-1, +1).
+	normal = (normal * 2.0f) - 1.0f;
+	//normal.r = (normal.r - 0.5f) * 2.0f;
+	//normal.g = (normal.g - 0.5f) * 2.0f;
+	// transform the normal into tangent space
+	normal = (normal.x * input.binormal) + (normal.y * input.tangent) + (normal.z * input.normal);
+	//normal = (1.0f * input.binormal) + (1.0f * input.tangent) + (normal.z * input.normal);
+	//normal = (normal.x * float3(0, 0, 1)) + (normal.y * float3(1, 0, 0)) + (normal.z * float3(0, 1, 0));
+	//normal = float3(0, 1, 0);
+	normal = normalize( normal );
+
 	// For each light
 	for (int i = 0; i < NUM_LIGHTS; i++)
 	{
@@ -85,15 +101,6 @@ float4 main(InputType input) : SV_TARGET
 			{
 				// The fragment is receiving light
 
-			// Sample the pixel in the bump map.
-				normal = normalTexture.Sample( SampleTypeClamp, input.tex ).rgb;
-				// Expand the range of the normal value from (0, +1) to (-1, +1).
-				normal = (normal * 2.0f) - 1.0f;
-				// transform the normal into tangent space
-				normal = (normal.x * input.binormal) + (normal.y * input.tangent) + (normal.z * input.normal);
-				//normal = (normal.x * float3(0, 0, 1)) + (normal.y * float3(1, 0, 0)) + (normal.z * float3(0, 1, 0));
-				//normal = float3(0, 1, 0);
-				normal = normalize( normal );
 
 				// Calculate the amount of light on this pixel.
 				lightIntensity = saturate(dot(normal, input.lightPos[i]));
@@ -122,5 +129,5 @@ float4 main(InputType input) : SV_TARGET
 	color.a = input.depthPosition.z / input.depthPosition.w;
 
 	return color;
-	//return float4( normal.xyz, color.a);
+	//return float4( normal, color.a);
 }
