@@ -1,10 +1,11 @@
 # Graphics Programming with Shaders
 #### Coursework Documentation
+#### AG0904A15
 #### Thomas Hope: 1302495
 
 ## Preface
 
-This document is a description of the techniques
+This document is a description of the techniques used for my submission
 
 ## Overview
 ### Controls
@@ -54,7 +55,10 @@ This document is a description of the techniques
 * Blur shader, modified box blur shader using sub pixel sampling
 * Depth of field shader, blends a sharp and blurred texture based on depth from the screen centre 
 ## Detail
+### Hellknight
+### Floor
+### Magic Sphere
 
 ## References
 * Paul Robertson, what a gent
-* [RasterTek Tutorials](http://www.rastertek.com/tutdx11.html)
+* with help from [RasterTek Tutorials](http://www.rastertek.com/tutdx11.html)
