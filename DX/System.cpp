@@ -13,7 +13,10 @@ System::System()
 	InitializeWindows(screenWidth, screenHeight);
 
 	// Create the application wrapper object.
-	m_Application = new CURRENT_LAB(m_hinstance, m_hwnd, screenWidth, screenHeight, &m_Input);
+	m_Application = new FINAL_SCENE( m_hinstance, m_hwnd, screenWidth, screenHeight, &m_Input );
+	m_BonusApp = new BONUS_SCENE( m_hinstance, m_hwnd, screenWidth, screenHeight, &m_Input );
+
+	m_bonus = false;
 }
 
 
@@ -25,6 +28,12 @@ System::~System()
 		//m_Application->Shutdown();
 		delete m_Application;
 		m_Application = 0;
+	}
+
+	if( m_BonusApp )
+	{
+		delete m_BonusApp;
+		m_BonusApp = 0;
 	}
 
 	// Shutdown the window.
@@ -77,9 +86,18 @@ bool System::Frame()
 {
 	bool result;
 
+	if( m_Input.isKeyDown( VK_NUMPAD0 ) )
+	{
+		m_bonus = !m_bonus;
+		m_Input.SetKeyUp( VK_NUMPAD0 );
+	}
 
 	// Do the frame processing for the application object.
-	result = m_Application->Frame();
+	if( !m_bonus )
+		result = m_Application->Frame();
+	else
+		result = m_BonusApp->Frame();
+
 	if (!result)
 	{
 		return false;

@@ -1,6 +1,6 @@
 // Lab3.cpp
 // Lab 1 example, simple coloured triangle mesh
-#include "Lab10.h"
+#include "FinalScene.h"
 #include <iostream>
 
 Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in ) : BaseApplication( hinstance, hwnd, screenWidth, screenHeight, in )
@@ -187,8 +187,8 @@ bool Lab10::Render()
 	BlendScene();
 	BlurScene();
 
-	ShowScene();
-	//ShowDOF();
+	//ShowScene();
+	ShowDOF();
 
 	return true;
 }

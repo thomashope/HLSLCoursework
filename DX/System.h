@@ -14,11 +14,12 @@
 #include "Lab6.h"
 #include "Lab8.h"
 #include "Lab9.h"
-#include "Lab10.h"
+#include "FinalScene.h"
 #include "Lab11.h"
 #include "Input.h"
 
-#define CURRENT_LAB Lab10
+#define BONUS_SCENE Lab4
+#define FINAL_SCENE Lab10
 
 class System
 {
@@ -40,8 +41,11 @@ private:
 	HINSTANCE m_hinstance;
 	HWND m_hwnd;
 	
-	CURRENT_LAB* m_Application;
+	FINAL_SCENE* m_Application;
+	BONUS_SCENE* m_BonusApp;
 	Input m_Input;
+
+	bool m_bonus;
 
 //Prototypes
 	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

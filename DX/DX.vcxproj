@@ -103,7 +103,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="JellyShader.cpp" />
     <ClCompile Include="Lab1.cpp" />
-    <ClCompile Include="Lab10.cpp" />
+    <ClCompile Include="FinalScene.cpp" />
     <ClCompile Include="Lab11.cpp" />
     <ClCompile Include="Lab2.cpp" />
     <ClCompile Include="Lab3.cpp" />
@@ -157,7 +157,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="JellyShader.h" />
     <ClInclude Include="Lab1.h" />
-    <ClInclude Include="Lab10.h" />
+    <ClInclude Include="FinalScene.h" />
     <ClInclude Include="Lab11.h" />
     <ClInclude Include="Lab2.h" />
     <ClInclude Include="Lab3.h" />

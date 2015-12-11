@@ -32,8 +32,7 @@ Lab4::Lab4( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 	m_Lights[3]->SetPosition( 30.0f, -1.0f, 20.0f );
 	m_Lights[3]->SetDiffuseColour( 1.0f, 1.0f, 1.0f, 1.0f );
 	m_Lights[3]->SetSpecularColour( 0.1f, 0.9f, 1.0f, 1.0f );
-	m_Lights[3]->setAttenuation( 0.5f, 0.2f, 0.0f );
-	m_Lights[3]->SetRange( 9.5f );
+	m_Lights[3]->setAttenuation( 0.2f, 0.1f, 0.1f );
 	m_Lights[3]->SetSpecularPower( 20.0f );
 }
 

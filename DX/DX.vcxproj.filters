@@ -150,9 +150,6 @@
     <ClCompile Include="ShadowShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Lab10.cpp">
-      <Filter>Source Files\Applications</Filter>
-    </ClCompile>
     <ClCompile Include="Lab11.cpp">
       <Filter>Source Files\Applications</Filter>
     </ClCompile>
@@ -182,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="DOFShader.cpp">
       <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalScene.cpp">
+      <Filter>Source Files\Applications</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,9 +302,6 @@
     <ClInclude Include="ShadowShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Lab10.h">
-      <Filter>Source Files\Applications</Filter>
-    </ClInclude>
     <ClInclude Include="Lab11.h">
       <Filter>Source Files\Applications</Filter>
     </ClInclude>
@@ -334,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="DOFShader.h">
       <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalScene.h">
+      <Filter>Source Files\Applications</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -473,5 +473,7 @@
     <FxCompile Include="..\shaders\dof_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
+    <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
   </ItemGroup>
 </Project>
