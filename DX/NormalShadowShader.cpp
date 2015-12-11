@@ -169,27 +169,26 @@ void NormalShadowShader::SetShaderParameters( ID3D11DeviceContext* deviceContext
 
 	// Now set the constant buffer in the vertex shader with the updated values.
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
-
-	//Additional
+	
 	// Send light data to pixel shader
 	deviceContext->Map(m_LightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	PSlightPtr = (PSLightBufferType*)mappedResource.pData;
 	// Send colour and attenuation for first light
-	PSlightPtr->ambient[0] = lights[0]->GetAmbientColour( );
-	PSlightPtr->position[0] = lights[0]->GetPosition4( );
-	PSlightPtr->diffuse[0] = lights[0]->GetDiffuseColour( );
-	PSlightPtr->attenuation[0].x = lights[0]->GetRange( );
-	PSlightPtr->attenuation[0].y = lights[0]->GetConstantAttenuation( );
-	PSlightPtr->attenuation[0].z = lights[0]->GetLinearAttenuation( );
-	PSlightPtr->attenuation[0].w = lights[0]->GetQuadraticAttenuation( );
+	PSlightPtr->ambient[0]			= lights[0]->GetAmbientColour( );
+	PSlightPtr->position[0]			= lights[0]->GetPosition4( );
+	PSlightPtr->diffuse[0]			= lights[0]->GetDiffuseColour( );
+	PSlightPtr->attenuation[0].x	= lights[0]->GetRange( );
+	PSlightPtr->attenuation[0].y	= lights[0]->GetConstantAttenuation( );
+	PSlightPtr->attenuation[0].z	= lights[0]->GetLinearAttenuation( );
+	PSlightPtr->attenuation[0].w	= lights[0]->GetQuadraticAttenuation( );
 	// Send colour and attenuation for second light
-	PSlightPtr->ambient[1] = lights[1]->GetAmbientColour( );
-	PSlightPtr->position[1] = lights[1]->GetPosition4( );
-	PSlightPtr->diffuse[1] = lights[1]->GetDiffuseColour( );
-	PSlightPtr->attenuation[1].x = lights[1]->GetRange( );
-	PSlightPtr->attenuation[1].y = lights[1]->GetConstantAttenuation( );
-	PSlightPtr->attenuation[1].z = lights[1]->GetLinearAttenuation( );
-	PSlightPtr->attenuation[1].w = lights[1]->GetQuadraticAttenuation( );
+	PSlightPtr->ambient[1]			= lights[1]->GetAmbientColour( );
+	PSlightPtr->position[1]			= lights[1]->GetPosition4( );
+	PSlightPtr->diffuse[1]			= lights[1]->GetDiffuseColour( );
+	PSlightPtr->attenuation[1].x	= lights[1]->GetRange( );
+	PSlightPtr->attenuation[1].y	= lights[1]->GetConstantAttenuation( );
+	PSlightPtr->attenuation[1].z	= lights[1]->GetLinearAttenuation( );
+	PSlightPtr->attenuation[1].w	= lights[1]->GetQuadraticAttenuation( );
 
 	deviceContext->Unmap(m_LightBuffer, 0);
 	bufferNumber = 0;
@@ -198,8 +197,8 @@ void NormalShadowShader::SetShaderParameters( ID3D11DeviceContext* deviceContext
 	// Send light data to vertex shader
 	deviceContext->Map(m_LightBuffer2, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	VSlightPtr = (VSLightBufferType*)mappedResource.pData;
-	VSlightPtr->position[0] = lights[0]->GetPosition4();
-	VSlightPtr->position[1] = lights[1]->GetPosition4();
+	VSlightPtr->position[0]			= lights[0]->GetPosition4();
+	VSlightPtr->position[1]			= lights[1]->GetPosition4();
 	deviceContext->Unmap(m_LightBuffer2, 0);
 	bufferNumber = 1;
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_LightBuffer2);

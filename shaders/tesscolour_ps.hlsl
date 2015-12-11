@@ -11,22 +11,14 @@ struct InputType
 
 float4 main(InputType input) : SV_TARGET
 {
-	// modify the colour based on the positon
 	float4 finalColour;
-	float3 lightDir;
-	float lightIntensity;
 	float depthValue;
 
+	// the colour is modified based on position in the domain shader
 	finalColour = input.colour;
-	
-	lightDir = normalize( float3(1.0f, 1.0f, 0.0f) );
 
+	// write the depth value to the alpha channel for colour blending
 	depthValue = input.depthPosition.z / input.depthPosition.w;
-	
-	// Do lighting
-	lightIntensity = saturate( dot( lightDir, input.normal.xyz ) );
-	finalColour *= lightIntensity;
-
 	finalColour.w = depthValue;
 
 	return finalColour;

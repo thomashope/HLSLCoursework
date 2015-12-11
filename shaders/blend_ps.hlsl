@@ -45,6 +45,7 @@ float4 main(InputType input) : SV_TARGET
 
 	// blend with the transparent pixel
 	distortedPixel += transparentSample;
+	distortedPixel.w = transparentSample.w;
 
 	return distortedPixel;	
 }

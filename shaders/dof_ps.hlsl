@@ -17,6 +17,7 @@ float4 main(InputType input) : SV_TARGET
 {
 	float4 sceneSample;
 	float4 blurSample;
+	float4 fog;
 
 	// Distance to the center of the screen
 	float centerDist = scene.Sample( Sampler, float2(0.5f, 0.5f) ).w;
@@ -24,8 +25,9 @@ float4 main(InputType input) : SV_TARGET
 	sceneSample = scene.Sample( Sampler, input.tex );
 	blurSample = blur.Sample( Sampler, input.tex );
 
-	float depthDifference = abs( centerDist - sceneSample.w  );
-	//if( sceneSample.w == 1.0f ) depthDifference = 0.0f;
+	float depthDifference = abs( centerDist - sceneSample.w  ) * 0.9f;
 
-	return lerp(sceneSample, blurSample, depthDifference);
+	fog = (float4(0.6f, 0.5f, 0.6f, 1.0f) * pow(sceneSample.w, 60) );
+
+	return saturate(lerp(sceneSample, blurSample, depthDifference) - fog);
 }
