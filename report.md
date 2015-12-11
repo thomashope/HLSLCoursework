@@ -12,6 +12,7 @@ This document is a description of the techniques
 * E: up
 * Q: down
 * Arrow Keys: rotate camera
+* NUMPAD 0: show bonus scene
 * NUMPAD 1: toggle normal display
 * NUMPAD 2: increase tessellation
 * NUMPAD 3: decrease tessellation
@@ -19,6 +20,7 @@ This document is a description of the techniques
 * multiple lights, ambient and diffuse
 * per light attenuation
 * per light shadow mapping
+* per light specular highlights (see bonus scene)
 * diffuse texturing
 * normal mapping
 * tessellation
