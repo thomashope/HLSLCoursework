@@ -80,7 +80,7 @@ void BaseApplication::HandleInput(float frameTime)
 		// forward
 		m_Camera->MoveForward();
 	}
-	if (m_Input->isKeyDown('R'))
+	if (m_Input->isKeyDown('S'))
 	{
 		// back
 		m_Camera->MoveBackward();
@@ -90,7 +90,7 @@ void BaseApplication::HandleInput(float frameTime)
 		// Strafe Left
 		m_Camera->StrafeLeft();
 	}
-	if (m_Input->isKeyDown('S'))
+	if (m_Input->isKeyDown('D'))
 	{
 		// Strafe Right
 		m_Camera->StrafeRight();
@@ -100,7 +100,7 @@ void BaseApplication::HandleInput(float frameTime)
 		// Down
 		m_Camera->MoveDownward();
 	}
-	if (m_Input->isKeyDown('F'))
+	if (m_Input->isKeyDown('E'))
 	{
 		// Up
 		m_Camera->MoveUpward();

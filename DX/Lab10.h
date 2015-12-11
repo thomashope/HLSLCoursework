@@ -87,31 +87,30 @@ private:
 	BoxBlurShader* m_BlurShader;
 	DOFShader* m_DOFShader;
 
-	RenderTexture* m_ShadowMap1;
-	RenderTexture* m_ShadowMap2;
-	RenderTexture* m_BlobDepth;
-	RenderTexture* m_SceneLighting;
-	RenderTexture* m_BlobLighting;
-	RenderTexture* m_BlobNormals;
-	RenderTexture* m_BlendedScene;
-	RenderTexture* m_BluredScene;
+	RenderTexture* m_ShadowMap1;	// shadow map for the first light
+	RenderTexture* m_ShadowMap2;	// shadow map for the second light
+	RenderTexture* m_SceneLighting;	// scene with light and shadow, without the magic sphere
+	RenderTexture* m_BlobLighting;	// magic sphere diffuse colours
+	RenderTexture* m_BlobNormals;	// magic sphere normals
+	RenderTexture* m_BlendedScene;	// scene with light and shadow, blended with magic sphere
+	RenderTexture* m_BluredScene;	// blurred version of the blended scene
 	
-	OrthoMesh* m_FullscreenMesh;
-	OrthoMesh* m_TopLeftMesh;
-	OrthoMesh* m_TopRightMesh;
-	OrthoMesh* m_BottomLeftMesh;
-	OrthoMesh* m_BottomRightMesh;
+	OrthoMesh* m_FullscreenMesh;	// used for multi pass rendering
+	OrthoMesh* m_TopLeftMesh;		// top left quadrant
+	OrthoMesh* m_TopRightMesh;		// top right quadrant
+	OrthoMesh* m_BottomLeftMesh;	// bottom left quadrant
+	OrthoMesh* m_BottomRightMesh;	// bottom righ quadrant
 
-	PlaneMesh* m_FloorMesh;
-	Model* m_Hellknight;
-	TessellationMesh* m_MagicSphere;
+	PlaneMesh* m_FloorMesh;				// a plane for the floor
+	Model* m_Hellknight;				// hellknight model
+	TessellationMesh* m_MagicSphere;	// starts as a cube, tesselates into a sphere
 
-	Light* m_Lights[2];
-	float m_time;
-	XMFLOAT4 m_frequency;
+	XMFLOAT4 m_frequency;				// distortion frequency for the tesselated mesh
+	Light* m_Lights[2];					// array of shadow casting lights
+	float m_time;						// accumulated time in the scene
 
-	bool m_showNormals;
-	float m_tesselation;
+	bool m_showNormals;					// user controled bool to display model normals
+	float m_tesselation;				// user controled tesselation value
 };
 
 #endif

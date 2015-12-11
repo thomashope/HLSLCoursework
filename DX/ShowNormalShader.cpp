@@ -4,7 +4,7 @@
 
 ShowNormalShader::ShowNormalShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
 {
-	InitShader(L"../shaders/shownormal_vs.hlsl", L"../shaders/shownormal_gs.hlsl", L"../shaders/shownormal_ps.hlsl");
+	InitShader(L"../shaders/geometry_vs.hlsl", L"../shaders/geometry_gs.hlsl", L"../shaders/geometry_ps.hlsl");
 }
 
 ShowNormalShader::~ShowNormalShader()

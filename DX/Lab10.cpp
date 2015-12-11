@@ -7,7 +7,7 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 {
 	// Create Mesh objects
 	m_FloorMesh = new PlaneMesh(m_Direct3D->GetDevice(), L"../res/floor_diffuse.png");
-	m_FloorMesh->LoadNormalMap( m_Direct3D->GetDevice(), L"../res/floor_normal.png" );
+	m_FloorMesh->LoadNormalMap( m_Direct3D->GetDevice(), L"../res/floor2_normal.png" );
 	m_FloorMesh->LoadSpecularMap( m_Direct3D->GetDevice(), L"../res/floor_specular.png" );
 
 	m_Hellknight = new Model(m_Direct3D->GetDevice(), L"../res/hellknight_diffuse.png", L"../res/hellknight.obj");
@@ -51,16 +51,14 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
 	m_Lights[0]->SetAmbientColour( 0.1f, 0.1f, 0.1f, 1.0f );
 	m_Lights[0]->SetDiffuseColour( 0.8f, 0.8f, 1.0f, 1.0f );
-	//m_Lights[0]->SetDiffuseColour( 0.0f, 0.0f, 0.0f, 1.0f );
 	m_Lights[0]->SetSpecularColour( 1.0f, 0.0f, 0.0f, 1.0f );
 	m_Lights[0]->SetRange( 40.0f );
 	m_Lights[0]->setAttenuation(0.1f, 0.1f, 0.0f);
 
 	
-	m_Lights[1]->SetPosition( -6.0f, 1.5f, -6.0f );
+	m_Lights[1]->SetPosition( -6.0f, 3.5f, -6.0f );
 	m_Lights[1]->SetLookAt( 0.0f, 0.0f, 0.0f );
 	m_Lights[1]->SetDiffuseColour( 0.6f, 0.7f, 0.6f, 1.0f );
-	//m_Lights[1]->SetAmbientColour( 0.0f, 0.0f, 0.0f, 1.0f );
 	m_Lights[1]->SetSpecularColour( 0.0f, 0.0f, 0.0f, 1.0f );
 	m_Lights[1]->SetRange( 60.0f );
 	m_Lights[1]->setAttenuation( 0.1f, 0.1f, 0.0f );
@@ -148,6 +146,20 @@ bool Lab10::Frame()
 	m_frequency.z = sin( m_time * 2.7f );
 	m_frequency.w = 0.5f + sin( m_time * 2.0f ) * 0.3f;
 
+	// move the lights
+	{
+		static float radians;
+		float radius = 11;
+		radians += m_Timer->GetTime( ) * 1.0f;
+
+		m_Lights[1]->SetPosition(
+			sin( radians ) * radius,
+			m_Lights[1]->GetPosition( ).y,
+			cos( radians ) * radius );
+
+		m_Lights[1]->SetLookAt( 0.0f, 0.0f, 0.0f );
+	}
+
 	// Render the graphics.
 	result = Render();
 	if( !result )
@@ -163,22 +175,7 @@ bool Lab10::Render()
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Update();
 	// update the world time
-	m_time += m_Timer->GetTime();
-
-	// move the lights
-	//*
-	{
-		static float radians;
-		float radius = 7;
-		radians += m_Timer->GetTime() * 1.0f;
-
-		m_Lights[1]->SetPosition(
-			sin(radians) * radius,
-			m_Lights[1]->GetPosition().y,
-			cos(radians) * radius);
-
-		m_Lights[1]->SetLookAt(0.0f, 0.0f, 0.0f);
-	}//*/
+	m_time += m_Timer->GetTime();	
 
 	//RenderScene();
 
@@ -190,8 +187,8 @@ bool Lab10::Render()
 	BlendScene();
 	BlurScene();
 
-	//ShowScene();
-	ShowDOF();
+	ShowScene();
+	//ShowDOF();
 
 	return true;
 }
@@ -457,6 +454,7 @@ void Lab10::ShowDOF()
 	// Present the rendered scene to the screen.
 	m_Direct3D->EndScene( );
 }
+
 void Lab10::ShowScene()
 {
 	XMMATRIX worldMatrix, baseViewMatrix, orthoMatrix;
@@ -473,11 +471,11 @@ void Lab10::ShowScene()
 	m_Direct3D->TurnZBufferOff();
 	
 	m_TopLeftMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_ShadowMap1->GetShaderResourceView( ) );
+	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BlobLighting->GetShaderResourceView( ) );
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
 	
 	m_TopRightMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_ShadowMap2->GetShaderResourceView( ) );
+	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BlobNormals->GetShaderResourceView( ) );
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
 
 	m_BottomLeftMesh->SendData(m_Direct3D->GetDeviceContext());
