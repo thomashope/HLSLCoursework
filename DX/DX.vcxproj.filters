@@ -421,9 +421,6 @@
     <FxCompile Include="..\shaders\tesscolour_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\shaders\tesscolour_ds.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
-    </FxCompile>
     <FxCompile Include="..\shaders\blend_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
@@ -475,5 +472,10 @@
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
+    <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
+    <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
+    <FxCompile Include="..\shaders\tessellation_ds.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -6,10 +6,9 @@ TessColourShader::TessColourShader(ID3D11Device* device, HWND hwnd) : BaseShader
 {
 	InitShader(	L"../shaders/tessellation_vs.hlsl",
 				L"../shaders/tessellation_hs.hlsl",
-				L"../shaders/tesscolour_ds.hlsl",
+				L"../shaders/tessellation_ds.hlsl",
 				L"../shaders/tesscolour_ps.hlsl" );
 }
-
 
 TessColourShader::~TessColourShader()
 {
@@ -121,7 +120,6 @@ void TessColourShader::InitShader(WCHAR* vsFilename, WCHAR* hsFilename, WCHAR* d
 	loadHullShader(hsFilename);
 	loadDomainShader(dsFilename);
 }
-
 
 void TessColourShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, float tesselationFactor, XMFLOAT4 frequency)
 {

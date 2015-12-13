@@ -29,15 +29,13 @@ struct OutputType
 {
     float4 position : SV_POSITION;
 	float4 depthPosition : TEXCOORD0;
-	float4 normal : NORMAL;
     float4 colour : COLOR;
 };
 
 [domain("quad")]
 OutputType main(ConstantOutputType input, float2 uvwCoord : SV_DomainLocation, const OutputPatch<InputType, 4> patch)
 {
-    float3 position;
-	float3 normal;
+    float3 position;	// the position of the generated vertex
     OutputType output;
     
 	// The new vertex position interpolated across the quad
@@ -47,14 +45,10 @@ OutputType main(ConstantOutputType input, float2 uvwCoord : SV_DomainLocation, c
 
 	// create the sphere
 	position = normalize( position );
-	normal = position + position;
 	
 	// Distort the sphere
 	float3 f = frequency.xyz * position * frequency.w;
 	position += position * f;
-
-	// aproximation of the normal, good enough
-	output.normal = float4( normalize( normal - position ), 1.0f);
 
     // Calculate the position of the new vertex against the world, view, and projection matrices.
 	output.position = mul( float4(position, 1.0f), worldMatrix );

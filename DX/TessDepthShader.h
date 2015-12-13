@@ -20,8 +20,7 @@ private:
 
 	struct VertexManipBufferType
 	{
-		float time;
-		XMFLOAT3 padding;
+		XMFLOAT4 frequency;
 	};
 
 public:
@@ -29,7 +28,7 @@ public:
 	TessDepthShader(ID3D11Device* device, HWND hwnd);
 	~TessDepthShader();
 
-	void SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* DepthMap, float tesselationFactor, float time );
+	void SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, float tesselationFactor, XMFLOAT4 frequency );
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
 
 private:

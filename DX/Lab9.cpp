@@ -150,7 +150,7 @@ bool Lab9::Render()
 	if( tesselationFactor > 31.0f ) tesselationFactor = 31.0f;
 
 	m_TesselationMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TesselationShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_TesselationMesh->GetTexture( ), tesselationFactor, m_time );
+	m_TesselationShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, tesselationFactor, XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) );
 	m_TesselationShader->Render(m_Direct3D->GetDeviceContext(), m_SphereMesh->GetIndexCount());
 	
 	// Present the rendered scene to the screen.

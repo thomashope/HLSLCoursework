@@ -62,9 +62,9 @@ private:
 	void BlurScene();
 
 	// takes all the textures and displays them
-	void ShowScene();
+	void ShowBuffers();
 
-	void ShowDOF();
+	void ShowFinalScene();
 
 	template<typename T>
 	void deleteIfNotNull(T* resource) {
@@ -75,17 +75,17 @@ private:
 public:
 
 private:
-	DepthShader* m_DepthShader;
-	TextureShader* m_TextureShader;
-	ShadowShader* m_ShadowShader;
+	DepthShader*		m_DepthShader;
+	TextureShader*		m_TextureShader;
+	ShadowShader*		m_ShadowShader;
 	NormalShadowShader* m_NormalShadowShader;
-	TessDepthShader* m_TessDepthShader;
-	TessColourShader* m_TessColourShader;
-	TessNormalShader* m_TessNormalShader;
-	BlendShader* m_BlendShader;
-	ShowNormalShader* m_ShowNormalShader;
-	BoxBlurShader* m_BlurShader;
-	DOFShader* m_DOFShader;
+	TessDepthShader*	m_TessDepthShader;
+	TessColourShader*	m_TessColourShader;
+	TessNormalShader*	m_TessNormalShader;
+	BlendShader*		m_BlendShader;
+	ShowNormalShader*	m_ShowNormalShader;
+	BoxBlurShader*		m_BlurShader;
+	DOFShader*			m_DOFShader;
 
 	RenderTexture* m_ShadowMap1;	// shadow map for the first light
 	RenderTexture* m_ShadowMap2;	// shadow map for the second light
@@ -111,6 +111,7 @@ private:
 
 	bool m_showNormals;					// user controled bool to display model normals
 	float m_tesselation;				// user controled tesselation value
+	int m_displayMode;
 };
 
 #endif

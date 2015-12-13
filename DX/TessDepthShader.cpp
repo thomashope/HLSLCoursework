@@ -6,10 +6,9 @@ TessDepthShader::TessDepthShader(ID3D11Device* device, HWND hwnd) : BaseShader(d
 {
 	InitShader(	L"../shaders/tessellation_vs.hlsl",
 				L"../shaders/tessellation_hs.hlsl",
-				L"../shaders/tessdepth_ds.hlsl",
+				L"../shaders/tessellation_ds.hlsl",
 				L"../shaders/tessdepth_ps.hlsl" );
 }
-
 
 TessDepthShader::~TessDepthShader()
 {
@@ -122,8 +121,7 @@ void TessDepthShader::InitShader(WCHAR* vsFilename, WCHAR* hsFilename, WCHAR* ds
 	loadDomainShader(dsFilename);
 }
 
-
-void TessDepthShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* DepthMap, float tesselationFactor, float time)
+void TessDepthShader::SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, float tesselationFactor, XMFLOAT4 frequency )
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -156,8 +154,7 @@ void TessDepthShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, co
 	// Send vertex manip info to domain shader
 	deviceContext->Map( m_vertexManipBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );
 	VertexManipPtr = (VertexManipBufferType*)mappedResource.pData;
-	VertexManipPtr->time = time;
-	VertexManipPtr->padding = XMFLOAT3( 1.0f, 1.0f, 1.0f );
+	VertexManipPtr->frequency = frequency;
 	deviceContext->Unmap( m_vertexManipBuffer, 0 );
 	bufferNumber = 1;
 	deviceContext->DSSetConstantBuffers( bufferNumber, 1, &m_vertexManipBuffer );
@@ -169,10 +166,7 @@ void TessDepthShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, co
 	tessellationPtr->padding = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	deviceContext->Unmap(m_tessellationBuffer, 0);
 	bufferNumber = 0;
-	deviceContext->HSSetConstantBuffers(bufferNumber, 1, &m_tessellationBuffer);	
-
-	// Set shader texture resource in the pixel shader.
-	deviceContext->PSSetShaderResources( 0, 1, &DepthMap );
+	deviceContext->HSSetConstantBuffers(bufferNumber, 1, &m_tessellationBuffer);
 }
 
 void TessDepthShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)

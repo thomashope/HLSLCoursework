@@ -64,6 +64,8 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	m_Lights[1]->setAttenuation( 0.1f, 0.1f, 0.0f );
 
 	m_showNormals = false;
+	m_displayMode = 2;
+	m_tesselation = 1.0f;
 }
 
 Lab10::~Lab10()
@@ -128,6 +130,20 @@ bool Lab10::Frame()
 		m_Input->SetKeyUp( VK_NUMPAD1 );
 	}
 
+	// Switch display mode
+	if( m_Input->isKeyDown( VK_NUMPAD4 ) )
+	{
+		m_displayMode = 0;
+	}
+	else if( m_Input->isKeyDown( VK_NUMPAD5 ) )
+	{
+		m_displayMode = 1;
+	}
+	else if( m_Input->isKeyDown( VK_NUMPAD6 ) )
+	{
+		m_displayMode = 2;
+	}
+
 	// adjust tesselation
 	if( m_Input->isKeyDown( VK_NUMPAD2 ) )
 	{
@@ -171,24 +187,26 @@ bool Lab10::Frame()
 }
 
 bool Lab10::Render()
-{
-	// Generate the view matrix based on the camera's position.
-	m_Camera->Update();
-	// update the world time
-	m_time += m_Timer->GetTime();	
+{	
+	m_Camera->Update();				// Generate the view matrix based on the camera's position.
+	m_time += m_Timer->GetTime();	// Update the world time
 
-	//RenderScene();
+	RenderShadowmap1();				// Shadow map for light 0
+	RenderShadowmap2();				// shadow map for light 1
+	RenderSceneLighting();			// scene with shadows applied
+	RenderBlobLighting();			// render the blob with colour
+	RenderBlobNormals();			// create the normal map for the blob
+	BlendScene();					// blend the blob into the scene
+	BlurScene();					// blur the blended scene
 
-	RenderShadowmap1();
-	RenderShadowmap2();
-	RenderSceneLighting();
-	RenderBlobLighting();
-	RenderBlobNormals();
-	BlendScene();
-	BlurScene();
-
-	//ShowScene();
-	ShowDOF();
+	if( m_displayMode == 2 )
+	{
+		ShowFinalScene();
+	}
+	else
+	{
+		ShowBuffers( );
+	}
 
 	return true;
 }
@@ -260,8 +278,7 @@ void Lab10::RenderShadowmap1()
 	// cap tesselation for the shadow map at 16
 	worldMatrix = XMMatrixTranslation( -2.0f, 0.0f, -2.0f );
 	m_MagicSphere->SendData( m_Direct3D->GetDeviceContext() );
-	m_TessDepthShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_ShadowMap1->GetShaderResourceView(),
-		((m_tesselation < 16.0f) ? m_tesselation : 16.0f), m_time );
+	m_TessDepthShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, ((m_tesselation < 16.0f) ? m_tesselation : 16.0f), m_frequency );
 	m_TessDepthShader->Render( m_Direct3D->GetDeviceContext(), m_MagicSphere->GetIndexCount() );
 
 	m_Direct3D->TurnOffColourOnly();
@@ -302,8 +319,7 @@ void Lab10::RenderShadowmap2()
 	// cap tesselation for the shadow map at 16
 	worldMatrix = XMMatrixTranslation( -2.0f, 0.0f, -2.0f );
 	m_MagicSphere->SendData( m_Direct3D->GetDeviceContext( ) );
-	m_TessDepthShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_ShadowMap1->GetShaderResourceView( ),
-		((m_tesselation < 16.0f) ? m_tesselation : 16.0f), m_time );
+	m_TessDepthShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, ((m_tesselation < 16.0f) ? m_tesselation : 16.0f), m_frequency );
 	m_TessDepthShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
 	m_Direct3D->TurnOffColourOnly( );
 }
@@ -430,7 +446,7 @@ void Lab10::BlurScene()
 	//m_Direct3D->EndScene( );
 }
 
-void Lab10::ShowDOF()
+void Lab10::ShowFinalScene( )
 {
 	XMMATRIX worldMatrix, baseViewMatrix, orthoMatrix;
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
@@ -455,7 +471,7 @@ void Lab10::ShowDOF()
 	m_Direct3D->EndScene( );
 }
 
-void Lab10::ShowScene()
+void Lab10::ShowBuffers( )
 {
 	XMMATRIX worldMatrix, baseViewMatrix, orthoMatrix;
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
@@ -470,21 +486,43 @@ void Lab10::ShowScene()
 
 	m_Direct3D->TurnZBufferOff();
 	
-	m_TopLeftMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BlobLighting->GetShaderResourceView( ) );
-	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
+	if( m_displayMode == 0 )
+	{
+		m_TopLeftMesh->SendData( m_Direct3D->GetDeviceContext( ) );
+		m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_ShadowMap1->GetShaderResourceView( ) );
+		m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_FullscreenMesh->GetIndexCount( ) );
+
+		m_TopRightMesh->SendData( m_Direct3D->GetDeviceContext( ) );
+		m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_ShadowMap2->GetShaderResourceView( ) );
+		m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_FullscreenMesh->GetIndexCount( ) );
+
+		m_BottomLeftMesh->SendData( m_Direct3D->GetDeviceContext( ) );
+		m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BlobLighting->GetShaderResourceView( ) );
+		m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_FullscreenMesh->GetIndexCount( ) );
+
+		m_BottomRightMesh->SendData( m_Direct3D->GetDeviceContext( ) );
+		m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_SceneLighting->GetShaderResourceView( ) );
+		m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_FullscreenMesh->GetIndexCount( ) );
+	}
+	else
+	{
+		m_TopLeftMesh->SendData(m_Direct3D->GetDeviceContext());
+		m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BlobLighting->GetShaderResourceView( ) );
+		m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
 	
-	m_TopRightMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BlobNormals->GetShaderResourceView( ) );
-	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
+		m_TopRightMesh->SendData(m_Direct3D->GetDeviceContext());
+		m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BlobNormals->GetShaderResourceView( ) );
+		m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_FullscreenMesh->GetIndexCount());
 
-	m_BottomLeftMesh->SendData(m_Direct3D->GetDeviceContext());
-	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BlendedScene->GetShaderResourceView( ) );
-	m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_FullscreenMesh->GetIndexCount( ) );
+		m_BottomLeftMesh->SendData(m_Direct3D->GetDeviceContext());
+		m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BlendedScene->GetShaderResourceView( ) );
+		m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_FullscreenMesh->GetIndexCount( ) );
 
-	m_BottomRightMesh->SendData( m_Direct3D->GetDeviceContext( ) );
-	m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BluredScene->GetShaderResourceView( ) );
-	m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_FullscreenMesh->GetIndexCount( ) );
+		m_BottomRightMesh->SendData( m_Direct3D->GetDeviceContext( ) );
+		m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BluredScene->GetShaderResourceView( ) );
+		m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_FullscreenMesh->GetIndexCount( ) );
+	}
+	
 
 	m_Direct3D->TurnZBufferOn();
 
