@@ -84,6 +84,7 @@ The normal map is passed into the pixel shader along with the diffuse texture an
 * final scene is rendered with depth info to alpha buffer
 * blur final scene
 * sample in the middle, lerp based on difference
+* apply fog
 ### Things to improve
 * normal mapping on model (tried to use triangle adjacency, could try sending data when loading model)
 * When light is falling on a normal mapped surface in the negative z and x direction the normal is incorrect
