@@ -11,8 +11,7 @@
 #include "PointLightShader.h"
 #include "DepthShader.h"
 #include "ShadowShader.h"
-#include "TessDepthShader.h"
-#include "TessColourShader.h"
+#include "TessTintShader.h"
 #include "TessNormalShader.h"
 #include "BlendShader.h"
 #include "ShowNormalShader.h"
@@ -79,8 +78,7 @@ private:
 	TextureShader*		m_TextureShader;
 	ShadowShader*		m_ShadowShader;
 	NormalShadowShader* m_NormalShadowShader;
-	TessDepthShader*	m_TessDepthShader;
-	TessColourShader*	m_TessColourShader;
+	TessColourShader*	m_TessTintShader;
 	TessNormalShader*	m_TessNormalShader;
 	BlendShader*		m_BlendShader;
 	ShowNormalShader*	m_ShowNormalShader;

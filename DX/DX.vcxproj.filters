@@ -159,12 +159,6 @@
     <ClCompile Include="PointLightNormalShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="TessDepthShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="TessColourShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="BlendShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
@@ -182,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="FinalScene.cpp">
       <Filter>Source Files\Applications</Filter>
+    </ClCompile>
+    <ClCompile Include="TessTintShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,12 +308,6 @@
     <ClInclude Include="PointLightNormalShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="TessDepthShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="TessColourShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="BlendShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
@@ -334,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="FinalScene.h">
       <Filter>Source Files\Applications</Filter>
+    </ClInclude>
+    <ClInclude Include="TessTintShader.h">
+      <Filter>Source Files\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -412,15 +406,6 @@
     <FxCompile Include="..\shaders\point_light_normal_vs.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\shaders\tessdepth_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\tessdepth_ds.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\tesscolour_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
-    </FxCompile>
     <FxCompile Include="..\shaders\blend_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
@@ -475,6 +460,9 @@
     <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_ds.hlsl">
+      <Filter>Source Files\Shaders\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\tessellation_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
   </ItemGroup>

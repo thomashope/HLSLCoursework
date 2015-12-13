@@ -50,10 +50,10 @@ This document is a description of the techniques used for Thomas Hope's submissi
 * Texture shader, renders unlit mesh with texture
 * Shadow shader, renders objects with light and shadow
 * Normal shadow shader, renders objects with normal map, light and shadow
-* Tess depth shader, renders tint information for a tessellated shape for shadow blending
-* Tess colour shader, renders colour information for tessellated shape and depth to alpha
+* Tess Colour shader, renders colour tint and depth to alpha information
 * Tess normal shader, renders normal information for tessellated shape to texture RGB
 * Blend Shader, blends two textures with refraction
+* Show Normal Shader, highlights the edges of faces with a colour representing their normal
 * Blur shader, modified box blur shader using sub pixel sampling
 * Depth of field shader, blends a sharp and blurred texture based on depth from the screen centre 
 
@@ -75,11 +75,18 @@ This additional tangent and binormal information needs to be passed to the pixel
 The normal map is passed into the pixel shader along with the diffuse texture and sampled at the same UV coordinate. The normal sample is then transformed from the range [0,1] to [-1,1], transformed from tangent space, and normalised (if the values in the texture have not been normalised already). All further lighting calculating are then done with this normal.
 ### Shadow Mapping
 * render depth information to the alpha channel
-* render tint information to the colour channel
+* render tint information to the colour channel, preserving depth with blend mode
 ### Magic Sphere
 * render colour info with depth to a buffer
 * render normals to another buffer
+* blend into the scene with depth information, use normals to refract sample
 ### Depth Of Field
+* final scene is rendered with depth info to alpha buffer
+* blur final scene
+* sample in the middle, lerp based on difference
+### Things to improve
+* normal mapping on model (tried to use triangle adjacency, could try sending data when loading model)
+* When light is falling on a normal mapped surface in the negative z and x direction the normal is incorrect
 
 ## References
 * Paul Robertson, what a gent

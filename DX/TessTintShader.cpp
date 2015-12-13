@@ -1,13 +1,12 @@
 // tessellation shader.cpp
-#include "TessColourShader.h"
-
+#include "TessTintShader.h"
 
 TessColourShader::TessColourShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, hwnd)
 {
 	InitShader(	L"../shaders/tessellation_vs.hlsl",
 				L"../shaders/tessellation_hs.hlsl",
 				L"../shaders/tessellation_ds.hlsl",
-				L"../shaders/tesscolour_ps.hlsl" );
+				L"../shaders/tessellation_ps.hlsl" );
 }
 
 TessColourShader::~TessColourShader()
@@ -121,7 +120,7 @@ void TessColourShader::InitShader(WCHAR* vsFilename, WCHAR* hsFilename, WCHAR* d
 	loadDomainShader(dsFilename);
 }
 
-void TessColourShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, ID3D11ShaderResourceView* texture, float tesselationFactor, XMFLOAT4 frequency)
+void TessColourShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &worldMatrix, const XMMATRIX &viewMatrix, const XMMATRIX &projectionMatrix, float tesselationFactor, XMFLOAT4 frequency)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -167,9 +166,6 @@ void TessColourShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, c
 	deviceContext->Unmap(m_tessellationBuffer, 0);
 	bufferNumber = 0;
 	deviceContext->HSSetConstantBuffers(bufferNumber, 1, &m_tessellationBuffer);	
-
-	// Set shader texture resource in the pixel shader.
-	deviceContext->PSSetShaderResources(0, 1, &texture);
 }
 
 void TessColourShader::Render(ID3D11DeviceContext* deviceContext, int indexCount)

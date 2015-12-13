@@ -28,7 +28,7 @@ public:
 	TessColourShader(ID3D11Device* device, HWND hwnd);
 	~TessColourShader();
 
-	void SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, ID3D11ShaderResourceView* texture, float tesselationFactor, XMFLOAT4 frequency );
+	void SetShaderParameters( ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection, float tesselationFactor, XMFLOAT4 frequency );
 	void Render(ID3D11DeviceContext* deviceContext, int vertexCount);
 
 private:

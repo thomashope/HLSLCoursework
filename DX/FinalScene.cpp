@@ -6,47 +6,46 @@
 Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in ) : BaseApplication( hinstance, hwnd, screenWidth, screenHeight, in )
 {
 	// Create Mesh objects
-	m_FloorMesh = new PlaneMesh(m_Direct3D->GetDevice(), L"../res/floor_diffuse.png");
-	m_FloorMesh->LoadNormalMap( m_Direct3D->GetDevice(), L"../res/floor2_normal.png" );
-	m_FloorMesh->LoadSpecularMap( m_Direct3D->GetDevice(), L"../res/floor_specular.png" );
+	m_FloorMesh			= new PlaneMesh(m_Direct3D->GetDevice(),	L"../res/floor_diffuse.png");
+	m_FloorMesh->LoadNormalMap( m_Direct3D->GetDevice(),			L"../res/floor2_normal.png" );
+	m_FloorMesh->LoadSpecularMap( m_Direct3D->GetDevice(),			L"../res/floor_specular.png" );
 
-	m_Hellknight = new Model(m_Direct3D->GetDevice(), L"../res/hellknight_diffuse.png", L"../res/hellknight.obj");
-	m_MagicSphere = new TessellationMesh( m_Direct3D->GetDevice(), L"" );
+	m_Hellknight		= new Model(m_Direct3D->GetDevice(), L"../res/hellknight_diffuse.png", L"../res/hellknight.obj");
+	m_MagicSphere		= new TessellationMesh( m_Direct3D->GetDevice(), L"" );
 
-	m_FullscreenMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth, screenHeight, 0, 0);
-	m_TopLeftMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, -screenWidth / 4, screenHeight / 4);
-	m_TopRightMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, screenWidth / 4, screenHeight / 4);
-	m_BottomLeftMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, -screenWidth / 4, -screenHeight / 4);
-	m_BottomRightMesh = new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, screenWidth / 4, -screenHeight / 4);
+	m_FullscreenMesh	= new OrthoMesh(m_Direct3D->GetDevice(), screenWidth, screenHeight, 0, 0);
+	m_TopLeftMesh		= new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, -screenWidth / 4, screenHeight / 4);
+	m_TopRightMesh		= new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, screenWidth / 4, screenHeight / 4);
+	m_BottomLeftMesh	= new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, -screenWidth / 4, -screenHeight / 4);
+	m_BottomRightMesh	= new OrthoMesh(m_Direct3D->GetDevice(), screenWidth / 2, screenHeight / 2, screenWidth / 4, -screenHeight / 4);
 
 	// Create alternate render targets with meshes to render them on
-	m_ShadowMap1 = new RenderTexture( m_Direct3D->GetDevice( ), 1536, 1536, SCREEN_NEAR, SCREEN_DEPTH );
-	m_ShadowMap2 = new RenderTexture( m_Direct3D->GetDevice( ), 1536, 1536, SCREEN_NEAR, SCREEN_DEPTH );
+	m_ShadowMap1	= new RenderTexture( m_Direct3D->GetDevice( ), 1536, 1536, SCREEN_NEAR, SCREEN_DEPTH );
+	m_ShadowMap2	= new RenderTexture( m_Direct3D->GetDevice( ), 1536, 1536, SCREEN_NEAR, SCREEN_DEPTH );
 	m_SceneLighting = new RenderTexture( m_Direct3D->GetDevice( ), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH );
-	m_BlobLighting = new RenderTexture( m_Direct3D->GetDevice( ), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH );
-	m_BlobNormals = new RenderTexture( m_Direct3D->GetDevice( ), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH );
-	m_BlendedScene = new RenderTexture( m_Direct3D->GetDevice( ), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH );
-	m_BluredScene = new RenderTexture( m_Direct3D->GetDevice( ), screenWidth/4, screenHeight/4, SCREEN_NEAR, SCREEN_DEPTH );
+	m_BlobLighting	= new RenderTexture( m_Direct3D->GetDevice( ), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH );
+	m_BlobNormals	= new RenderTexture( m_Direct3D->GetDevice( ), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH );
+	m_BlendedScene	= new RenderTexture( m_Direct3D->GetDevice( ), screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH );
+	m_BluredScene	= new RenderTexture( m_Direct3D->GetDevice( ), screenWidth/4, screenHeight/4, SCREEN_NEAR, SCREEN_DEPTH );
 
 	// create the shaders
-	m_DepthShader = new DepthShader(m_Direct3D->GetDevice(), hwnd);
-	m_TextureShader = new TextureShader(m_Direct3D->GetDevice(), hwnd);
-	m_ShadowShader = new ShadowShader( m_Direct3D->GetDevice( ), hwnd );
-	m_NormalShadowShader = new NormalShadowShader( m_Direct3D->GetDevice( ), hwnd );
-	m_TessDepthShader = new TessDepthShader( m_Direct3D->GetDevice( ), hwnd );
-	m_TessColourShader = new TessColourShader( m_Direct3D->GetDevice( ), hwnd );
-	m_TessNormalShader = new TessNormalShader( m_Direct3D->GetDevice( ), hwnd );
-	m_BlendShader = new BlendShader( m_Direct3D->GetDevice(), hwnd );
-	m_ShowNormalShader = new ShowNormalShader( m_Direct3D->GetDevice( ), hwnd );
-	m_BlurShader = new BoxBlurShader( m_Direct3D->GetDevice( ), hwnd, screenWidth, screenHeight );
-	m_DOFShader = new DOFShader( m_Direct3D->GetDevice( ), hwnd );
+	m_DepthShader			= new DepthShader		( m_Direct3D->GetDevice(), hwnd );
+	m_TextureShader			= new TextureShader		( m_Direct3D->GetDevice(), hwnd );
+	m_ShadowShader			= new ShadowShader		( m_Direct3D->GetDevice(), hwnd );
+	m_NormalShadowShader	= new NormalShadowShader( m_Direct3D->GetDevice(), hwnd );
+	m_TessTintShader		= new TessColourShader	( m_Direct3D->GetDevice(), hwnd );
+	m_TessNormalShader		= new TessNormalShader	( m_Direct3D->GetDevice(), hwnd );
+	m_BlendShader			= new BlendShader		( m_Direct3D->GetDevice(), hwnd );
+	m_ShowNormalShader		= new ShowNormalShader	( m_Direct3D->GetDevice(), hwnd );
+	m_BlurShader			= new BoxBlurShader		( m_Direct3D->GetDevice(), hwnd, (float)screenWidth, (float)screenHeight );
+	m_DOFShader				= new DOFShader			( m_Direct3D->GetDevice(), hwnd );
 
-	// declare all the lights with default values
+	// declare the lights
 	for (int i = 0; i < 2; i++)
 	{
 		m_Lights[i] = new Light;
 	}
-
+	// Setup light 0
 	m_Lights[0]->SetPosition( -7.0f, 4.0f, -4.0f );
 	m_Lights[0]->SetLookAt(0.0f, 0.0f, 0.0f);
 	m_Lights[0]->SetAmbientColour( 0.1f, 0.1f, 0.1f, 1.0f );
@@ -54,15 +53,14 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	m_Lights[0]->SetSpecularColour( 1.0f, 0.0f, 0.0f, 1.0f );
 	m_Lights[0]->SetRange( 40.0f );
 	m_Lights[0]->setAttenuation(0.1f, 0.1f, 0.0f);
-
-	
+	// setup light 1
 	m_Lights[1]->SetPosition( -6.0f, 3.5f, -6.0f );
 	m_Lights[1]->SetLookAt( 0.0f, 0.0f, 0.0f );
 	m_Lights[1]->SetDiffuseColour( 0.6f, 0.7f, 0.6f, 1.0f );
 	m_Lights[1]->SetSpecularColour( 0.0f, 0.0f, 0.0f, 1.0f );
 	m_Lights[1]->SetRange( 60.0f );
 	m_Lights[1]->setAttenuation( 0.1f, 0.1f, 0.0f );
-
+	// set scene defaults
 	m_showNormals = false;
 	m_displayMode = 2;
 	m_tesselation = 1.0f;
@@ -97,8 +95,7 @@ Lab10::~Lab10()
 	deleteIfNotNull<DepthShader>(m_DepthShader);
 	deleteIfNotNull<ShadowShader>( m_ShadowShader );
 	deleteIfNotNull<NormalShadowShader>( m_NormalShadowShader );
-	deleteIfNotNull<TessDepthShader>( m_TessDepthShader );
-	deleteIfNotNull<TessColourShader>( m_TessColourShader );
+	deleteIfNotNull<TessColourShader>( m_TessTintShader );
 	deleteIfNotNull<TessNormalShader>( m_TessNormalShader );
 	deleteIfNotNull<BlendShader>( m_BlendShader );
 	deleteIfNotNull<DOFShader>( m_DOFShader );
@@ -205,7 +202,7 @@ bool Lab10::Render()
 	}
 	else
 	{
-		ShowBuffers( );
+		ShowBuffers();
 	}
 
 	return true;
@@ -278,8 +275,8 @@ void Lab10::RenderShadowmap1()
 	// cap tesselation for the shadow map at 16
 	worldMatrix = XMMatrixTranslation( -2.0f, 0.0f, -2.0f );
 	m_MagicSphere->SendData( m_Direct3D->GetDeviceContext() );
-	m_TessDepthShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, ((m_tesselation < 16.0f) ? m_tesselation : 16.0f), m_frequency );
-	m_TessDepthShader->Render( m_Direct3D->GetDeviceContext(), m_MagicSphere->GetIndexCount() );
+	m_TessTintShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, ((m_tesselation < 16.0f) ? m_tesselation : 16.0f), m_frequency );
+	m_TessTintShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
 
 	m_Direct3D->TurnOffColourOnly();
 }
@@ -319,8 +316,9 @@ void Lab10::RenderShadowmap2()
 	// cap tesselation for the shadow map at 16
 	worldMatrix = XMMatrixTranslation( -2.0f, 0.0f, -2.0f );
 	m_MagicSphere->SendData( m_Direct3D->GetDeviceContext( ) );
-	m_TessDepthShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, ((m_tesselation < 16.0f) ? m_tesselation : 16.0f), m_frequency );
-	m_TessDepthShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
+	m_TessTintShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, ((m_tesselation < 16.0f) ? m_tesselation : 16.0f), m_frequency );
+	m_TessTintShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
+	
 	m_Direct3D->TurnOffColourOnly( );
 }
 
@@ -374,8 +372,8 @@ void Lab10::RenderBlobLighting()
 	// render the blob
 	worldMatrix = XMMatrixTranslation( -2.0f, 0.0f, -2.0f );
 	m_MagicSphere->SendData( m_Direct3D->GetDeviceContext( ) );
-	m_TessColourShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_MagicSphere->GetTexture( ), m_tesselation, m_frequency );
-	m_TessColourShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
+	m_TessTintShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix, m_tesselation, m_frequency );
+	m_TessTintShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
 }
 
 void Lab10::RenderBlobNormals()
@@ -446,7 +444,7 @@ void Lab10::BlurScene()
 	//m_Direct3D->EndScene( );
 }
 
-void Lab10::ShowFinalScene( )
+void Lab10::ShowFinalScene()
 {
 	XMMATRIX worldMatrix, baseViewMatrix, orthoMatrix;
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
@@ -522,7 +520,6 @@ void Lab10::ShowBuffers( )
 		m_TextureShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, baseViewMatrix, orthoMatrix, m_BluredScene->GetShaderResourceView( ) );
 		m_TextureShader->Render( m_Direct3D->GetDeviceContext( ), m_FullscreenMesh->GetIndexCount( ) );
 	}
-	
 
 	m_Direct3D->TurnZBufferOn();
 
