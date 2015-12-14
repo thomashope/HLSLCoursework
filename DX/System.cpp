@@ -13,8 +13,8 @@ System::System()
 	InitializeWindows(screenWidth, screenHeight);
 
 	// Create the application wrapper object.
-	m_Application = new FINAL_SCENE( m_hinstance, m_hwnd, screenWidth, screenHeight, &m_Input );
-	m_BonusApp = new BONUS_SCENE( m_hinstance, m_hwnd, screenWidth, screenHeight, &m_Input );
+	m_Application = new Scene( m_hinstance, m_hwnd, screenWidth, screenHeight, &m_Input );
+	m_BonusApp = new BonusScene(m_hinstance, m_hwnd, screenWidth, screenHeight, &m_Input);
 
 	m_bonus = false;
 }

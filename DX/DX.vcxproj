@@ -107,7 +107,7 @@
     <ClCompile Include="Lab11.cpp" />
     <ClCompile Include="Lab2.cpp" />
     <ClCompile Include="Lab3.cpp" />
-    <ClCompile Include="Lab4.cpp" />
+    <ClCompile Include="BonusScene.cpp" />
     <ClCompile Include="Lab5.cpp" />
     <ClCompile Include="Lab6.cpp" />
     <ClCompile Include="Lab8.cpp" />
@@ -160,7 +160,7 @@
     <ClInclude Include="Lab11.h" />
     <ClInclude Include="Lab2.h" />
     <ClInclude Include="Lab3.h" />
-    <ClInclude Include="Lab4.h" />
+    <ClInclude Include="BonusScene.h" />
     <ClInclude Include="Lab5.h" />
     <ClInclude Include="Lab6.h" />
     <ClInclude Include="Lab8.h" />

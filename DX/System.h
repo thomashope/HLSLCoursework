@@ -6,20 +6,9 @@
 
 // INCLUDES 
 #include <windows.h>
-#include "Lab1.h"
-#include "Lab2.h"
-#include "Lab3.h"
-#include "Lab4.h"
-#include "Lab5.h"
-#include "Lab6.h"
-#include "Lab8.h"
-#include "Lab9.h"
-#include "FinalScene.h"
-#include "Lab11.h"
 #include "Input.h"
-
-#define BONUS_SCENE Lab4
-#define FINAL_SCENE Lab10
+#include "BonusScene.h"
+#include "FinalScene.h"
 
 class System
 {
@@ -37,15 +26,16 @@ private:
 	void ShutdownWindows();
 
 private:
-	LPCWSTR m_applicationName;
-	HINSTANCE m_hinstance;
-	HWND m_hwnd;
+	LPCWSTR		m_applicationName;
+	HINSTANCE	m_hinstance;
+	HWND		m_hwnd;
 	
-	FINAL_SCENE* m_Application;
-	BONUS_SCENE* m_BonusApp;
-	Input m_Input;
+	Scene*		m_Application;
+	BonusScene* m_BonusApp;
+	Input		m_Input;
 
-	bool m_bonus;
+	// True when the bonus scene should be displayed
+	bool		m_bonus;
 
 //Prototypes
 	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

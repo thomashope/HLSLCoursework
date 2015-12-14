@@ -1,6 +1,6 @@
 // Application.h
-#ifndef _LAB10_H
-#define _LAB10_H
+#ifndef _FINAL_SCENE_H
+#define _FINAL_SCENE_H
 
 // Includes
 #include "baseapplication.h"
@@ -26,13 +26,13 @@
 #include "TessellationMesh.h"
 
 // demonstrates point lights
-class Lab10 : public BaseApplication
+class Scene : public BaseApplication
 {
 // functons
 public:
 
-	Lab10(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input*);
-	~Lab10();
+	Scene(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input*);
+	~Scene();
 
 	bool Frame();
 

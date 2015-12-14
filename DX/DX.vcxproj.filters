@@ -114,9 +114,6 @@
     <ClCompile Include="DirectionalLightShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Lab4.cpp">
-      <Filter>Source Files\Applications</Filter>
-    </ClCompile>
     <ClCompile Include="PointLightShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
@@ -179,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="TessTintShader.cpp">
       <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="BonusScene.cpp">
+      <Filter>Source Files\Applications</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,9 +263,6 @@
     <ClInclude Include="DirectionalLightShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Lab4.h">
-      <Filter>Source Files\Applications</Filter>
-    </ClInclude>
     <ClInclude Include="PointLightShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
@@ -328,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="TessTintShader.h">
       <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="BonusScene.h">
+      <Filter>Source Files\Applications</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -465,5 +465,7 @@
     <FxCompile Include="..\shaders\tessellation_ps.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
+    <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
   </ItemGroup>
 </Project>

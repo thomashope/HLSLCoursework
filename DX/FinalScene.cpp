@@ -3,7 +3,7 @@
 #include "FinalScene.h"
 #include <iostream>
 
-Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in ) : BaseApplication( hinstance, hwnd, screenWidth, screenHeight, in )
+Scene::Scene( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in ) : BaseApplication( hinstance, hwnd, screenWidth, screenHeight, in )
 {
 	// Create Mesh objects
 	m_FloorMesh			= new PlaneMesh(m_Direct3D->GetDevice(),	L"../res/floor_diffuse.png");
@@ -66,7 +66,7 @@ Lab10::Lab10( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 	m_tesselation = 1.0f;
 }
 
-Lab10::~Lab10()
+Scene::~Scene()
 {
 	// Run base application deconstructor
 	BaseApplication::~BaseApplication();
@@ -108,7 +108,7 @@ Lab10::~Lab10()
 	}
 }
 
-bool Lab10::Frame()
+bool Scene::Frame()
 {
 	bool result;
 
@@ -183,7 +183,7 @@ bool Lab10::Frame()
 	return true;
 }
 
-bool Lab10::Render()
+bool Scene::Render()
 {	
 	m_Camera->Update();				// Generate the view matrix based on the camera's position.
 	m_time += m_Timer->GetTime();	// Update the world time
@@ -208,7 +208,7 @@ bool Lab10::Render()
 	return true;
 }
 
-void Lab10::RenderScene()
+void Scene::RenderScene()
 {
 	// Get the world, view and projection matricies from the camera and Direct3D objects.
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
@@ -240,7 +240,7 @@ void Lab10::RenderScene()
 	//m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_FloorMesh->GetIndexCount());
 }
 
-void Lab10::RenderShadowmap1()
+void Scene::RenderShadowmap1()
 {
 	// Get the world, view and projection matricies from the camera and Direct3D objects.
 	XMMATRIX worldMatrix;
@@ -281,7 +281,7 @@ void Lab10::RenderShadowmap1()
 	m_Direct3D->TurnOffColourOnly();
 }
 
-void Lab10::RenderShadowmap2()
+void Scene::RenderShadowmap2()
 {
 	// Get the world, view and projection matricies from the camera and Direct3D objects.
 	XMMATRIX worldMatrix;
@@ -322,7 +322,7 @@ void Lab10::RenderShadowmap2()
 	m_Direct3D->TurnOffColourOnly( );
 }
 
-void Lab10::RenderSceneLighting()
+void Scene::RenderSceneLighting()
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 
@@ -358,7 +358,7 @@ void Lab10::RenderSceneLighting()
 	m_NormalShadowShader->Render(m_Direct3D->GetDeviceContext(), m_FloorMesh->GetIndexCount());
 }
 
-void Lab10::RenderBlobLighting()
+void Scene::RenderBlobLighting()
 {
 	// Get the world, view and projection matricies from the camera and Direct3D objects.
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
@@ -376,7 +376,7 @@ void Lab10::RenderBlobLighting()
 	m_TessTintShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
 }
 
-void Lab10::RenderBlobNormals()
+void Scene::RenderBlobNormals()
 {
 	// Get the world, view and projection matricies from the camera and Direct3D objects.
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
@@ -393,7 +393,7 @@ void Lab10::RenderBlobNormals()
 	m_TessNormalShader->Render( m_Direct3D->GetDeviceContext( ), m_MagicSphere->GetIndexCount( ) );
 }
 
-void Lab10::BlendScene()
+void Scene::BlendScene()
 {
 	XMMATRIX worldMatrix, baseViewMatrix, orthoMatrix;
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
@@ -419,7 +419,7 @@ void Lab10::BlendScene()
 	//m_Direct3D->EndScene( );
 }
 
-void Lab10::BlurScene()
+void Scene::BlurScene()
 {
 	XMMATRIX worldMatrix, baseViewMatrix, orthoMatrix;
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
@@ -444,7 +444,7 @@ void Lab10::BlurScene()
 	//m_Direct3D->EndScene( );
 }
 
-void Lab10::ShowFinalScene()
+void Scene::ShowFinalScene()
 {
 	XMMATRIX worldMatrix, baseViewMatrix, orthoMatrix;
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.
@@ -469,7 +469,7 @@ void Lab10::ShowFinalScene()
 	m_Direct3D->EndScene( );
 }
 
-void Lab10::ShowBuffers( )
+void Scene::ShowBuffers( )
 {
 	XMMATRIX worldMatrix, baseViewMatrix, orthoMatrix;
 	// Get the world, view, projection, and ortho matrices from the camera and Direct3D objects.

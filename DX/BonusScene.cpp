@@ -1,9 +1,9 @@
 // Lab3.cpp
 // Lab 1 example, simple coloured triangle mesh
-#include "lab4.h"
+#include "BonusScene.h"
 #include <iostream>
 
-Lab4::Lab4( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in ) : BaseApplication( hinstance, hwnd, screenWidth, screenHeight, in )
+BonusScene::BonusScene( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in ) : BaseApplication( hinstance, hwnd, screenWidth, screenHeight, in )
 {
 	// Create Mesh object
 	m_SphereMesh = new SphereMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
@@ -37,7 +37,7 @@ Lab4::Lab4( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, I
 }
 
 
-Lab4::~Lab4()
+BonusScene::~BonusScene()
 {
 	// Run base application deconstructor
 	BaseApplication::~BaseApplication();
@@ -66,7 +66,7 @@ Lab4::~Lab4()
 }
 
 
-bool Lab4::Frame()
+bool BonusScene::Frame()
 {
 	bool result;
 
@@ -86,7 +86,7 @@ bool Lab4::Frame()
 	return true;
 }
 
-bool Lab4::Render()
+bool BonusScene::Render()
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 

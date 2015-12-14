@@ -1,6 +1,6 @@
 // Application.h
-#ifndef _LAB4_H
-#define _LAB4_H
+#ifndef _BONUS_SCENE_H
+#define _BONUS_SCENE_H
 
 // Includes
 #include "baseapplication.h"
@@ -11,12 +11,12 @@
 #include "Light.h"
 
 // demonstrates point lights
-class Lab4 : public BaseApplication
+class BonusScene : public BaseApplication
 {
 public:
 
-	Lab4(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input*);
-	~Lab4();
+	BonusScene(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input*);
+	~BonusScene();
 
 	bool Frame();
 
