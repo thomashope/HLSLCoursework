@@ -247,22 +247,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\shaders\colour_ps.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\colour_vs.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
     <FxCompile Include="..\shaders\texture_ps.hlsl">
       <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\texture_vs.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\directional_light_vs.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\directional_light_ps.hlsl">
       <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\point_light_ps.hlsl">
@@ -271,28 +259,10 @@
     <FxCompile Include="..\shaders\point_light_vs.hlsl">
       <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
-    <FxCompile Include="..\shaders\jelly_vs.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\jelly_ps.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
     <FxCompile Include="..\shaders\boxBlur_vs.hlsl">
       <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\boxBlur_ps.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\horizontalBlur_ps.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\horizontalBlur_vs.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\verticalBlur_ps.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\verticalBlur_vs.hlsl">
       <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_hs.hlsl">
@@ -311,12 +281,6 @@
       <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\depth_vs.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\point_light_normal_ps.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\point_light_normal_vs.hlsl">
       <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\blend_ps.hlsl">
@@ -343,15 +307,6 @@
       <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\geometry_gs.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\shownormal_gs.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\shownormal_ps.hlsl">
-      <Filter>Source Files\Shaders\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="..\shaders\shownormal_vs.hlsl">
       <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\normalshadow_vs.hlsl">
