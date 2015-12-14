@@ -38,7 +38,6 @@ void ShowNormalShader::InitShader(WCHAR* vsFilename, WCHAR* psFilename)
 {
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
-	D3D11_BUFFER_DESC tessellationBufferDesc;
 
 	// Load (+ compile) shader files
 	loadVertexShader(vsFilename);

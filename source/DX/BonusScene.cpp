@@ -103,9 +103,9 @@ bool BonusScene::Render()
 
 	// move the lights
 	{
-		static double radians;
-		double radius = 6;
-		radians += m_Timer->GetTime() * 1.6;
+		static float radians;
+		float radius = 6;
+		radians += m_Timer->GetTime() * 1.6f;
 
 		m_Lights[3]->SetPosition( 30 + sin( radians ) * radius,
 								  -1,
@@ -132,8 +132,7 @@ bool BonusScene::Render()
 	m_PlaneMesh->SendData( m_Direct3D->GetDeviceContext() );
 	m_LightShader->SetShaderParameters( m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, m_PlaneMesh->GetTexture(), m_Camera, m_Lights );
 	m_LightShader->Render( m_Direct3D->GetDeviceContext(), m_PlaneMesh->GetIndexCount() );
-
-
+	
 	// Present the rendered scene to the screen.
 	m_Direct3D->EndScene();
 

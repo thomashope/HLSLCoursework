@@ -25,7 +25,6 @@ void TessellationMesh::InitBuffers(ID3D11Device* device)
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
-	D3D11_BUFFER_DESC timeBufferDesc;
 
 	// Set the number of vertices in the vertex array.
 	m_vertexCount = 8;
