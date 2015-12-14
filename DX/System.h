@@ -37,7 +37,7 @@ private:
 	// True when the bonus scene should be displayed
 	bool		m_bonus;
 
-//Prototypes
+	//Prototypes
 	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 };
 

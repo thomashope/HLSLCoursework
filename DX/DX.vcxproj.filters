@@ -63,9 +63,6 @@
     <ClCompile Include="BaseApplication.cpp">
       <Filter>Source Files\System</Filter>
     </ClCompile>
-    <ClCompile Include="Lab1.cpp">
-      <Filter>Source Files\Applications</Filter>
-    </ClCompile>
     <ClCompile Include="ColourShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
@@ -102,14 +99,8 @@
     <ClCompile Include="QuadMesh.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="Lab2.cpp">
-      <Filter>Source Files\Applications</Filter>
-    </ClCompile>
     <ClCompile Include="TextureShader.cpp">
       <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Lab3.cpp">
-      <Filter>Source Files\Applications</Filter>
     </ClCompile>
     <ClCompile Include="DirectionalLightShader.cpp">
       <Filter>Source Files\Shaders</Filter>
@@ -117,17 +108,8 @@
     <ClCompile Include="PointLightShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Lab5.cpp">
-      <Filter>Source Files\Applications</Filter>
-    </ClCompile>
     <ClCompile Include="JellyShader.cpp">
       <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Lab6.cpp">
-      <Filter>Source Files\Applications</Filter>
-    </ClCompile>
-    <ClCompile Include="Lab8.cpp">
-      <Filter>Source Files\Applications</Filter>
     </ClCompile>
     <ClCompile Include="BoxBlurShader.cpp">
       <Filter>Source Files\Shaders</Filter>
@@ -138,17 +120,11 @@
     <ClCompile Include="HorizontalBlurShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Lab9.cpp">
-      <Filter>Source Files\Applications</Filter>
-    </ClCompile>
     <ClCompile Include="DepthShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="ShadowShader.cpp">
       <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Lab11.cpp">
-      <Filter>Source Files\Applications</Filter>
     </ClCompile>
     <ClCompile Include="GeometryShader.cpp">
       <Filter>Source Files\Shaders</Filter>
@@ -212,9 +188,6 @@
     <ClInclude Include="BaseApplication.h">
       <Filter>Source Files\System</Filter>
     </ClInclude>
-    <ClInclude Include="Lab1.h">
-      <Filter>Source Files\Applications</Filter>
-    </ClInclude>
     <ClInclude Include="ColourShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
@@ -251,14 +224,8 @@
     <ClInclude Include="QuadMesh.h">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Lab2.h">
-      <Filter>Source Files\Applications</Filter>
-    </ClInclude>
     <ClInclude Include="TextureShader.h">
       <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Lab3.h">
-      <Filter>Source Files\Applications</Filter>
     </ClInclude>
     <ClInclude Include="DirectionalLightShader.h">
       <Filter>Source Files\Shaders</Filter>
@@ -266,17 +233,8 @@
     <ClInclude Include="PointLightShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Lab5.h">
-      <Filter>Source Files\Applications</Filter>
-    </ClInclude>
     <ClInclude Include="JellyShader.h">
       <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Lab6.h">
-      <Filter>Source Files\Applications</Filter>
-    </ClInclude>
-    <ClInclude Include="Lab8.h">
-      <Filter>Source Files\Applications</Filter>
     </ClInclude>
     <ClInclude Include="BoxBlurShader.h">
       <Filter>Source Files\Shaders</Filter>
@@ -287,17 +245,11 @@
     <ClInclude Include="HorizontalBlurShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Lab9.h">
-      <Filter>Source Files\Applications</Filter>
-    </ClInclude>
     <ClInclude Include="DepthShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="ShadowShader.h">
       <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Lab11.h">
-      <Filter>Source Files\Applications</Filter>
     </ClInclude>
     <ClInclude Include="GeometryShader.h">
       <Filter>Source Files\Shaders</Filter>

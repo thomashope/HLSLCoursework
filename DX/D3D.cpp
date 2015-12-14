@@ -145,7 +145,7 @@ D3D::D3D(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscre
 	
 	// Get the pointer to the back buffer.
 	m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr);
-	
+
 	// Create the render target view with the back buffer pointer.
 	m_device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView);
 	

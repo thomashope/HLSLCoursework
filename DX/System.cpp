@@ -81,7 +81,6 @@ void System::Run()
 	return;
 }
 
-
 bool System::Frame()
 {
 	bool result;
@@ -112,14 +111,12 @@ LRESULT CALLBACK System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPA
 	return DefWindowProc(hwnd, umsg, wparam, lparam);
 }
 
-
 void System::InitializeWindows(int& screenWidth, int& screenHeight)
 {
 	WNDCLASSEX wc;
 	DEVMODE dmScreenSettings;
 	int posX, posY;
-
-
+	
 	// Get an external pointer to this object.	
 	ApplicationHandle = this;
 
@@ -194,7 +191,6 @@ void System::InitializeWindows(int& screenWidth, int& screenHeight)
 	return;
 }
 
-
 void System::ShutdownWindows()
 {
 	// Show the mouse cursor.
@@ -219,7 +215,6 @@ void System::ShutdownWindows()
 
 	return;
 }
-
 
 LRESULT CALLBACK System::WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
 {
