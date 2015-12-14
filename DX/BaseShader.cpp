@@ -282,8 +282,7 @@ void BaseShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, W
 	char* compileErrors;
 	unsigned long bufferSize, i;
 	ofstream fout;
-
-
+	
 	// Get a pointer to the error message text buffer.
 	compileErrors = (char*)(errorMessage->GetBufferPointer());
 
