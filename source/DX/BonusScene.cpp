@@ -6,7 +6,7 @@
 BonusScene::BonusScene( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in ) : BaseApplication( hinstance, hwnd, screenWidth, screenHeight, in )
 {
 	// Create Mesh object
-	m_SphereMesh = new SphereMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
+	m_SphereMesh = new SphereMesh( m_Direct3D->GetDevice(), L"../res/bunny.png" );
 	m_PlaneMesh = new PlaneMesh( m_Direct3D->GetDevice(), L"../res/brick1.dds" );
 
 	// create she shaders

@@ -7,7 +7,7 @@ Scene::Scene( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 {
 	// Create Mesh objects
 	m_FloorMesh			= new PlaneMesh(m_Direct3D->GetDevice(),	L"../res/floor_diffuse.png");
-	m_FloorMesh->LoadNormalMap( m_Direct3D->GetDevice(),			L"../res/floor2_normal.png" );
+	m_FloorMesh->LoadNormalMap( m_Direct3D->GetDevice(),			L"../res/floor_normal.png" );
 	m_FloorMesh->LoadSpecularMap( m_Direct3D->GetDevice(),			L"../res/floor_specular.png" );
 
 	m_Hellknight		= new Model(m_Direct3D->GetDevice(), L"../res/hellknight_diffuse.png", L"../res/hellknight.obj");
