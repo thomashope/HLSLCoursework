@@ -144,4 +144,4 @@ if( /* ShadMapTexCoord is inside shadow map */ )
 # References
 * Dr Paul Robertson, what a gent
 * [RasterTek Tutorials](http://www.rastertek.com/tutdx11.html)
-* [Sampling Trick](http://prideout.net/archive/bloom/)
+* [Blur Sampling Trick](http://prideout.net/archive/bloom/)
