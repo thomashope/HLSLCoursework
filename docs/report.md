@@ -8,7 +8,7 @@ This document is a description of the techniques used for Thomas Hope's submissi
 
 # Overview
 
-![Completed Scene](./header.png)
+![Completed Scene](./images/header.png)
 
 ## Controls
 * WASD: forward, left, back, right
@@ -81,10 +81,50 @@ The normal map is passed into the pixel shader along with the diffuse texture an
 
 ## Shadow Mapping
 Shadow mapping works by rendering the scene from the lights perspective and storing the depth of each pixel in a buffer i.e. the shadow map. The scene is then rendered from the viewers pespective and a test is done for each fragment to see if it's closer or farther away than the corresponding pixel in the lights depth buffer. If the viewer's fragment is closer (after applying a bias to prevent shadow acne) than the that stored in the depth buffer then it is considered lit, if its farther away it is considered unlit.  
-In my scene I modified this technique to allow light to appear to pass through semitransparent objects. When storing the depth value in the shadow map
+In my scene I modified this technique to allow light to appear to pass through semitransparent objects. When storing the depth value in the shadow map I stored the value in the alpha channel and, assuming the object was opaque, set the RGB channels to white. When rendering transparent objects to the shadow map I changed the blend mode before rendering, so the alpha channel would not be modified, writing only the colour that the light should be tinted and preserving the alpha of the object behind.
 
-* render depth information to the alpha channel
-* render tint information to the colour channel, preserving depth with blend mode
+![Shadowmaps](./images/ShadowMaps.png)
+
+The top two quarters of the above image show the shadow map for each light. Opaque objects are shown as a white silhouette, their depth information is stored in the alpha channel. The transparent shape is visible in colour and rendered last, keeping the same alpha value as whatever was behind it. The bottom right shows the lit scene with shadows and tints applied, but before the magic sphere/cube has been blended into the scene.  
+
+Below is some pseudo pixel shader code for rendering the shadows with a tint.  
+
+~~~cpp
+// Pixel Shader pseudo code
+
+input: ShadowMap
+input: light
+
+out: finalColour
+
+// get the projected tex coord in the shadow map
+
+// get depth value by sampling ShadowMap alpha channel
+
+// get tint colour by sampling ShadowMap RGB channel
+
+if( /* ShadMapTexCoord is inside shadow map */ )
+{
+	// Calculate light depth, adjust with bias to prevent shadow acne
+
+	if( /* the fragment is closed to the light than the sampled depth value */ )
+	{
+		// the fragment is receiving light
+		finalColour = dolighting(light)
+		
+		// multiply by the tint from the ShadowMap
+		// simulates the light passing through it like a filter
+		finalColour *= tint
+
+		return finalColour		
+	}
+	else
+	{
+		// the fragment is in shadow
+		return finalColour = light.ambient
+	}
+}
+~~~
 
 ## Magic Sphere
 * render colour info with depth to a buffer
