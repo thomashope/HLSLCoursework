@@ -108,16 +108,7 @@
     <ClCompile Include="PointLightShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="JellyShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="BoxBlurShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="VerticalBlurShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="HorizontalBlurShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="DepthShader.cpp">
@@ -233,16 +224,7 @@
     <ClInclude Include="PointLightShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="JellyShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="BoxBlurShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="VerticalBlurShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="HorizontalBlurShader.h">
       <Filter>Source Files\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="DepthShader.h">

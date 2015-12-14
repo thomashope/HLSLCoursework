@@ -99,9 +99,7 @@
     <ClCompile Include="DepthShader.cpp" />
     <ClCompile Include="DOFShader.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
-    <ClCompile Include="HorizontalBlurShader.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="JellyShader.cpp" />
     <ClCompile Include="FinalScene.cpp" />
     <ClCompile Include="BonusScene.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -129,7 +127,6 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TokenStream.cpp" />
     <ClCompile Include="TriangleMesh.cpp" />
-    <ClCompile Include="VerticalBlurShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h" />
@@ -144,9 +141,7 @@
     <ClInclude Include="DepthShader.h" />
     <ClInclude Include="DOFShader.h" />
     <ClInclude Include="GeometryShader.h" />
-    <ClInclude Include="HorizontalBlurShader.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="JellyShader.h" />
     <ClInclude Include="FinalScene.h" />
     <ClInclude Include="BonusScene.h" />
     <ClInclude Include="Light.h" />
@@ -172,7 +167,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TokenStream.h" />
     <ClInclude Include="TriangleMesh.h" />
-    <ClInclude Include="VerticalBlurShader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
