@@ -22,11 +22,14 @@
     <Filter Include="Source Files\Geometry">
       <UniqueIdentifier>{99e7f5f5-e9b9-441a-a3f8-5a091e53677f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders\shaders">
-      <UniqueIdentifier>{a6380955-4777-4cb6-9433-492d43ffce67}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Applications">
       <UniqueIdentifier>{e2052eed-0665-4425-a274-e1d27c576dfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\cpp">
+      <UniqueIdentifier>{c00bb194-f6e6-40d5-a739-94860eb19881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\hlsl">
+      <UniqueIdentifier>{a6380955-4777-4cb6-9433-492d43ffce67}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,9 +54,6 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="BaseShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="BaseMesh.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
@@ -62,9 +62,6 @@
     </ClCompile>
     <ClCompile Include="BaseApplication.cpp">
       <Filter>Source Files\System</Filter>
-    </ClCompile>
-    <ClCompile Include="ColourShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="RenderTexture.cpp">
       <Filter>Source Files\System</Filter>
@@ -99,53 +96,47 @@
     <ClCompile Include="QuadMesh.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="TextureShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectionalLightShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="PointLightShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxBlurShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="DepthShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="ShadowShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="GeometryShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="PointLightNormalShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="BlendShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="TessNormalShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="ShowNormalShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="NormalShadowShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="DOFShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="FinalScene.cpp">
       <Filter>Source Files\Applications</Filter>
     </ClCompile>
-    <ClCompile Include="TessTintShader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="BonusScene.cpp">
       <Filter>Source Files\Applications</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="TessTintShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="TessNormalShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ShowNormalShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalShadowShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxBlurShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="DOFShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseShader.cpp">
+      <Filter>Source Files\Shaders\cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,9 +158,6 @@
     <ClInclude Include="Texture.h">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="BaseShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="BaseMesh.h">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
@@ -178,9 +166,6 @@
     </ClInclude>
     <ClInclude Include="BaseApplication.h">
       <Filter>Source Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="ColourShader.h">
-      <Filter>Source Files\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="RenderTexture.h">
       <Filter>Source Files\System</Filter>
@@ -215,53 +200,47 @@
     <ClInclude Include="QuadMesh.h">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="TextureShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectionalLightShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="PointLightShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="BoxBlurShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="DepthShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="ShadowShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="PointLightNormalShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="BlendShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="TessNormalShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="ShowNormalShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalShadowShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="DOFShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="FinalScene.h">
       <Filter>Source Files\Applications</Filter>
     </ClInclude>
-    <ClInclude Include="TessTintShader.h">
-      <Filter>Source Files\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="BonusScene.h">
       <Filter>Source Files\Applications</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="TessTintShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="TessNormalShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ShowNormalShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalShadowShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxBlurShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="DOFShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseShader.h">
+      <Filter>Source Files\Shaders\cpp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,79 +248,79 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\shaders\colour_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\colour_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\texture_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\texture_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\directional_light_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\directional_light_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\point_light_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\point_light_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\jelly_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\jelly_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\boxBlur_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\boxBlur_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\horizontalBlur_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\horizontalBlur_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\verticalBlur_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\verticalBlur_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_hs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\shadow_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\shadow_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\depth_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\depth_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\point_light_normal_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\point_light_normal_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\blend_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_vs.hlsl">
       <Filter>Source Files\Shaders\shaders</Filter>
@@ -350,54 +329,54 @@
       <Filter>Source Files\Shaders\shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessnormal_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessnormal_ds.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
     <FxCompile Include="..\shaders\geometry_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\geometry_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\geometry_gs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\shownormal_gs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\shownormal_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\shownormal_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\normalshadow_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\normalshadow_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\depthnormal_vs.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
     <FxCompile Include="..\shaders\dof_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_ds.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_ps.hlsl">
-      <Filter>Source Files\Shaders\shaders</Filter>
+      <Filter>Source Files\Shaders\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="..\shaders\tessellation_hs.hlsl" />
     <FxCompile Include="..\shaders\tessellation_vs.hlsl" />
