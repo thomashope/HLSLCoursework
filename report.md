@@ -3,6 +3,8 @@
 #### AG0904A15
 #### Thomas Hope: 1302495
 
+![Header Image](./final2.png)
+
 ## Preface
 
 This document is a description of the techniques used for Thomas Hope's submission for module AG0904A15, Graphics Programming with Shaders. The module tutor was Dr Paul Robertson. The application was based on a framework provided by the module tutor written in C++. Shaders were written in HLSL for DirectX11.
