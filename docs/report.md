@@ -8,7 +8,7 @@ This document is a description of the techniques used for Thomas Hope's submissi
 
 # Overview
 
-![Completed Scene](./images/header.png)
+![Completed Scene](./images/Header.png)
 
 ## Controls
 * WASD: forward, left, back, right
