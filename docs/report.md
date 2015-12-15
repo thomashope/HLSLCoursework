@@ -98,9 +98,7 @@ input: light
 out: finalColour
 
 // get the projected tex coord in the shadow map
-
 // get depth value by sampling ShadowMap alpha channel
-
 // get tint colour by sampling ShadowMap RGB channel
 
 if( /* ShadMapTexCoord is inside shadow map */ )
@@ -131,17 +129,46 @@ if( /* ShadMapTexCoord is inside shadow map */ )
 * render normals to another buffer
 * blend into the scene with depth information, use normals to refract sample
 
+The colour info for the sphere is rendered into the depth buffer as described above, and from the viewers perspective into a buffer separate to the main scene with the depth information stored in the alpha channel.
+
 ## Depth Of Field
-* final scene is rendered with depth info to alpha buffer
-* blur final scene
-* sample in the middle, lerp based on difference
-* apply fog
+After the scene is rendered with all lighting and depth stored in the alpha channel the depth of field effect is applied. The final scene buffer is rendered into an downscaled colour buffer using a modified box blur shader. The image below shows the final lit scene in the bottom left, with the blurred version in the bottom right.
+
+![Blur Stages](./images/TessStages_poly.png)
+
+The box blur is enhanced by making use of the texture sampler's blending to sample between to pixels. Effectively doubling the number of samples for free.  
+
+The Depth of Field shader then blends between the two buffers by sampling the depth in the centre of the original, then depth at the current pixel, and blending between the blurred and original scene based on the difference between the two depths.
+
+~~~hlsl
+// Distance to the center of the screen
+centerDist = scene.Sample( Sampler, float2(0.5f, 0.5f) ).w;
+
+// sample the blurred and unblurred textures
+sceneSample = scene.Sample( Sampler, input.tex );
+blurSample = blur.Sample( Sampler, input.tex );
+
+depthDifference = abs( centerDist - sceneSample.w  ) * 0.9f;
+
+// lerp between the two and apply fog
+blendedPixel = saturate(lerp(sceneSample, blurSample, depthDifference));
+~~~
+
+Before returning a fog value, multiplied by the distance, is subtracted from the blended pixel. This makes the scene darker / tinted as the camera moves away from objects.
+
+![For Near](./images/FogNear.png)\ ![Fog Far](./images/FogFar.png)
 
 ## Things to improve
+There was a problem with the normal mapping where when a light is shining down the negative x or z axis the angle is calculated incorrectly and the light drops off far too fast.  
+
+I tried normal mapping the Hellknight model by calculating the tangents and binormals in the geometry shader using triangle adjacency but
+
+
 * normal mapping on model (tried to use triangle adjacency, could try sending data when loading model)
 * When light is falling on a normal mapped surface in the negative z and x direction the normal is incorrect
 
 # References
-* Dr Paul Robertson, what a gent
-* [RasterTek Tutorials](http://www.rastertek.com/tutdx11.html)
-* [Blur Sampling Trick](http://prideout.net/archive/bloom/)
+1. Dr Paul Robertson, what a gent
+2. [RasterTek Tutorials](http://www.rastertek.com/tutdx11.html)
+3. [Blur Sampling Trick](http://prideout.net/archive/bloom/)
+4. [Normal Mapping](http://www.gamasutra.com/view/feature/129939/messing_with_tangent_space.php)
