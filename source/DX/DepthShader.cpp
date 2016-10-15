@@ -6,7 +6,7 @@ DepthShader::DepthShader(ID3D11Device* device, HWND hwnd) : BaseShader(device, h
 {
 	InitShader(L"../shaders/depth_vs.hlsl", L"../shaders/depth_ps.hlsl");
 	
-	loadVertexShader( L"../shaders/depthnormal_vs.hlsl", m_vertexNormalShader);
+	//loadVertexShader( L"../shaders/depthnormal_vs.hlsl", true, m_vertexNormalShader);
 }
 
 
@@ -88,20 +88,13 @@ void DepthShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, const 
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 }
 
-void DepthShader::Render( ID3D11DeviceContext* deviceContext, int indexCount, bool hasNormalData )
+void DepthShader::Render( ID3D11DeviceContext* deviceContext, int indexCount )
 {
 	// Set the vertex input layout.
 	deviceContext->IASetInputLayout( m_layout );
 
-	// Set the vertex and pixel shaders that will be used to render.
-	if( hasNormalData )
-	{
-		// The mesh that has been sent includes binormal and tangent data, so we need to use a vertex shader that takes account of that
-	}
-	else
-	{
-		deviceContext->VSSetShader( m_vertexShader, NULL, 0 );
-	}
+	deviceContext->VSSetShader( m_vertexShader, NULL, 0 );
+	
 	deviceContext->PSSetShader( m_pixelShader, NULL, 0 );
 
 	// if Hull shader is not null then set HS and DS

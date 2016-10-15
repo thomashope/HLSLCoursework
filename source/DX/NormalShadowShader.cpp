@@ -142,9 +142,9 @@ void NormalShadowShader::SetShaderParameters( ID3D11DeviceContext* deviceContext
 	tproj = XMMatrixTranspose(projectionMatrix);
 
 	tLightViewMatrix[0] = XMMatrixTranspose(lights[0]->GetViewMatrix());
-	tLightProjectionMatrix[0] = XMMatrixTranspose( lights[0]->GetProjectionMatrix( ) );
-	tLightViewMatrix[1] = XMMatrixTranspose( lights[1]->GetViewMatrix( ) );
-	tLightProjectionMatrix[1] = XMMatrixTranspose( lights[1]->GetProjectionMatrix( ) );
+	tLightProjectionMatrix[0] = XMMatrixTranspose( lights[0]->GetProjectionMatrix() );
+	tLightViewMatrix[1] = XMMatrixTranspose( lights[1]->GetViewMatrix() );
+	tLightProjectionMatrix[1] = XMMatrixTranspose( lights[1]->GetProjectionMatrix() );
 
 	// Lock the constant buffer so it can be written to.
 	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

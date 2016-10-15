@@ -18,18 +18,18 @@ cbuffer LightBuffer : register(cb1)
 
 struct InputType
 {
-    float4 position : POSITION;
+    float4 position : POSITION; // TODO input is 3 instead of 4?
     float2 tex		: TEXCOORD0;
 	float3 normal	: NORMAL;
-	float3 binormal : BINORMAL;
-	float3 tangent	: TANGENT;
+	//float3 binormal : BINORMAL;
+	//float3 tangent	: TANGENT;
 };
 
 struct OutputType
 {
 	float4 position				: SV_POSITION;
     float2 tex					: TEXCOORD0;
-	float3 normal				: NORMAL;
+	float3 normal				: NORMAL0;
 	float3 binormal				: BINORMAL;
 	float3 tangent				: TANGENT;
 
@@ -40,19 +40,18 @@ struct OutputType
 	float3 lightPos				[NUM_LIGHTS] : TEXCOORD5;
 };
 
-
 OutputType main(InputType input)
 {
     OutputType output;
 	float4 worldPosition;
 
+	// Change the position vector to be 4 units for proper matrix calculations.
+    input.position.w = 1.0f;
+
 	// Calculate the depthPosition of the vertex against the world, view, and projection matrices.
 	output.depthPosition = mul( input.position, worldMatrix );
 	output.depthPosition = mul( output.depthPosition, viewMatrix );
 	output.depthPosition = mul( output.depthPosition, projectionMatrix );
-
-	// Change the position vector to be 4 units for proper matrix calculations.
-    input.position.w = 1.0f;
 
 	// Calculate the position of the vertex against the world, view, and projection matrices.
 	output.position = mul( input.position, worldMatrix );
@@ -60,15 +59,15 @@ OutputType main(InputType input)
 	output.position = mul( output.position, projectionMatrix );
 
 	// Calculate the normal vector against the world matrix only and then normalize the final value.
-	output.normal = mul( input.normal, (float3x3)worldMatrix );
+	output.normal = mul( float3(0.0f, 1.0f, 0.0f), (float3x3)worldMatrix );
 	output.normal = normalize( output.normal );
 
 	// Calculate the tangent vector against the world matrix only and then normalize the final value.
-	output.tangent = mul( input.tangent, (float3x3)worldMatrix );
+	output.tangent = mul( float3(0.0f, 0.0f, 1.0f), (float3x3)worldMatrix);
 	output.tangent = normalize( output.tangent );
 
 	// Calculate the binormal vector against the world matrix only and then normalize the final value.
-	output.binormal = mul( input.binormal, (float3x3)worldMatrix );
+	output.binormal = mul( float3(1.0f, 0.0f, 0.0f), (float3x3)worldMatrix );
 	output.binormal = normalize( output.binormal );
 
 	// Store the texture coordinates for the pixel shader.
@@ -91,7 +90,6 @@ OutputType main(InputType input)
 		output.lightPos[i] = lightPosition[i].xyz - worldPosition.xyz;
 		output.lightPos[i] = normalize( output.lightPos[i] );
 	}
-
 
 	return output;
 }

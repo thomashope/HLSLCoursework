@@ -181,12 +181,12 @@ void Model::LoadModel( WCHAR* filename )
 
 void Model::InitBuffers(ID3D11Device* device)
 {
-	NormalVertexType* vertices;
+	VertexType* vertices;
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 		
-	vertices = new NormalVertexType[m_vertexCount];	
+	vertices = new VertexType[m_vertexCount];
 	
 	indices = new unsigned long[m_indexCount];
 	
@@ -202,7 +202,7 @@ void Model::InitBuffers(ID3D11Device* device)
 
 	// Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(NormalVertexType)* m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(VertexType)* m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;

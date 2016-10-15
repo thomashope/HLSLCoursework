@@ -16,13 +16,6 @@ class Model : public BaseMesh
 		float nx, ny, nz;
 	};
 
-	struct NormalVertexType
-	{
-		XMFLOAT3 position;
-		XMFLOAT2 texture;
-		XMFLOAT3 normal;
-	};
-
 public:
 	Model(ID3D11Device* device, WCHAR* textureFilename, WCHAR* filename);
 	~Model();

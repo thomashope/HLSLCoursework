@@ -7,7 +7,7 @@ Scene::Scene( HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight,
 {
 	// Create Mesh objects
 	m_FloorMesh			= new PlaneMesh(m_Direct3D->GetDevice(),	L"../res/floor_diffuse.png");
-	m_FloorMesh->LoadNormalMap( m_Direct3D->GetDevice(),			L"../res/floor_normal.png" );
+	m_FloorMesh->LoadNormalMap( m_Direct3D->GetDevice(),			L"../res/floor-test.jpg" ); // TODO was it a problem with the texture?
 	m_FloorMesh->LoadSpecularMap( m_Direct3D->GetDevice(),			L"../res/floor_specular.png" );
 
 	m_Hellknight		= new Model(m_Direct3D->GetDevice(), L"../res/hellknight_diffuse.png", L"../res/hellknight.obj");
@@ -266,7 +266,7 @@ void Scene::RenderShadowmap1()
 	worldMatrix = XMMatrixMultiply( XMMatrixTranslation( -40, -2, -40 ), XMMatrixScaling( 0.2f, 1.0f, 0.2f ) );
 	m_FloorMesh->SendData( m_Direct3D->GetDeviceContext( ) );
 	m_DepthShader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
-	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_FloorMesh->GetIndexCount(), true);
+	m_DepthShader->Render(m_Direct3D->GetDeviceContext(), m_FloorMesh->GetIndexCount());
 
 	// Only write che colour of the blob to the depth texture	
 	m_Direct3D->TurnOnColourOnly();
@@ -307,7 +307,7 @@ void Scene::RenderShadowmap2()
 	worldMatrix = XMMatrixMultiply( XMMatrixTranslation( -40, -2, -40 ), XMMatrixScaling( 0.2f, 1.0f, 0.2f ) );
 	m_FloorMesh->SendData( m_Direct3D->GetDeviceContext( ) );
 	m_DepthShader->SetShaderParameters( m_Direct3D->GetDeviceContext( ), worldMatrix, viewMatrix, projectionMatrix );
-	m_DepthShader->Render( m_Direct3D->GetDeviceContext( ), m_FloorMesh->GetIndexCount( ) , true);
+	m_DepthShader->Render( m_Direct3D->GetDeviceContext( ), m_FloorMesh->GetIndexCount( ) );
 
 	// Only write che colour of the blob to the depth texture	
 	m_Direct3D->TurnOnColourOnly( );

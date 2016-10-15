@@ -19,7 +19,7 @@ public:
 
 	void SetShaderParameters(ID3D11DeviceContext* deviceContext, const XMMATRIX &world, const XMMATRIX &view, const XMMATRIX &projection);
 
-	void Render( ID3D11DeviceContext* deviceContext, int indexCount, bool hasNormalData = false );
+	void Render( ID3D11DeviceContext* deviceContext, int indexCount );
 
 
 private:

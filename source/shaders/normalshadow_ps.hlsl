@@ -23,7 +23,7 @@ struct InputType
 {
 	float4 position				: SV_POSITION;
     float2 tex					: TEXCOORD0;
-	float3 normal				: NORMAL;
+	float3 normal				: NORMAL0;
 	float3 binormal				: BINORMAL;
 	float3 tangent				: TANGENT;
 
@@ -49,16 +49,13 @@ float4 main(InputType input) : SV_TARGET
 
 	// Set the default output color to the ambient light value for all pixels.
 	color = ambientColor[0];
-
-
-	//TODO: figure out why one corner of the plane is dark
-
+	
 	// Sample the pixel in the bump map.
 	normal = normalTexture.Sample( SampleTypeClamp, input.tex ).rgb;
 	// Expand the range of the normal value from (0, +1) to (-1, +1).
 	normal = (normal * 2.0f) - 1.0f;
-	// transform the normal into tangent space
-	normal = (normal.x * input.binormal) + (normal.y * input.tangent) + (normal.z * input.normal);
+	// transform the normal into tangent space using binormal and tangent information
+	normal = (normal.r * input.binormal) + (normal.g * input.tangent) + (normal.b * input.normal);
 	normal = normalize( normal );
 
 	// For each light
@@ -102,8 +99,8 @@ float4 main(InputType input) : SV_TARGET
 			// The fragment is receiving light
 
 			// Calculate the amount of light on this pixel.
-			lightIntensity = saturate( dot( normal, input.lightPos[i] ) );
-
+			lightIntensity = saturate(dot(normal, input.lightPos[i]));
+						
 			if( lightIntensity > 0.0f )
 			{
 				// Calculate Attenuation
@@ -127,5 +124,4 @@ float4 main(InputType input) : SV_TARGET
 	color.a = input.depthPosition.z / input.depthPosition.w;
 
 	return color;
-	//return float4( normal, color.a);
 }
